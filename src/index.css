@@ -13,16 +13,18 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 222.2 47.4% 11.2%;
+    /* Updated primary colors to match Wasper brand */
+    --primary: 240 19% 16%; /* wasper-primary */
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 210 40% 96.1%;
+    /* Updated secondary colors */
+    --secondary: 255 80% 75%; /* wasper-secondary */
     --secondary-foreground: 222.2 47.4% 11.2%;
 
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 210 40% 96.1%;
+    --accent: 262 35% 54%; /* wasper-accent */
     --accent-foreground: 222.2 47.4% 11.2%;
 
     --destructive: 0 84.2% 60.2%;
@@ -30,7 +32,7 @@
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --ring: 255 80% 75%; /* Match wasper-secondary */
 
     --radius: 0.5rem;
 

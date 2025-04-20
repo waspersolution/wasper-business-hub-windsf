@@ -52,6 +52,17 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				wasper: {
+					primary: '#1A1F2C', // dark purple
+					secondary: '#9b87f5', // primary purple
+					accent: '#7E69AB', // secondary purple
+					light: '#E5DEFF', // soft purple
+					dark: '#1A1F2C', // dark purple
+					success: '#4CAF50', // green
+					warning: '#FFC107', // yellow
+					error: '#F44336', // red
+					info: '#2196F3', // blue
+				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
