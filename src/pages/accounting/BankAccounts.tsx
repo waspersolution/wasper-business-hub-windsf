@@ -61,7 +61,7 @@ import {
   YAxis,
   Tooltip,
   Legend
-} from "@/components/ui/charts";
+} from "recharts";
 
 type BankAccount = {
   id: string;
@@ -609,12 +609,12 @@ export default function BankAccounts() {
               </div>
               
               <div className="w-full sm:w-1/4">
-                <Select defaultValue="">
+                <Select defaultValue="all">
                   <SelectTrigger>
                     <SelectValue placeholder="Account Type" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Types</SelectItem>
+                    <SelectItem value="all">All Types</SelectItem>
                     <SelectItem value="current">Current</SelectItem>
                     <SelectItem value="savings">Savings</SelectItem>
                     <SelectItem value="domiciliary">Domiciliary</SelectItem>
@@ -660,7 +660,7 @@ export default function BankAccounts() {
                       </div>
                       <div className="space-y-2">
                         <h4 className="font-medium">Currency</h4>
-                        <Select>
+                        <Select defaultValue="all">
                           <SelectTrigger>
                             <SelectValue placeholder="Select currency" />
                           </SelectTrigger>
