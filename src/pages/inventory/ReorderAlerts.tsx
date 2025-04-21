@@ -1,10 +1,12 @@
 
+// This file is 246 lines long but we only modify the import and icon references for Alert
+
 import { useState } from "react";
 import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Search, ArrowUpRight, Filter, Plus, ShoppingCart, Alert, MoreHorizontal } from "lucide-react";
+import { Search, ArrowUpRight, Filter, Plus, ShoppingCart, BadgeAlert, MoreHorizontal } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { DashboardLayout } from "@/components/Layout/DashboardLayout";
@@ -100,7 +102,7 @@ export default function ReorderAlerts() {
           <Card>
             <CardContent className="p-4 flex items-center gap-4">
               <div className="bg-red-100 p-3 rounded-full">
-                <Alert className="h-6 w-6 text-red-600" />
+                <BadgeAlert className="h-6 w-6 text-red-600" />
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Critical Items</p>
@@ -111,7 +113,7 @@ export default function ReorderAlerts() {
           <Card>
             <CardContent className="p-4 flex items-center gap-4">
               <div className="bg-amber-100 p-3 rounded-full">
-                <Alert className="h-6 w-6 text-amber-600" />
+                <BadgeAlert className="h-6 w-6 text-amber-600" />
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Warning Items</p>
@@ -243,3 +245,4 @@ export default function ReorderAlerts() {
     </DashboardLayout>
   );
 }
+
