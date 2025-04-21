@@ -1,3 +1,4 @@
+
 import {
   Box,
   ClipboardList,
@@ -98,6 +99,7 @@ export const navigationItems: SidebarItem[] = [
     title: "Reports",
     icon: <BarChart2 />,
     children: [
+      { title: "Reports Dashboard", path: "/reports", icon: <BarChart2 /> },
       {
         title: "Stock Reports",
         icon: <Box />,
@@ -132,7 +134,7 @@ export const navigationItems: SidebarItem[] = [
         children: [
           { title: "Trial Balance", path: "/reports/trial-balance", icon: <BarChart /> },
           { title: "Profit & Loss", path: "/reports/profit-loss", icon: <DollarSign /> },
-          { title: "Balance Sheet", path: "/reports/balance-sheet", icon: <BarChart /> },
+          { title: "Balance Sheet", path: "/reports/balance-sheet", icon: <Layers /> },
           { title: "Journal Report", path: "/reports/journal", icon: <BookIcon /> },
         ]
       },

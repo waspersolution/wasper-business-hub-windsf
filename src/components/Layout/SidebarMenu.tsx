@@ -44,18 +44,10 @@ function SidebarMenuItem({
     (item.path && locationPath === item.path) ||
     (item.path && locationPath.startsWith(`${item.path}/`));
 
-  const isAnyChildActive =
-    hasChildren &&
-    item.children!.some(
-      (child) =>
-        (child.path && locationPath.startsWith(child.path)) ||
-        (child.children &&
-          child.children.some(
-            (sub) =>
-              sub.path && locationPath.startsWith(sub.path)
-          ))
-    );
+  // Check if any child or grandchild is active
+  const isAnyChildActive = hasChildren && checkIfAnyChildActive(item.children!, locationPath);
 
+  // Ensure menu is expanded if any child is active
   const expanded = isOpen || isAnyChildActive;
 
   const toggleSubmenu = () => {
@@ -141,4 +133,23 @@ function SidebarMenuItem({
       {item.title}
     </div>
   );
+}
+
+// Helper function to recursively check if any child or grandchild is active
+function checkIfAnyChildActive(items: SidebarItem[], locationPath: string): boolean {
+  for (const item of items) {
+    // Check if current item is active
+    if (item.path && (locationPath === item.path || locationPath.startsWith(`${item.path}/`))) {
+      return true;
+    }
+    
+    // If this item has children, check them too
+    if (item.children && item.children.length > 0) {
+      if (checkIfAnyChildActive(item.children, locationPath)) {
+        return true;
+      }
+    }
+  }
+  
+  return false;
 }

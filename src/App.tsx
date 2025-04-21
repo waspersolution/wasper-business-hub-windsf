@@ -79,12 +79,29 @@ const App = () => {
               <Route path="/accounting/chart-of-accounts" element={<ChartOfAccounts />} />
               <Route path="/accounting/tax-settings" element={<TaxSettings />} />
               <Route path="/accounting/bank-accounts" element={<BankAccounts />} />
+              
               {/* Reports routes */}
               <Route path="/reports" element={<ReportsDashboard />} />
               <Route path="/reports/stock" element={<StockReports />} />
               <Route path="/reports/sales" element={<SalesReports />} />
               <Route path="/reports/financials" element={<FinancialReports />} />
               <Route path="/reports/dead-stock" element={<DeadStock />} />
+              
+              {/* Additional Report routes for all the sub-menus */}
+              <Route path="/reports/stock-movement" element={<StockReports />} />
+              <Route path="/reports/valuation" element={<StockReports />} />
+              <Route path="/reports/sales-periods" element={<SalesReports />} />
+              <Route path="/reports/top-products" element={<SalesReports />} />
+              <Route path="/reports/customer-summary" element={<SalesReports />} />
+              <Route path="/reports/purchase-summary" element={<FinancialReports />} />
+              <Route path="/reports/supplier-purchases" element={<FinancialReports />} />
+              <Route path="/reports/trial-balance" element={<FinancialReports />} />
+              <Route path="/reports/profit-loss" element={<FinancialReports />} />
+              <Route path="/reports/balance-sheet" element={<FinancialReports />} />
+              <Route path="/reports/journal" element={<FinancialReports />} />
+              <Route path="/reports/custom" element={<ReportsDashboard />} />
+              <Route path="/reports/saved" element={<ReportsDashboard />} />
+              
               {/* Billing routes */}
               <Route path="/billing/subscription" element={<SubscriptionPlans />} />
               {/* Notifications routes */}
