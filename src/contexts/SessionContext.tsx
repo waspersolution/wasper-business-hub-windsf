@@ -1,9 +1,9 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { SessionContext, UserRole } from '@/types/auth';
+import { SessionContext as SessionContextType, UserRole } from '@/types/auth';
 
 // Default session context
-const defaultSession: SessionContext = {
+const defaultSession: SessionContextType = {
   userId: '',
   currentCompanyId: '',
   currentBranchId: '',
@@ -17,8 +17,8 @@ type SessionContextProviderProps = {
 
 // Create context
 const SessionContextData = createContext<{
-  session: SessionContext;
-  setSession: (session: SessionContext) => void;
+  session: SessionContextType;
+  setSession: (session: SessionContextType) => void;
   clearSession: () => void;
   setRole: (role: UserRole) => void; // NEW for mock role switching
 }>({
@@ -31,8 +31,8 @@ const SessionContextData = createContext<{
 // Custom hook for using the session context
 export const useSession = () => useContext(SessionContextData);
 
-export const SessionProvider = ({ children }: SessionContextProviderProps) => {
-  const [session, setSessionState] = useState<SessionContext>(() => {
+export const SessionProvider: React.FC<SessionContextProviderProps> = ({ children }) => {
+  const [session, setSessionState] = useState<SessionContextType>(() => {
     // Try to get session from localStorage on initial load
     const savedSession = localStorage.getItem('wasper_session');
     return savedSession ? JSON.parse(savedSession) : defaultSession;
@@ -47,7 +47,7 @@ export const SessionProvider = ({ children }: SessionContextProviderProps) => {
     }
   }, [session]);
 
-  const setSession = (newSession: SessionContext) => {
+  const setSession = (newSession: SessionContextType) => {
     setSessionState(newSession);
   };
 
@@ -67,4 +67,3 @@ export const SessionProvider = ({ children }: SessionContextProviderProps) => {
     </SessionContextData.Provider>
   );
 };
-
