@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { DashboardLayout } from "@/components/Layout/DashboardLayout";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -7,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
-import { Search, UserRole } from "lucide-react";
+import { Search, Users } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -168,7 +167,7 @@ export default function Permissions() {
             </p>
           </div>
           <Button variant="outline" className="gap-2">
-            <UserRole size={16} /> Create New Role
+            <Users size={16} /> Create New Role
           </Button>
         </div>
 
