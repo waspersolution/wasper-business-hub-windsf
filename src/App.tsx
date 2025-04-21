@@ -21,6 +21,9 @@ import PurchasesLedger from "./pages/purchases/Ledger";
 import AccountingLedgers from "./pages/accounting/Ledgers";
 import Reconciliation from "./pages/accounting/Reconciliation";
 import JournalEntries from "./pages/accounting/JournalEntries";
+import ChartOfAccounts from "./pages/accounting/ChartOfAccounts";
+import TaxSettings from "./pages/accounting/TaxSettings";
+import BankAccounts from "./pages/accounting/BankAccounts";
 import StockReports from "./pages/reports/Stock";
 import SalesReports from "./pages/reports/Sales";
 import FinancialReports from "./pages/reports/Financials";
@@ -72,6 +75,9 @@ const App = () => {
               <Route path="/accounting/ledgers" element={<AccountingLedgers />} />
               <Route path="/accounting/reconciliation" element={<Reconciliation />} />
               <Route path="/accounting/journal" element={<JournalEntries />} />
+              <Route path="/accounting/chart-of-accounts" element={<ChartOfAccounts />} />
+              <Route path="/accounting/tax-settings" element={<TaxSettings />} />
+              <Route path="/accounting/bank-accounts" element={<BankAccounts />} />
               {/* Reports routes */}
               <Route path="/reports/stock" element={<StockReports />} />
               <Route path="/reports/sales" element={<SalesReports />} />
