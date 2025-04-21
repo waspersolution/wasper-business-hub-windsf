@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import { useSession } from "@/contexts/SessionContext";
 import { Button } from "@/components/ui/button";
@@ -41,10 +40,8 @@ export function Header() {
                 Branch: <span className="text-wasper-secondary">Main Branch</span>
               </div>
             )}
-            {/* Role switcher (mock) */}
-            <RoleSwitcher />
+            {/* Role switcher has been moved to sidebar footer */}
           </div>
-
           {/* User menu */}
           {session.isAuthenticated ? (
             <DropdownMenu>
