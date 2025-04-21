@@ -1,6 +1,6 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { SessionContext } from '@/types/auth';
+import { SessionContext, UserRole } from '@/types/auth';
 
 // Default session context
 const defaultSession: SessionContext = {
@@ -20,10 +20,12 @@ const SessionContextData = createContext<{
   session: SessionContext;
   setSession: (session: SessionContext) => void;
   clearSession: () => void;
+  setRole: (role: UserRole) => void; // NEW for mock role switching
 }>({
   session: defaultSession,
   setSession: () => {},
   clearSession: () => {},
+  setRole: () => {},
 });
 
 // Custom hook for using the session context
@@ -54,9 +56,15 @@ export const SessionProvider = ({ children }: SessionContextProviderProps) => {
     localStorage.removeItem('wasper_session');
   };
 
+  // NEW: Set only the current role (mock, for switching)
+  const setRole = (role: UserRole) => {
+    setSessionState((prev) => ({ ...prev, currentRole: role, isAuthenticated: true }));
+  };
+
   return (
-    <SessionContextData.Provider value={{ session, setSession, clearSession }}>
+    <SessionContextData.Provider value={{ session, setSession, clearSession, setRole }}>
       {children}
     </SessionContextData.Provider>
   );
 };
+

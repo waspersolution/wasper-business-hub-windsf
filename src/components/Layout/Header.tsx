@@ -11,6 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { RoleSwitcher } from "../RoleSwitcher";
 
 export function Header() {
   const { session, clearSession } = useSession();
@@ -40,6 +41,8 @@ export function Header() {
                 Branch: <span className="text-wasper-secondary">Main Branch</span>
               </div>
             )}
+            {/* Role switcher (mock) */}
+            <RoleSwitcher />
           </div>
 
           {/* User menu */}

@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -10,6 +11,29 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import POS from "./pages/sales/POS";
+import Products from "./pages/inventory/Products";
+import StockAdjustments from "./pages/inventory/StockAdjustments";
+import Transfers from "./pages/inventory/Transfers";
+import ReorderAlerts from "./pages/inventory/ReorderAlerts";
+import Orders from "./pages/purchases/Orders";
+import GoodsReceived from "./pages/purchases/GoodsReceived";
+import Suppliers from "./pages/purchases/Suppliers";
+import PurchasesLedger from "./pages/purchases/Ledger";
+import AccountingLedgers from "./pages/accounting/Ledgers";
+import Reconciliation from "./pages/accounting/Reconciliation";
+import JournalEntries from "./pages/accounting/JournalEntries";
+import StockReports from "./pages/reports/Stock";
+import SalesReports from "./pages/reports/Sales";
+import FinancialReports from "./pages/reports/Financials";
+import DeadStock from "./pages/reports/DeadStock";
+import SubscriptionPlans from "./pages/billing/Subscription";
+import NotificationTemplates from "./pages/notifications/Templates";
+import CompaniesBranches from "./pages/settings/Companies";
+import UsersRoles from "./pages/settings/Users";
+import Attributes from "./pages/settings/Attributes";
+import AuditLogs from "./pages/audit-logs/AuditLogs";
+import SalesHistory from "./pages/sales/History";
+import SalesCustomers from "./pages/sales/Customers";
 
 const queryClient = new QueryClient();
 
@@ -26,26 +50,40 @@ const App = () => (
             <Route path="/register" element={<Register />} />
             <Route path="/dashboard" element={<Dashboard />} />
             {/* Inventory routes */}
-            <Route path="/inventory/*" element={<Dashboard />} />
+            <Route path="/inventory/products" element={<Products />} />
+            <Route path="/inventory/stock-adjustments" element={<StockAdjustments />} />
+            <Route path="/inventory/transfers" element={<Transfers />} />
+            <Route path="/inventory/reorder-alerts" element={<ReorderAlerts />} />
             {/* Sales routes */}
             <Route path="/sales" element={<Navigate to="/sales/pos" replace />} />
             <Route path="/sales/pos" element={<POS />} />
-            <Route path="/sales/*" element={<Dashboard />} />
+            <Route path="/sales/history" element={<SalesHistory />} />
+            <Route path="/sales/customers" element={<SalesCustomers />} />
             {/* Purchases routes */}
-            <Route path="/purchases/*" element={<Dashboard />} />
+            <Route path="/purchases/orders" element={<Orders />} />
+            <Route path="/purchases/goods-received" element={<GoodsReceived />} />
+            <Route path="/purchases/suppliers" element={<Suppliers />} />
+            <Route path="/purchases/ledger" element={<PurchasesLedger />} />
             {/* Accounting routes */}
-            <Route path="/accounting/*" element={<Dashboard />} />
+            <Route path="/accounting/ledgers" element={<AccountingLedgers />} />
+            <Route path="/accounting/reconciliation" element={<Reconciliation />} />
+            <Route path="/accounting/journal" element={<JournalEntries />} />
             {/* Reports routes */}
-            <Route path="/reports/*" element={<Dashboard />} />
+            <Route path="/reports/stock" element={<StockReports />} />
+            <Route path="/reports/sales" element={<SalesReports />} />
+            <Route path="/reports/financials" element={<FinancialReports />} />
+            <Route path="/reports/dead-stock" element={<DeadStock />} />
             {/* Billing routes */}
-            <Route path="/billing/*" element={<Dashboard />} />
+            <Route path="/billing/subscription" element={<SubscriptionPlans />} />
             {/* Notifications routes */}
-            <Route path="/notifications/*" element={<Dashboard />} />
+            <Route path="/notifications/templates" element={<NotificationTemplates />} />
             {/* Settings routes */}
-            <Route path="/settings/*" element={<Dashboard />} />
+            <Route path="/settings/companies" element={<CompaniesBranches />} />
+            <Route path="/settings/users" element={<UsersRoles />} />
+            <Route path="/settings/attributes" element={<Attributes />} />
             {/* Audit logs route */}
-            <Route path="/audit-logs" element={<Dashboard />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="/audit-logs" element={<AuditLogs />} />
+            {/* Default catch-all */}
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
