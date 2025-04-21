@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { CreditCard, Cash, Check } from "lucide-react";
+import { CreditCard, cash, Check } from "lucide-react";
 
 export default function POSSummary() {
   // Demo summary only
@@ -31,7 +31,7 @@ export default function POSSummary() {
           Card Payment
         </Button>
         <Button disabled variant="secondary" className="flex items-center gap-2">
-          <Cash className="h-5 w-5" />
+          <cash className="h-5 w-5" />
           Cash Payment
         </Button>
         <Button disabled variant="outline" className="flex items-center gap-2">

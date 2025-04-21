@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Wifi, WifiOff, Sync } from "lucide-react";
+import { Wifi, WifiOff, sync } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import POSAddItem from "./POSAddItem";
 import POSCart from "./POSCart";
@@ -48,7 +48,7 @@ export default function POS() {
               className="flex items-center gap-1"
               disabled
             >
-              <Sync className="h-4 w-4 animate-spin" />
+              <sync className="h-4 w-4 animate-spin" />
               Sync
             </Button>
           )}
