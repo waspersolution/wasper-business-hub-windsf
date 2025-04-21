@@ -5,6 +5,7 @@ import { Header } from "./Header";
 import { useSession } from "@/contexts/SessionContext";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { Toaster } from "@/components/ui/toaster";
 
 type DashboardLayoutProps = {
   children: ReactNode;

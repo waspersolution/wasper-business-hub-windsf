@@ -37,59 +37,61 @@ import SalesCustomers from "./pages/sales/Customers";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <SessionProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Navigate to="/login" replace />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            {/* Inventory routes */}
-            <Route path="/inventory/products" element={<Products />} />
-            <Route path="/inventory/stock-adjustments" element={<StockAdjustments />} />
-            <Route path="/inventory/transfers" element={<Transfers />} />
-            <Route path="/inventory/reorder-alerts" element={<ReorderAlerts />} />
-            {/* Sales routes */}
-            <Route path="/sales" element={<Navigate to="/sales/pos" replace />} />
-            <Route path="/sales/pos" element={<POS />} />
-            <Route path="/sales/history" element={<SalesHistory />} />
-            <Route path="/sales/customers" element={<SalesCustomers />} />
-            {/* Purchases routes */}
-            <Route path="/purchases/orders" element={<Orders />} />
-            <Route path="/purchases/goods-received" element={<GoodsReceived />} />
-            <Route path="/purchases/suppliers" element={<Suppliers />} />
-            <Route path="/purchases/ledger" element={<PurchasesLedger />} />
-            {/* Accounting routes */}
-            <Route path="/accounting/ledgers" element={<AccountingLedgers />} />
-            <Route path="/accounting/reconciliation" element={<Reconciliation />} />
-            <Route path="/accounting/journal" element={<JournalEntries />} />
-            {/* Reports routes */}
-            <Route path="/reports/stock" element={<StockReports />} />
-            <Route path="/reports/sales" element={<SalesReports />} />
-            <Route path="/reports/financials" element={<FinancialReports />} />
-            <Route path="/reports/dead-stock" element={<DeadStock />} />
-            {/* Billing routes */}
-            <Route path="/billing/subscription" element={<SubscriptionPlans />} />
-            {/* Notifications routes */}
-            <Route path="/notifications/templates" element={<NotificationTemplates />} />
-            {/* Settings routes */}
-            <Route path="/settings/companies" element={<CompaniesBranches />} />
-            <Route path="/settings/users" element={<UsersRoles />} />
-            <Route path="/settings/attributes" element={<Attributes />} />
-            {/* Audit logs route */}
-            <Route path="/audit-logs" element={<AuditLogs />} />
-            {/* Default catch-all */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
-    </SessionProvider>
-  </QueryClientProvider>
-);
+const App = () => {
+  return (
+    <BrowserRouter>
+      <QueryClientProvider client={queryClient}>
+        <SessionProvider>
+          <TooltipProvider>
+            <Routes>
+              <Route path="/" element={<Navigate to="/login" replace />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              {/* Inventory routes */}
+              <Route path="/inventory/products" element={<Products />} />
+              <Route path="/inventory/stock-adjustments" element={<StockAdjustments />} />
+              <Route path="/inventory/transfers" element={<Transfers />} />
+              <Route path="/inventory/reorder-alerts" element={<ReorderAlerts />} />
+              {/* Sales routes */}
+              <Route path="/sales" element={<Navigate to="/sales/pos" replace />} />
+              <Route path="/sales/pos" element={<POS />} />
+              <Route path="/sales/history" element={<SalesHistory />} />
+              <Route path="/sales/customers" element={<SalesCustomers />} />
+              {/* Purchases routes */}
+              <Route path="/purchases/orders" element={<Orders />} />
+              <Route path="/purchases/goods-received" element={<GoodsReceived />} />
+              <Route path="/purchases/suppliers" element={<Suppliers />} />
+              <Route path="/purchases/ledger" element={<PurchasesLedger />} />
+              {/* Accounting routes */}
+              <Route path="/accounting/ledgers" element={<AccountingLedgers />} />
+              <Route path="/accounting/reconciliation" element={<Reconciliation />} />
+              <Route path="/accounting/journal" element={<JournalEntries />} />
+              {/* Reports routes */}
+              <Route path="/reports/stock" element={<StockReports />} />
+              <Route path="/reports/sales" element={<SalesReports />} />
+              <Route path="/reports/financials" element={<FinancialReports />} />
+              <Route path="/reports/dead-stock" element={<DeadStock />} />
+              {/* Billing routes */}
+              <Route path="/billing/subscription" element={<SubscriptionPlans />} />
+              {/* Notifications routes */}
+              <Route path="/notifications/templates" element={<NotificationTemplates />} />
+              {/* Settings routes */}
+              <Route path="/settings/companies" element={<CompaniesBranches />} />
+              <Route path="/settings/users" element={<UsersRoles />} />
+              <Route path="/settings/attributes" element={<Attributes />} />
+              {/* Audit logs route */}
+              <Route path="/audit-logs" element={<AuditLogs />} />
+              {/* Default catch-all */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+            <Toaster />
+            <Sonner />
+          </TooltipProvider>
+        </SessionProvider>
+      </QueryClientProvider>
+    </BrowserRouter>
+  );
+};
 
 export default App;

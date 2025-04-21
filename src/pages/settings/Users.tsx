@@ -1,165 +1,202 @@
 
 import { useState } from "react";
 import { DashboardLayout } from "@/components/Layout/DashboardLayout";
-import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Search, Plus, MoreHorizontal, UserPlus } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
+import { 
+  MoreVertical, 
+  UserPlus, 
+  Edit, 
+  Trash, 
+  Lock, 
+  Shield, 
+  CheckCircle, 
+  XCircle 
+} from "lucide-react";
+import { 
+  DropdownMenu, 
+  DropdownMenuContent, 
+  DropdownMenuItem, 
+  DropdownMenuLabel, 
+  DropdownMenuSeparator, 
+  DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu";
 import { useSession } from "@/contexts/SessionContext";
-import { UserRole } from "@/types/auth";
+import { useToast } from "@/components/ui/use-toast";
 
-const mockUsersRoles = [
+// Mock users data
+const mockUsers = [
   {
     id: "USR001",
-    name: "Jane Doe",
-    email: "jane@example.com",
-    role: "Company Admin",
-    created_at: "2025-03-11",
+    name: "John Smith",
+    email: "john@example.com",
+    role: "super_admin",
     status: "active",
-    last_login: "2025-04-21 08:45",
+    lastLogin: "2025-04-20 14:25",
   },
   {
     id: "USR002",
-    name: "Sam Smith",
-    email: "sam@example.com",
-    role: "Staff",
-    created_at: "2025-04-03",
-    status: "inactive",
-    last_login: "2025-04-15 14:22",
+    name: "Jane Doe",
+    email: "jane@example.com",
+    role: "branch_manager",
+    status: "active",
+    lastLogin: "2025-04-20 09:31",
   },
   {
     id: "USR003",
-    name: "Ngozi Okonkwo",
-    email: "ngozi@example.com",
-    role: "Branch Manager",
-    created_at: "2025-01-22",
+    name: "Ibrahim Hassan",
+    email: "ibrahim@example.com",
+    role: "inventory_manager",
     status: "active",
-    last_login: "2025-04-21 09:12",
+    lastLogin: "2025-04-20 11:15",
   },
   {
     id: "USR004",
-    name: "Ahmed Bello",
-    email: "ahmed@example.com",
-    role: "Inventory Manager",
-    created_at: "2025-02-18",
-    status: "active",
-    last_login: "2025-04-20 16:05",
+    name: "Chidi Okafor",
+    email: "chidi@example.com",
+    role: "sales_manager",
+    status: "inactive",
+    lastLogin: "2025-04-15 16:20",
   },
   {
     id: "USR005",
-    name: "Joy Adebayo",
-    email: "joy@example.com",
-    role: "Sales Manager",
-    created_at: "2025-03-29",
+    name: "Fatima Umar",
+    email: "fatima@example.com",
+    role: "purchase_manager",
     status: "active",
-    last_login: "2025-04-21 07:30",
-  },
+    lastLogin: "2025-04-20 14:05",
+  }
 ];
 
 export default function UsersRoles() {
   const { session } = useSession();
-  const [searchTerm, setSearchTerm] = useState("");
+  const { toast } = useToast();
+  const [users, setUsers] = useState(mockUsers);
   
-  // Filter users based on search term
-  const filteredUsers = mockUsersRoles.filter(user => 
-    user.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-    user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.role.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  // Only super_admin and company_admin can manage users
-  const canManageUsers = session.currentRole === "super_admin" || session.currentRole === "company_admin";
-
+  // Check if user has permission to manage users
+  const canManageUsers = ["super_admin", "company_admin"].includes(session.currentRole);
+  
+  const toggleUserStatus = (userId: string) => {
+    setUsers(users.map(user => 
+      user.id === userId 
+        ? {...user, status: user.status === "active" ? "inactive" : "active"} 
+        : user
+    ));
+    
+    toast({
+      title: "User Status Updated",
+      description: "The user's status has been updated successfully.",
+    });
+  };
+  
+  const deleteUser = (userId: string) => {
+    setUsers(users.filter(user => user.id !== userId));
+    
+    toast({
+      title: "User Deleted",
+      description: "The user has been deleted successfully.",
+      variant: "destructive",
+    });
+  };
+  
   return (
     <DashboardLayout>
-      <div>
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-xl font-bold">Users &amp; Roles</h1>
+      <div className="space-y-4">
+        <div className="flex justify-between items-center">
+          <h1 className="text-xl font-bold">Users & Roles</h1>
           
           {canManageUsers && (
-            <Button>
+            <Button size="sm">
               <UserPlus className="h-4 w-4 mr-2" />
               Add User
             </Button>
           )}
         </div>
         
-        <div className="mb-6">
-          <div className="relative">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Search users..."
-              className="pl-8"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
-        </div>
-        
         <div className="border rounded-md">
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>User ID</TableHead>
                 <TableHead>Name</TableHead>
                 <TableHead>Email</TableHead>
                 <TableHead>Role</TableHead>
                 <TableHead>Status</TableHead>
-                <TableHead>Date Joined</TableHead>
                 <TableHead>Last Login</TableHead>
-                {canManageUsers && <TableHead></TableHead>}
+                <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredUsers.map((user) => (
+              {users.map((user) => (
                 <TableRow key={user.id}>
-                  <TableCell className="font-mono text-xs">{user.id}</TableCell>
-                  <TableCell>{user.name}</TableCell>
+                  <TableCell className="font-medium">{user.name}</TableCell>
                   <TableCell>{user.email}</TableCell>
                   <TableCell>
-                    <Badge variant={user.role === "Company Admin" ? "default" : "outline"}>
-                      {user.role}
+                    <Badge variant="secondary">
+                      {user.role.replace('_', ' ')}
                     </Badge>
                   </TableCell>
                   <TableCell>
-                    <Badge variant={user.status === "active" ? "success" : "secondary"} className={
-                      user.status === "active" ? "bg-green-100 text-green-800 hover:bg-green-100" : 
-                      "bg-gray-100 text-gray-800 hover:bg-gray-100"
-                    }>
-                      {user.status.charAt(0).toUpperCase() + user.status.slice(1)}
-                    </Badge>
+                    {user.status === "active" ? (
+                      <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
+                        <CheckCircle className="h-3 w-3 mr-1" />
+                        Active
+                      </Badge>
+                    ) : (
+                      <Badge variant="secondary" className="bg-red-100 text-red-800 hover:bg-red-100">
+                        <XCircle className="h-3 w-3 mr-1" />
+                        Inactive
+                      </Badge>
+                    )}
                   </TableCell>
-                  <TableCell>{user.created_at}</TableCell>
-                  <TableCell>{user.last_login}</TableCell>
-                  {canManageUsers && (
-                    <TableCell>
+                  <TableCell>{user.lastLogin}</TableCell>
+                  <TableCell className="text-right">
+                    {canManageUsers && (
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                           <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                            <MoreHorizontal className="h-4 w-4" />
+                            <MoreVertical className="h-4 w-4" />
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                          <DropdownMenuItem>Edit User</DropdownMenuItem>
-                          <DropdownMenuItem>Change Role</DropdownMenuItem>
+                          <DropdownMenuItem>
+                            <Edit className="h-4 w-4 mr-2" />
+                            Edit
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => toggleUserStatus(user.id)}>
+                            {user.status === "active" ? (
+                              <>
+                                <XCircle className="h-4 w-4 mr-2" />
+                                Deactivate
+                              </>
+                            ) : (
+                              <>
+                                <CheckCircle className="h-4 w-4 mr-2" />
+                                Activate
+                              </>
+                            )}
+                          </DropdownMenuItem>
+                          <DropdownMenuItem>
+                            <Lock className="h-4 w-4 mr-2" />
+                            Reset Password
+                          </DropdownMenuItem>
+                          <DropdownMenuItem>
+                            <Shield className="h-4 w-4 mr-2" />
+                            Change Role
+                          </DropdownMenuItem>
                           <DropdownMenuSeparator />
-                          <DropdownMenuItem className="text-red-600">
-                            {user.status === "active" ? "Deactivate" : "Activate"} User
+                          <DropdownMenuItem 
+                            className="text-red-600"
+                            onClick={() => deleteUser(user.id)}
+                          >
+                            <Trash className="h-4 w-4 mr-2" />
+                            Delete
                           </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
-                    </TableCell>
-                  )}
+                    )}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
