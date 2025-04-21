@@ -15,7 +15,7 @@ import { JournalEntry } from "../JournalEntries";
 interface JournalEntriesTableProps {
   journalEntries: JournalEntry[];
   handleViewEntry: (entry: JournalEntry) => void;
-  getStatusColor: (status: "draft" | "posted" | "reversed") => string;
+  getStatusColor: (status: "draft" | "posted" | "reversed") => "success" | "outline" | "warning" | "danger" | "default" | "destructive" | "secondary" | "info";
 }
 
 export function JournalEntriesTable({

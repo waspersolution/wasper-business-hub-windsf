@@ -1,5 +1,4 @@
 
-// ... code moved from New Account Dialog in ChartOfAccounts, but made a proper props interface
 import {
   Dialog,
   DialogContent,

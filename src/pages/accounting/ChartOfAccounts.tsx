@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { 
   Coins, 
@@ -45,9 +46,9 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 
-type AccountType = "asset" | "liability" | "equity" | "revenue" | "expense";
+export type AccountType = "asset" | "liability" | "equity" | "revenue" | "expense";
 
-type Account = {
+export type Account = {
   id: string;
   code: string;
   name: string;

@@ -13,10 +13,16 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import { Download, BookOpen } from "lucide-react";
-import { JournalEntry } from "../JournalEntries";
+import { JournalEntry, JournalLine } from "../JournalEntries";
 import { mockJournalLines } from "../JournalEntries";
 
-export function JournalEntryDialog({ entry, open, onOpenChange }) {
+interface JournalEntryDialogProps {
+  entry: JournalEntry | null;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}
+
+export function JournalEntryDialog({ entry, open, onOpenChange }: JournalEntryDialogProps) {
   if (!entry) return null;
   const lines = mockJournalLines[entry.id] || [];
 

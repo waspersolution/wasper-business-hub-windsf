@@ -15,7 +15,7 @@ import { Account } from "../ChartOfAccounts";
 interface ChartAccountsTableProps {
   accounts: Account[];
   handleEditAccount: (account: Account) => void;
-  getAccountTypeColor: (type: string) => string;
+  getAccountTypeColor: (type: string) => "success" | "danger" | "info" | "warning" | "outline" | "default" | "destructive" | "secondary";
 }
 
 export function ChartAccountsTable({
