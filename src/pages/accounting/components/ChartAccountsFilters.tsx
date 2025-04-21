@@ -56,7 +56,7 @@ export function ChartAccountsFilters({
                 <SelectValue placeholder="Account Type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Types</SelectItem>
+                <SelectItem value="all">All Types</SelectItem>
                 <SelectItem value="asset">Asset</SelectItem>
                 <SelectItem value="liability">Liability</SelectItem>
                 <SelectItem value="equity">Equity</SelectItem>
@@ -72,7 +72,7 @@ export function ChartAccountsFilters({
                 <SelectValue placeholder="Status" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Statuses</SelectItem>
+                <SelectItem value="all">All Statuses</SelectItem>
                 <SelectItem value="active">Active</SelectItem>
                 <SelectItem value="inactive">Inactive</SelectItem>
               </SelectContent>

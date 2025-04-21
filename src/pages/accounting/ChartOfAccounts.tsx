@@ -192,8 +192,8 @@ import { EditAccountDialog } from "./components/EditAccountDialog";
 
 export default function ChartOfAccounts() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [typeFilter, setTypeFilter] = useState<string>("");
-  const [statusFilter, setStatusFilter] = useState<string>("");
+  const [typeFilter, setTypeFilter] = useState<string>("all");
+  const [statusFilter, setStatusFilter] = useState<string>("all");
   const [newAccountDialog, setNewAccountDialog] = useState(false);
   const [editAccountDialog, setEditAccountDialog] = useState(false);
   const [selectedAccount, setSelectedAccount] = useState<Account | null>(null);
@@ -202,8 +202,8 @@ export default function ChartOfAccounts() {
     const matchesSearch = 
       account.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       account.code.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesType = typeFilter === "" || account.type === typeFilter;
-    const matchesStatus = statusFilter === "" || 
+    const matchesType = typeFilter === "all" || account.type === typeFilter;
+    const matchesStatus = statusFilter === "all" || 
       (statusFilter === "active" && account.active) || 
       (statusFilter === "inactive" && !account.active);
     
