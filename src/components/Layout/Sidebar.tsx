@@ -71,7 +71,7 @@ export function Sidebar() {
         </SidebarHeader>
 
         <SidebarContent className="py-0 flex-1 min-h-0">
-          <ScrollArea className="h-full flex-1">
+          <ScrollArea className="h-full">
             <div className="px-3 py-2 space-y-1">
               <SidebarMenu items={navigationItems} />
             </div>
