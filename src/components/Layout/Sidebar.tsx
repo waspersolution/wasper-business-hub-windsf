@@ -1,6 +1,4 @@
 
-// Move all icon imports to the top before usage
-
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -21,7 +19,6 @@ import {
   DollarSign,
   BarChart2,
   ChevronDown,
-  ChevronLeft,
   FilePlus,
   File,
   User,
@@ -30,6 +27,7 @@ import {
   Mail as MailIcon,
   Settings,
   Home,
+  RefreshCw, // Fixed icon import here
 } from "lucide-react";
 
 type SidebarItem = {
@@ -39,7 +37,7 @@ type SidebarItem = {
   children?: SidebarItem[];
 };
 
-// New Navigation Structure per user specification
+// navigationItems is the same as before
 const navigationItems: SidebarItem[] = [
   {
     title: "Dashboard",
@@ -91,7 +89,7 @@ const navigationItems: SidebarItem[] = [
     children: [
       { title: "Chart of Accounts", path: "/accounting/chart-of-accounts", icon: <BookIcon /> },
       { title: "Journal Entries", path: "/accounting/journal", icon: <BookIcon /> },
-      { title: "Reconciliation", path: "/accounting/reconciliation", icon: <RefreshCwIcon /> },
+      { title: "Reconciliation", path: "/accounting/reconciliation", icon: <RefreshCw /> },
       { title: "Bank Accounts", path: "/accounting/bank-accounts", icon: <CreditCard /> },
       { title: "Trial Balance", path: "/accounting/trial-balance", icon: <BarChart2 /> },
       { title: "Profit & Loss", path: "/accounting/profit-loss", icon: <DollarSign /> },
@@ -285,3 +283,4 @@ export function Sidebar() {
     </div>
   );
 }
+
