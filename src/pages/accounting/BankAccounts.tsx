@@ -10,10 +10,15 @@ import {
   Trash2,
   CreditCard,
   BanknoteIcon,
-  ArrowLeftRight
+  ArrowLeftRight,
+  FileText,
+  RefreshCw,
+  Wallet,
+  BarChart2,
+  Eye
 } from "lucide-react";
 import { DashboardLayout } from "@/components/Layout/DashboardLayout";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -47,6 +52,16 @@ import {
 } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
+import {
+  ResponsiveContainer,
+  LineChart,
+  Line,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend
+} from "@/components/ui/charts";
 
 type BankAccount = {
   id: string;
@@ -709,9 +724,9 @@ export default function BankAccounts() {
                           }}
                           variant="outline"
                           size="sm"
+                          className="h-8 w-8 p-0"
                         >
-                          <Eye className="h-4 w-4 mr-2" />
-                          View
+                          <Eye className="h-4 w-4" />
                         </Button>
                       </TableCell>
                     </TableRow>
@@ -730,11 +745,11 @@ export default function BankAccounts() {
       />
       
       <Dialog open={newAccountDialog} onOpenChange={setNewAccountDialog}>
-        <DialogContent className="sm:max-w-lg">
+        <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle>Add New Account</DialogTitle>
             <DialogDescription>
-              Create a new bank or cash account
+              Enter the details for the new bank or cash account
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
@@ -802,14 +817,14 @@ export default function BankAccounts() {
               </div>
               
               <div className="space-y-2">
-                <label htmlFor="opening-balance" className="text-sm font-medium">Opening Balance</label>
-                <Input
-                  id="opening-balance"
-                  type="number"
-                  min="0"
-                  step="0.01"
-                  placeholder="0.00"
-                  suffix={<div className="text-muted-foreground">NGN</div>}
+                <label htmlFor="initial-balance" className="text-sm font-medium">Initial Balance</label>
+                <Input 
+                  id="initial-balance" 
+                  type="number" 
+                  min="0" 
+                  step="0.01" 
+                  placeholder="0.00" 
+                  prefix={<span className="text-muted-foreground">₦</span>}
                 />
               </div>
               

@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { 
   Percent, 
@@ -10,13 +11,20 @@ import {
   Trash2,
   Globe,
   Check,
-  X
+  X,
+  AlertTriangle,
+  Info
 } from "lucide-react";
 import { DashboardLayout } from "@/components/Layout/DashboardLayout";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import {
+  Alert,
+  AlertTitle,
+  AlertDescription
+} from "@/components/ui/alert";
 import { 
   Select,
   SelectContent,
@@ -728,7 +736,7 @@ export default function TaxSettings() {
               </div>
               
               {selectedTax.is_default && (
-                <Alert className="mt-4" variant="destructive">
+                <Alert variant="destructive" className="mt-4">
                   <AlertTriangle className="h-4 w-4" />
                   <AlertTitle>Warning</AlertTitle>
                   <AlertDescription>
