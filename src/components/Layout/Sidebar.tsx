@@ -1,4 +1,6 @@
 
+// Move all icon imports to the top before usage
+
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
@@ -16,6 +18,13 @@ import {
   Bell,
   Settings,
   ClipboardList,
+  ArrowRight,
+  Users as UsersIcon,
+  Package as PackageIcon,
+  RefreshCw as RefreshCwIcon,
+  Book as BookIcon,
+  Mail as MailIcon,
+  Tag as TagIcon,
 } from 'lucide-react';
 
 type SidebarItem = {
@@ -113,26 +122,6 @@ const navigationItems: SidebarItem[] = [
     icon: <ClipboardList />,
   },
 ];
-
-// Since a few icons like ArrowRight, UsersIcon, PackageIcon, RefreshCwIcon, BookIcon, MailIcon, TagIcon are not in the lucide-react list or are named differently, let's import and use correct icons instead
-
-import {
-  ArrowRight,
-  Users,
-  Package,
-  RefreshCw,
-  Book,
-  Mail,
-  Tag,
-} from 'lucide-react';
-
-// Alias them for clarity
-const UsersIcon = Users;
-const PackageIcon = Package;
-const RefreshCwIcon = RefreshCw;
-const BookIcon = Book;
-const MailIcon = Mail;
-const TagIcon = Tag;
 
 const SidebarItem = ({ item, isNested = false }: { item: SidebarItem; isNested?: boolean }) => {
   const location = useLocation();
