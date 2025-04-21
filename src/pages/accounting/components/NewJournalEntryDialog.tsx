@@ -1,3 +1,4 @@
+
 import {
   Dialog,
   DialogContent,
@@ -26,7 +27,12 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 
-export function NewJournalEntryDialog({ open, onOpenChange }) {
+interface NewJournalEntryDialogProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}
+
+export function NewJournalEntryDialog({ open, onOpenChange }: NewJournalEntryDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-4xl">

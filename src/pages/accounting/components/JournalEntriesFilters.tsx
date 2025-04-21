@@ -1,3 +1,4 @@
+
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search, Filter, ChevronDown, Calendar } from "lucide-react";
@@ -44,7 +45,7 @@ export function JournalEntriesFilters({
             <SelectValue placeholder="Filter by status" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">All Statuses</SelectItem>
+            <SelectItem value="all">All Statuses</SelectItem>
             <SelectItem value="posted">Posted</SelectItem>
             <SelectItem value="draft">Draft</SelectItem>
             <SelectItem value="reversed">Reversed</SelectItem>

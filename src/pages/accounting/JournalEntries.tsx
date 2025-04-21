@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { 
   BookOpen, 
@@ -244,7 +245,7 @@ export const mockJournalLines: Record<string, JournalLine[]> = {
 
 export default function JournalEntries() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
   const [selectedEntry, setSelectedEntry] = useState<JournalEntry | null>(null);
   const [viewEntryDialog, setViewEntryDialog] = useState(false);
   const [newEntryDialog, setNewEntryDialog] = useState(false);
@@ -253,7 +254,7 @@ export default function JournalEntries() {
     const matchesSearch = 
       entry.entry_number.toLowerCase().includes(searchTerm.toLowerCase()) ||
       entry.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = statusFilter === "" || entry.status === statusFilter;
+    const matchesStatus = statusFilter === "all" || entry.status === statusFilter;
     
     return matchesSearch && matchesStatus;
   });
