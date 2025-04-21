@@ -1,10 +1,11 @@
+
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useSession } from "@/contexts/SessionContext";
 import { SidebarMenu } from "./SidebarMenu";
 import { navigationItems } from "./SidebarNavigationItems";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ShoppingCart, Plus, Settings, UserPlus } from "lucide-react";
+import { ShoppingCart, Plus, Clock, UserPlus } from "lucide-react";
 import { RoleSwitcher } from "../RoleSwitcher";
 import {
   Sidebar as ShadSidebar,
@@ -58,11 +59,11 @@ export function Sidebar() {
                   <UserPlus size={26} />
                 </button>
               </Link>
-              <Link to="/settings" title="Settings" tabIndex={0}>
+              <Link to="/sales/pos#drafts" title="Resume Draft" tabIndex={0}>
                 <button
-                  className="rounded-xl bg-gradient-to-tr from-indigo-500 to-violet-400 text-white shadow-lg hover:scale-110 active:scale-95 transition-all w-12 h-12 flex items-center justify-center focus:ring-2 focus:ring-violet-300"
+                  className="rounded-xl bg-gradient-to-tr from-yellow-400 to-amber-400 text-white shadow-lg hover:scale-110 active:scale-95 transition-all w-12 h-12 flex items-center justify-center focus:ring-2 focus:ring-amber-300"
                 >
-                  <Settings size={26} />
+                  <Clock size={26} />
                 </button>
               </Link>
             </div>
