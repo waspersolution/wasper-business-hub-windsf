@@ -209,7 +209,7 @@ export default function ChartOfAccounts() {
     setEditAccountDialog(true);
   };
   
-  const getAccountTypeColor = (type: AccountType): string => {
+  const getAccountTypeColor = (type: AccountType): "success" | "danger" | "info" | "warning" | "outline" => {
     switch (type) {
       case "asset": return "success";
       case "liability": return "danger";

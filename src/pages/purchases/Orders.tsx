@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { 
   ClipboardList, 
@@ -461,7 +460,8 @@ export default function Orders() {
                 {mockOrders.filter(o => {
                   const date = new Date(o.created_at);
                   const now = new Date();
-                  const diffDays = Math.ceil((now - date) / (1000 * 60 * 60 * 24));
+                  const diffTime = now.getTime() - date.getTime();
+                  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
                   return diffDays <= 7;
                 }).length}
               </div>
