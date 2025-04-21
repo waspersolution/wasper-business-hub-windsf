@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -53,15 +54,15 @@ export default {
 					foreground: 'hsl(var(--card-foreground))'
 				},
 				wasper: {
-					primary: '#1A1F2C', // dark purple
-					secondary: '#9b87f5', // primary purple
-					accent: '#7E69AB', // secondary purple
-					light: '#E5DEFF', // soft purple
-					dark: '#1A1F2C', // dark purple
-					success: '#4CAF50', // green
-					warning: '#FFC107', // yellow
-					error: '#F44336', // red
-					info: '#2196F3', // blue
+					primary: '#6366F1', // Updated to indigo
+					secondary: '#8B5CF6', // Updated to violet
+					accent: '#EC4899', // Updated to pink
+					light: '#EEF2FF', // Softer light indigo
+					dark: '#1E293B', // Softer dark slate
+					success: '#10B981', // Updated to emerald green
+					warning: '#F59E0B', // Updated to amber
+					error: '#EF4444', // Updated to red
+					info: '#3B82F6', // Updated to blue
 				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
@@ -95,11 +96,30 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'fade-in': {
+					from: { opacity: '0' },
+					to: { opacity: '1' }
+				},
+				'fade-out': {
+					from: { opacity: '1' },
+					to: { opacity: '0' }
+				},
+				'scale-in': {
+					from: { transform: 'scale(0.95)', opacity: '0' },
+					to: { transform: 'scale(1)', opacity: '1' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'fade-in': 'fade-in 0.3s ease-out',
+				'scale-in': 'scale-in 0.2s ease-out'
+			},
+			boxShadow: {
+				'soft': '0 4px 12px 0 rgba(0, 0, 0, 0.05)',
+				'card': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+				'glow': '0 0 15px rgba(99, 102, 241, 0.5)'
 			}
 		}
 	},
