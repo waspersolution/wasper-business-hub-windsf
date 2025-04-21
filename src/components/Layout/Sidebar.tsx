@@ -22,16 +22,15 @@ export function Sidebar() {
   const isMobile = useIsMobile();
 
   return (
-    <SidebarProvider>
+    <SidebarProvider defaultOpen={!isMobile}>
       {/* Sidebar Toggle Button for Mobile */}
-      {isMobile && (
-        <div className="fixed top-3 left-3 z-50">
-          <SidebarTrigger className="border-none shadow-md bg-gradient-to-tr from-indigo-500 to-blue-500 text-white hover:scale-105 active:scale-95 rounded-full w-11 h-11 flex items-center justify-center" />
-        </div>
-      )}
+      <div className={`${isMobile ? "fixed top-3 left-3 z-50" : "hidden"}`}>
+        <SidebarTrigger className="border-none shadow-md bg-gradient-to-tr from-indigo-500 to-blue-500 text-white hover:scale-105 active:scale-95 rounded-full w-11 h-11 flex items-center justify-center" />
+      </div>
 
       <ShadSidebar
         className="bg-gradient-to-b from-white via-slate-50 to-indigo-50 dark:from-gray-900 dark:via-gray-800 dark:to-indigo-950 border-r shadow-lg h-screen flex flex-col overflow-hidden"
+        collapsible={isMobile ? "offcanvas" : "none"}
       >
         <SidebarHeader className="!p-0">
           {/* Sidebar Top: App Title and Shortcuts */}
@@ -88,4 +87,3 @@ export function Sidebar() {
     </SidebarProvider>
   );
 }
-

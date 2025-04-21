@@ -32,10 +32,8 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
   return (
     <div className="flex h-screen overflow-hidden bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
-      {/* Sidebar */}
-      <div className="hidden md:flex md:w-64 md:flex-col">
-        <Sidebar />
-      </div>
+      {/* Sidebar is now rendered for both desktop and mobile */}
+      <Sidebar />
 
       {/* Main content */}
       <div className="flex flex-1 flex-col overflow-hidden">
