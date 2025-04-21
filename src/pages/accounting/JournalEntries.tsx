@@ -48,6 +48,10 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
+import { JournalEntriesFilters } from "./components/JournalEntriesFilters";
+import { JournalEntriesTable } from "./components/JournalEntriesTable";
+import { JournalEntryDialog } from "./components/JournalEntryDialog";
+import { NewJournalEntryDialog } from "./components/NewJournalEntryDialog";
 
 type JournalEntry = {
   id: string;
@@ -444,152 +448,18 @@ export default function JournalEntries() {
           </Card>
         </div>
         
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-lg">Filters & Search</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
-              <div className="w-full sm:w-1/3">
-                <Input
-                  placeholder="Search by entry number or description..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full"
-                  prefix={<Search className="mr-2 h-4 w-4 text-muted-foreground" />}
-                />
-              </div>
-              
-              <div className="w-full sm:w-1/4">
-                <Select value={statusFilter} onValueChange={setStatusFilter}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Filter by status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Statuses</SelectItem>
-                    <SelectItem value="posted">Posted</SelectItem>
-                    <SelectItem value="draft">Draft</SelectItem>
-                    <SelectItem value="reversed">Reversed</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div className="flex gap-2 ml-auto">
-                <Button variant="outline">
-                  <Calendar className="mr-2 h-4 w-4" />
-                  Date Range
-                </Button>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button variant="outline">
-                      <Filter className="mr-2 h-4 w-4" />
-                      More Filters
-                      <ChevronDown className="ml-2 h-4 w-4" />
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-80">
-                    <div className="grid gap-4">
-                      <div className="space-y-2">
-                        <h4 className="font-medium">Journal Entry Type</h4>
-                        <Select>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select type" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="all-types">All Types</SelectItem>
-                            <SelectItem value="standard">Standard</SelectItem>
-                            <SelectItem value="recurring">Recurring</SelectItem>
-                            <SelectItem value="adjusting">Adjusting</SelectItem>
-                            <SelectItem value="closing">Closing</SelectItem>
-                            <SelectItem value="reversing">Reversing</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      <div className="space-y-2">
-                        <h4 className="font-medium">Created By</h4>
-                        <Select>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select user" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="all-users">All Users</SelectItem>
-                            <SelectItem value="jane">Jane Smith</SelectItem>
-                            <SelectItem value="john">John Doe</SelectItem>
-                            <SelectItem value="mike">Mike Wilson</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      <div className="space-y-2">
-                        <h4 className="font-medium">Amount Range</h4>
-                        <div className="flex gap-2">
-                          <Input type="number" className="w-full" placeholder="Min" />
-                          <Input type="number" className="w-full" placeholder="Max" />
-                        </div>
-                      </div>
-                      <div className="flex justify-end gap-2">
-                        <Button variant="outline" size="sm">Reset</Button>
-                        <Button size="sm">Apply Filters</Button>
-                      </div>
-                    </div>
-                  </PopoverContent>
-                </Popover>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        <JournalEntriesFilters
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          statusFilter={statusFilter}
+          setStatusFilter={setStatusFilter}
+        />
         
-        <Card>
-          <CardHeader className="pb-0">
-            <CardTitle>Journal Entries</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="rounded-md border">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Entry #</TableHead>
-                    <TableHead>Date</TableHead>
-                    <TableHead className="hidden md:table-cell">Description</TableHead>
-                    <TableHead>Amount</TableHead>
-                    <TableHead className="hidden lg:table-cell">Created By</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filteredEntries.map((entry) => (
-                    <TableRow key={entry.id}>
-                      <TableCell className="font-medium">{entry.entry_number}</TableCell>
-                      <TableCell>{entry.date}</TableCell>
-                      <TableCell className="hidden md:table-cell max-w-xs truncate">
-                        {entry.description}
-                      </TableCell>
-                      <TableCell className="font-mono">
-                        ₦{entry.total_amount.toLocaleString()}
-                      </TableCell>
-                      <TableCell className="hidden lg:table-cell">{entry.created_by}</TableCell>
-                      <TableCell>
-                        <Badge variant={getStatusColor(entry.status)}>
-                          {entry.status.charAt(0).toUpperCase() + entry.status.slice(1)}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <Button
-                          onClick={() => handleViewEntry(entry)}
-                          variant="outline"
-                          size="sm"
-                        >
-                          <Eye className="h-4 w-4 mr-2" />
-                          View
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          </CardContent>
-        </Card>
+        <JournalEntriesTable
+          journalEntries={filteredEntries}
+          handleViewEntry={handleViewEntry}
+          getStatusColor={getStatusColor}
+        />
       </div>
       
       <JournalEntryDialog
@@ -598,145 +468,10 @@ export default function JournalEntries() {
         onOpenChange={setViewEntryDialog}
       />
       
-      <Dialog open={newEntryDialog} onOpenChange={setNewEntryDialog}>
-        <DialogContent className="sm:max-w-4xl">
-          <DialogHeader>
-            <DialogTitle>New Journal Entry</DialogTitle>
-            <DialogDescription>
-              Create a new manual journal entry
-            </DialogDescription>
-          </DialogHeader>
-          
-          <div className="grid gap-6 py-4">
-            <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
-              <div className="space-y-2">
-                <label htmlFor="entry-date" className="text-sm font-medium">Date</label>
-                <Input id="entry-date" type="date" defaultValue={new Date().toISOString().split('T')[0]} />
-              </div>
-              <div className="space-y-2">
-                <label htmlFor="entry-reference" className="text-sm font-medium">Reference (Optional)</label>
-                <Input id="entry-reference" placeholder="e.g., INV-001 or Payment #123" />
-              </div>
-            </div>
-            
-            <div className="space-y-2">
-              <label htmlFor="entry-description" className="text-sm font-medium">Description</label>
-              <Textarea id="entry-description" placeholder="Enter a detailed description" />
-            </div>
-            
-            <div className="space-y-2">
-              <div className="flex justify-between items-center mb-2">
-                <label className="text-sm font-medium">Journal Lines</label>
-                <Button variant="outline" size="sm">
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add Line
-                </Button>
-              </div>
-              
-              <div className="rounded-md border">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead style={{ width: "30%" }}>Account</TableHead>
-                      <TableHead style={{ width: "30%" }}>Description</TableHead>
-                      <TableHead style={{ width: "15%" }} className="text-right">Debit</TableHead>
-                      <TableHead style={{ width: "15%" }} className="text-right">Credit</TableHead>
-                      <TableHead style={{ width: "10%" }}></TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    <TableRow>
-                      <TableCell>
-                        <Select>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select account" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="1000">1000 - Cash</SelectItem>
-                            <SelectItem value="1010">1010 - Bank Account</SelectItem>
-                            <SelectItem value="1200">1200 - Accounts Receivable</SelectItem>
-                            <SelectItem value="2000">2000 - Accounts Payable</SelectItem>
-                            <SelectItem value="4000">4000 - Sales Revenue</SelectItem>
-                            <SelectItem value="5000">5000 - Cost of Goods Sold</SelectItem>
-                            <SelectItem value="6000">6000 - Rent Expense</SelectItem>
-                            <SelectItem value="6100">6100 - Utilities Expense</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </TableCell>
-                      <TableCell>
-                        <Input placeholder="Line description" />
-                      </TableCell>
-                      <TableCell>
-                        <Input type="number" min="0" placeholder="0.00" className="text-right" />
-                      </TableCell>
-                      <TableCell>
-                        <Input type="number" min="0" placeholder="0.00" className="text-right" />
-                      </TableCell>
-                      <TableCell className="text-center">
-                        <Button variant="ghost" size="icon" className="h-8 w-8">
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>
-                        <Select>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select account" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="1000">1000 - Cash</SelectItem>
-                            <SelectItem value="1010">1010 - Bank Account</SelectItem>
-                            <SelectItem value="1200">1200 - Accounts Receivable</SelectItem>
-                            <SelectItem value="2000">2000 - Accounts Payable</SelectItem>
-                            <SelectItem value="4000">4000 - Sales Revenue</SelectItem>
-                            <SelectItem value="5000">5000 - Cost of Goods Sold</SelectItem>
-                            <SelectItem value="6000">6000 - Rent Expense</SelectItem>
-                            <SelectItem value="6100">6100 - Utilities Expense</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </TableCell>
-                      <TableCell>
-                        <Input placeholder="Line description" />
-                      </TableCell>
-                      <TableCell>
-                        <Input type="number" min="0" placeholder="0.00" className="text-right" />
-                      </TableCell>
-                      <TableCell>
-                        <Input type="number" min="0" placeholder="0.00" className="text-right" />
-                      </TableCell>
-                      <TableCell className="text-center">
-                        <Button variant="ghost" size="icon" className="h-8 w-8">
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                    <TableRow className="bg-muted/50">
-                      <TableCell colSpan={2} className="text-right font-medium">Total</TableCell>
-                      <TableCell className="text-right font-mono font-medium">₦0.00</TableCell>
-                      <TableCell className="text-right font-mono font-medium">₦0.00</TableCell>
-                      <TableCell></TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell colSpan={2} className="text-right font-medium">Difference</TableCell>
-                      <TableCell colSpan={2} className="text-center font-medium text-yellow-600">₦0.00</TableCell>
-                      <TableCell></TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              </div>
-              <p className="text-sm text-muted-foreground mt-2">
-                * Total debits must equal total credits for the entry to be balanced
-              </p>
-            </div>
-          </div>
-          
-          <DialogFooter>
-            <Button variant="outline">Save as Draft</Button>
-            <Button>Create & Post</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <NewJournalEntryDialog
+        open={newEntryDialog}
+        onOpenChange={setNewEntryDialog}
+      />
     </DashboardLayout>
   );
 }
