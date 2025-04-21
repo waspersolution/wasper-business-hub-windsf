@@ -5,6 +5,18 @@ import { cn } from '@/lib/utils';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Button } from '@/components/ui/button';
 import { useSession } from '@/contexts/SessionContext';
+import {
+  Home,
+  Box,
+  ShoppingCart,
+  Archive,
+  CreditCard,
+  BarChart2,
+  DollarSign,
+  Bell,
+  Settings,
+  ClipboardList,
+} from 'lucide-react';
 
 type SidebarItem = {
   title: string;
@@ -18,83 +30,109 @@ const navigationItems: SidebarItem[] = [
   {
     title: 'Dashboard',
     path: '/dashboard',
+    icon: <Home />,
   },
   {
     title: 'Inventory',
     path: '/inventory',
+    icon: <Box />,
     children: [
-      { title: 'Products', path: '/inventory/products' },
-      { title: 'Stock Adjustments', path: '/inventory/stock-adjustments' },
-      { title: 'Transfers', path: '/inventory/transfers' },
-      { title: 'Reorder Alerts', path: '/inventory/reorder-alerts' },
+      { title: 'Products', path: '/inventory/products', icon: <Box /> },
+      { title: 'Stock Adjustments', path: '/inventory/stock-adjustments', icon: <ClipboardList /> },
+      { title: 'Transfers', path: '/inventory/transfers', icon: <ArrowRight /> },
+      { title: 'Reorder Alerts', path: '/inventory/reorder-alerts', icon: <Bell /> },
     ],
   },
   {
     title: 'Sales',
     path: '/sales',
+    icon: <ShoppingCart />,
     children: [
-      { title: 'POS (New Sale)', path: '/sales/pos' },
-      { title: 'Sales History', path: '/sales/history' },
-      { title: 'Customers', path: '/sales/customers' },
+      { title: 'POS (New Sale)', path: '/sales/pos', icon: <ShoppingCart /> },
+      { title: 'Sales History', path: '/sales/history', icon: <ClipboardList /> },
+      { title: 'Customers', path: '/sales/customers', icon: <UsersIcon /> },
     ],
   },
   {
     title: 'Purchases',
     path: '/purchases',
+    icon: <Archive />,
     children: [
-      { title: 'Purchase Orders', path: '/purchases/orders' },
-      { title: 'Goods Received', path: '/purchases/goods-received' },
-      { title: 'Suppliers', path: '/purchases/suppliers' },
-      { title: 'Purchase Ledger', path: '/purchases/ledger' },
+      { title: 'Purchase Orders', path: '/purchases/orders', icon: <ClipboardList /> },
+      { title: 'Goods Received', path: '/purchases/goods-received', icon: <PackageIcon /> },
+      { title: 'Suppliers', path: '/purchases/suppliers', icon: <UsersIcon /> },
+      { title: 'Purchase Ledger', path: '/purchases/ledger', icon: <CreditCard /> },
     ],
   },
   {
     title: 'Accounting',
     path: '/accounting',
+    icon: <CreditCard />,
     children: [
-      { title: 'Ledgers', path: '/accounting/ledgers' },
-      { title: 'Reconciliation', path: '/accounting/reconciliation' },
-      { title: 'Journal Entries', path: '/accounting/journal' },
+      { title: 'Ledgers', path: '/accounting/ledgers', icon: <ClipboardList /> },
+      { title: 'Reconciliation', path: '/accounting/reconciliation', icon: <RefreshCwIcon /> },
+      { title: 'Journal Entries', path: '/accounting/journal', icon: <BookIcon /> },
     ],
   },
   {
     title: 'Reports',
     path: '/reports',
+    icon: <BarChart2 />,
     children: [
-      { title: 'Stock Reports', path: '/reports/stock' },
-      { title: 'Sales Reports', path: '/reports/sales' },
-      { title: 'Trial Balance & P&L', path: '/reports/financials' },
-      { title: 'Dead Stock', path: '/reports/dead-stock' },
+      { title: 'Stock Reports', path: '/reports/stock', icon: <BarChart2 /> },
+      { title: 'Sales Reports', path: '/reports/sales', icon: <BarChart2 /> },
+      { title: 'Trial Balance & P&L', path: '/reports/financials', icon: <DollarSign /> },
+      { title: 'Dead Stock', path: '/reports/dead-stock', icon: <Archive /> },
     ],
   },
   {
     title: 'Billing',
     path: '/billing',
-    children: [
-      { title: 'Subscription Plans', path: '/billing/subscription' },
-    ],
+    icon: <DollarSign />,
+    children: [{ title: 'Subscription Plans', path: '/billing/subscription', icon: <CreditCard /> }],
   },
   {
     title: 'Notifications',
     path: '/notifications',
-    children: [
-      { title: 'Email & SMS Templates', path: '/notifications/templates' },
-    ],
+    icon: <Bell />,
+    children: [{ title: 'Email & SMS Templates', path: '/notifications/templates', icon: <MailIcon /> }],
   },
   {
     title: 'Settings',
     path: '/settings',
+    icon: <Settings />,
     children: [
-      { title: 'Companies & Branches', path: '/settings/companies' },
-      { title: 'Users & Roles', path: '/settings/users' },
-      { title: 'Units/Categories/Brands', path: '/settings/attributes' },
+      { title: 'Companies & Branches', path: '/settings/companies', icon: <Home /> },
+      { title: 'Users & Roles', path: '/settings/users', icon: <UsersIcon /> },
+      { title: 'Units/Categories/Brands', path: '/settings/attributes', icon: <TagIcon /> },
     ],
   },
   {
     title: 'Audit Logs',
     path: '/audit-logs',
+    icon: <ClipboardList />,
   },
 ];
+
+// Since a few icons like ArrowRight, UsersIcon, PackageIcon, RefreshCwIcon, BookIcon, MailIcon, TagIcon are not in the lucide-react list or are named differently, let's import and use correct icons instead
+
+import {
+  ArrowRight,
+  Users,
+  Package,
+  RefreshCw,
+  Book,
+  Mail,
+  Tag,
+} from 'lucide-react';
+
+// Alias them for clarity
+const UsersIcon = Users;
+const PackageIcon = Package;
+const RefreshCwIcon = RefreshCw;
+const BookIcon = Book;
+const MailIcon = Mail;
+const TagIcon = Tag;
 
 const SidebarItem = ({ item, isNested = false }: { item: SidebarItem; isNested?: boolean }) => {
   const location = useLocation();
@@ -108,7 +146,7 @@ const SidebarItem = ({ item, isNested = false }: { item: SidebarItem; isNested?:
     }
   };
 
-  // For items with children, show a dropdown
+  // For items with children, show a dropdown with icon
   if (item.children?.length) {
     return (
       <div className={cn("space-y-1", isNested && "ml-4")}>
@@ -121,6 +159,7 @@ const SidebarItem = ({ item, isNested = false }: { item: SidebarItem; isNested?:
           )}
           onClick={toggleSubmenu}
         >
+          {item.icon && <span className="mr-2 flex items-center">{item.icon}</span>}
           {item.title}
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -148,7 +187,7 @@ const SidebarItem = ({ item, isNested = false }: { item: SidebarItem; isNested?:
     );
   }
 
-  // For items without children, show a link
+  // For items without children, show a link with icon
   return (
     <Link
       to={item.path}
@@ -158,6 +197,7 @@ const SidebarItem = ({ item, isNested = false }: { item: SidebarItem; isNested?:
         isNested && "ml-4"
       )}
     >
+      {item.icon && <span className="flex items-center">{item.icon}</span>}
       {item.title}
     </Link>
   );
@@ -181,3 +221,4 @@ export function Sidebar() {
     </div>
   );
 }
+
