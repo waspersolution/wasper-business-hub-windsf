@@ -13,24 +13,15 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
-  SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 export function Sidebar() {
   const { session } = useSession();
-  const isMobile = useIsMobile();
 
   return (
-    <SidebarProvider defaultOpen={!isMobile}>
-      {/* Sidebar Toggle Button for Mobile */}
-      <div className={`${isMobile ? "fixed top-3 left-3 z-50" : "hidden"}`}>
-        <SidebarTrigger className="border-none shadow-md bg-gradient-to-tr from-indigo-500 to-blue-500 text-white hover:scale-105 active:scale-95 rounded-full w-11 h-11 flex items-center justify-center" />
-      </div>
-
+    <SidebarProvider>
       <ShadSidebar
         className="bg-gradient-to-b from-white via-slate-50 to-indigo-50 dark:from-gray-900 dark:via-gray-800 dark:to-indigo-950 border-r shadow-lg h-screen flex flex-col overflow-hidden"
-        collapsible={isMobile ? "offcanvas" : "none"}
       >
         <SidebarHeader className="!p-0">
           {/* Sidebar Top: App Title and Shortcuts */}
