@@ -7,9 +7,9 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, Menu } from "lucide-react";
+import { ChevronLeft, Menu, X } from "lucide-react";
 import { motion } from "framer-motion";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 type DashboardLayoutProps = {
@@ -48,23 +48,25 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
       {/* Mobile Menu Button - Positioned absolutely with higher z-index */}
       <div className="fixed top-4 left-4 z-[1000] md:hidden">
+        <Button 
+          variant="outline" 
+          size="icon" 
+          className="bg-white dark:bg-gray-800 rounded-full shadow-lg h-10 w-10 border-0"
+          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+          onClick={toggleMenu}
+        >
+          {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        </Button>
+      </div>
+
+      {/* Mobile Sidebar */}
+      {isMobile && (
         <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
-          <SheetTrigger asChild>
-            <Button 
-              variant="outline" 
-              size="icon" 
-              className="bg-white dark:bg-gray-800 rounded-full shadow-lg h-10 w-10 border-0"
-              aria-label="Menu"
-              onClick={toggleMenu}
-            >
-              <Menu className="h-5 w-5" />
-            </Button>
-          </SheetTrigger>
           <SheetContent side="left" className="w-[85%] p-0 border-r-0">
             <Sidebar />
           </SheetContent>
         </Sheet>
-      </div>
+      )}
 
       {/* Main content */}
       <div className="flex flex-1 flex-col overflow-hidden">
