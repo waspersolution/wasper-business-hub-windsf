@@ -38,6 +38,7 @@ import UsersRoles from "./pages/settings/Users";
 import Permissions from "./pages/settings/Permissions";
 import Attributes from "./pages/settings/Attributes";
 import Settings from "./pages/settings/Settings";
+import BackupRestore from "./pages/settings/BackupRestore";
 import AuditLogs from "./pages/audit-logs/AuditLogs";
 import SalesHistory from "./pages/sales/History";
 import SalesCustomers from "./pages/sales/Customers";
@@ -113,6 +114,7 @@ const App = () => {
               <Route path="/settings/users" element={<UsersRoles />} />
               <Route path="/settings/permissions" element={<Permissions />} />
               <Route path="/settings/attributes" element={<Attributes />} />
+              <Route path="/settings/backup-restore" element={<BackupRestore />} />
               <Route path="/audit-logs" element={<AuditLogs />} />
               <Route path="/audit-logs/user-activities" element={<Navigate to="/audit-logs" replace state={{ tab: "user-activities" }} />} />
               <Route path="/audit-logs/login-history" element={<Navigate to="/audit-logs" replace state={{ tab: "login-history" }} />} />

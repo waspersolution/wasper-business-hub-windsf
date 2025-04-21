@@ -12,6 +12,7 @@ import {
   Globe,
   ShoppingCart,
   Smartphone,
+  Database,
 } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -87,6 +88,13 @@ export default function Settings() {
       description: "Manage devices, printers, and terminals",
       icon: <Smartphone className="w-12 h-12 text-rose-500" />,
       path: "/settings/devices",
+    },
+    {
+      id: "backup-restore",
+      name: "Backup & Restore",
+      description: "Backup your data or restore from previous backups",
+      icon: <Database className="w-12 h-12 text-emerald-500" />,
+      path: "/settings/backup-restore",
     },
   ];
 
@@ -176,6 +184,7 @@ function getColorForCategory(id: string): string {
     localization: "#06b6d4", // cyan-500
     pos: "#f97316", // orange-500
     devices: "#f43f5e", // rose-500
+    "backup-restore": "#10b981", // emerald-500
   };
 
   return colorMap[id] || "#6366f1";

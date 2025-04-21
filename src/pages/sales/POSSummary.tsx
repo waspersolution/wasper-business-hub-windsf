@@ -1,7 +1,9 @@
+
 import { Button } from "@/components/ui/button";
-import { CreditCard, DollarSign, Check, UserPlus, ChevronDown, Save } from "lucide-react";
+import { CreditCard, DollarSign, Check, UserPlus, ChevronDown, Save, Clock, ShoppingCart } from "lucide-react";
 import POSPaymentPanel from "./components/POSPaymentPanel";
 import { useState } from "react";
+import { useBranchSelection } from "@/hooks/use-branch-selection";
 
 interface POSSummaryProps {
   subtotal?: number;
@@ -21,6 +23,7 @@ export default function POSSummary({
   customerGroupDiscount = 0
 }: POSSummaryProps) {
   const [isPaymentPanelOpen, setIsPaymentPanelOpen] = useState(false);
+  const { currentBranch } = useBranchSelection();
 
   const handleComplete = () => {
     if (onComplete) onComplete();
@@ -35,6 +38,13 @@ export default function POSSummary({
       <h2 className="text-lg font-semibold text-wasper-primary">Payment</h2>
       
       <div className="space-y-2 text-sm">
+        {currentBranch && (
+          <div className="flex justify-between text-xs bg-slate-50 p-2 rounded">
+            <span>Current Branch:</span>
+            <span className="font-medium">{currentBranch.name}</span>
+          </div>
+        )}
+        
         <div className="flex justify-between">
           <span>Subtotal</span>
           <span>₦{subtotal.toLocaleString()}</span>

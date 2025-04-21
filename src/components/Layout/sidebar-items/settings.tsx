@@ -1,5 +1,5 @@
 
-import { Settings, Building, Users, Shield, Tag, DollarSign, Globe, ShoppingCart, Smartphone } from "lucide-react";
+import { Settings, Building, Users, Shield, Tag, DollarSign, Globe, ShoppingCart, Smartphone, Database } from "lucide-react";
 import type { SidebarItem } from "../SidebarNavigationItems";
 
 export const settingsSection: SidebarItem = {
@@ -15,5 +15,6 @@ export const settingsSection: SidebarItem = {
     { title: "Language & Localization", path: "/settings/localization", icon: <Globe /> },
     { title: "POS Settings", path: "/settings/pos", icon: <ShoppingCart /> },
     { title: "Device Management", path: "/settings/devices", icon: <Smartphone /> },
+    { title: "Backup & Restore", path: "/settings/backup-restore", icon: <Database /> },
   ],
 };
