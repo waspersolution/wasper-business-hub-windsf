@@ -13,9 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { RoleSwitcher } from "../RoleSwitcher";
 import { useBranchSelection } from "@/hooks/use-branch-selection";
-import { Building, ChevronDown } from "lucide-react";
-import { refreshCw } from "lucide-react/icons";
-import { RefreshCw } from "lucide-react";
+import { Building, ChevronDown, RefreshCw } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 
@@ -46,7 +44,7 @@ export function Header() {
     toast({
       title: "Branch switched",
       description: `Branch switched to ${branches.find(b => b.id === branchId)?.name}`,
-      variant: "success"
+      variant: "default"
     });
   };
 
@@ -63,7 +61,7 @@ export function Header() {
     toast({
       title: "Sync complete!",
       description: "Your data is up to date.",
-      variant: "success"
+      variant: "default"
     });
   };
 
