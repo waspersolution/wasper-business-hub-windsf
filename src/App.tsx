@@ -44,6 +44,10 @@ import SalesCustomers from "./pages/sales/Customers";
 import CustomerGroups from "./pages/sales/CustomerGroups";
 import DiscountRules from "./pages/sales/Discounts";
 import PaymentPlans from "./pages/sales/PaymentPlans";
+import ProductImport from "./pages/extras/imports/ProductImport";
+import CustomerImport from "./pages/extras/imports/CustomerImport";
+import SalesImport from "./pages/extras/imports/SalesImport";
+import Attachments from "./pages/extras/documents/Attachments";
 
 const queryClient = new QueryClient();
 
@@ -110,6 +114,13 @@ const App = () => {
               <Route path="/settings/permissions" element={<Permissions />} />
               <Route path="/settings/attributes" element={<Attributes />} />
               <Route path="/audit-logs" element={<AuditLogs />} />
+              <Route path="/audit-logs/user-activities" element={<Navigate to="/audit-logs" replace state={{ tab: "user-activities" }} />} />
+              <Route path="/audit-logs/login-history" element={<Navigate to="/audit-logs" replace state={{ tab: "login-history" }} />} />
+              <Route path="/audit-logs/record-changes" element={<Navigate to="/audit-logs" replace state={{ tab: "record-changes" }} />} />
+              <Route path="/extras/imports/products" element={<ProductImport />} />
+              <Route path="/extras/imports/customers" element={<CustomerImport />} />
+              <Route path="/extras/imports/sales" element={<SalesImport />} />
+              <Route path="/extras/documents/attachments" element={<Attachments />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
             <Sonner />

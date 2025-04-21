@@ -32,6 +32,11 @@ import {
   Building,
   Globe,
   Smartphone,
+  LogIn,
+  UserCog,
+  FileText,
+  FileImage,
+  Receipt
 } from "lucide-react";
 
 export type SidebarItem = {
@@ -182,9 +187,10 @@ export const navigationItems: SidebarItem[] = [
     title: "Audit Logs",
     icon: <ClipboardList />,
     children: [
-      { title: "User Activities", path: "/audit-logs/user-activities", icon: <UsersIcon /> },
-      { title: "Login History", path: "/audit-logs/login-history", icon: <User /> },
-      { title: "Record Changes", path: "/audit-logs/record-changes", icon: <ClipboardList /> },
+      { title: "All Activities", path: "/audit-logs", icon: <ClipboardList /> },
+      { title: "User Activities", path: "/audit-logs/user-activities", icon: <UserCog /> },
+      { title: "Login History", path: "/audit-logs/login-history", icon: <LogIn /> },
+      { title: "Record Changes", path: "/audit-logs/record-changes", icon: <FileText /> },
     ],
   },
   {
@@ -204,7 +210,8 @@ export const navigationItems: SidebarItem[] = [
         title: "Documents",
         icon: <File />,
         children: [
-          { title: "Attachments (Invoices, Receipts, etc.)", path: "/extras/documents/attachments", icon: <File /> },
+          { title: "Attachments", path: "/extras/documents/attachments", icon: <FileImage /> },
+          { title: "Invoice Templates", path: "/extras/documents/invoice-templates", icon: <Receipt /> },
         ],
       },
     ],
