@@ -26,7 +26,15 @@ import {
   Save, 
   Download,
   Share,
-  Plus
+  Plus,
+  TrendingUp, 
+  Users as UsersIcon,
+  DollarSign,
+  Archive,
+  User,
+  Layers,
+  Book as BookIcon,
+  Layout
 } from "lucide-react";
 
 // Mock data for reports
