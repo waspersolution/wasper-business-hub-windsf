@@ -4,10 +4,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerClose } from "@/components/ui/drawer";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
-import { Cash, Banknote, CreditCard, Wallet } from "lucide-react";
+import { DollarSign, Banknote, CreditCard, Wallet } from "lucide-react";
 
 const paymentOptions = [
-  { value: "cash", label: "Cash", icon: Cash },
+  { value: "cash", label: "Cash", icon: DollarSign },
   { value: "bank_transfer", label: "Transfer", icon: Banknote },
   { value: "pos", label: "POS", icon: Banknote },
   { value: "card", label: "Card", icon: CreditCard },
