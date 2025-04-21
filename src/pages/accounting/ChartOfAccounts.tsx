@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { 
   Coins, 
@@ -264,7 +265,7 @@ export default function ChartOfAccounts() {
                     <SelectValue placeholder="Account Type" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Types</SelectItem>
+                    <SelectItem value="all">All Types</SelectItem>
                     <SelectItem value="asset">Asset</SelectItem>
                     <SelectItem value="liability">Liability</SelectItem>
                     <SelectItem value="equity">Equity</SelectItem>
@@ -280,7 +281,7 @@ export default function ChartOfAccounts() {
                     <SelectValue placeholder="Status" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Statuses</SelectItem>
+                    <SelectItem value="all">All Statuses</SelectItem>
                     <SelectItem value="active">Active</SelectItem>
                     <SelectItem value="inactive">Inactive</SelectItem>
                   </SelectContent>
@@ -464,7 +465,7 @@ export default function ChartOfAccounts() {
                   <SelectValue placeholder="Select parent account" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">None (Top Level)</SelectItem>
+                  <SelectItem value="none">None (Top Level)</SelectItem>
                   {mockAccounts.map(account => (
                     <SelectItem key={account.id} value={account.id}>
                       {account.code} - {account.name}

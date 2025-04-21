@@ -466,7 +466,7 @@ export default function JournalEntries() {
                     <SelectValue placeholder="Filter by status" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Statuses</SelectItem>
+                    <SelectItem value="all">All Statuses</SelectItem>
                     <SelectItem value="posted">Posted</SelectItem>
                     <SelectItem value="draft">Draft</SelectItem>
                     <SelectItem value="reversed">Reversed</SelectItem>
@@ -496,7 +496,7 @@ export default function JournalEntries() {
                             <SelectValue placeholder="Select type" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="all">All Types</SelectItem>
+                            <SelectItem value="all-types">All Types</SelectItem>
                             <SelectItem value="standard">Standard</SelectItem>
                             <SelectItem value="recurring">Recurring</SelectItem>
                             <SelectItem value="adjusting">Adjusting</SelectItem>
@@ -512,7 +512,7 @@ export default function JournalEntries() {
                             <SelectValue placeholder="Select user" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="all">All Users</SelectItem>
+                            <SelectItem value="all-users">All Users</SelectItem>
                             <SelectItem value="jane">Jane Smith</SelectItem>
                             <SelectItem value="john">John Doe</SelectItem>
                             <SelectItem value="mike">Mike Wilson</SelectItem>
