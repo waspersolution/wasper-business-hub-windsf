@@ -113,4 +113,19 @@
   .btn-glow {
     @apply hover:shadow-glow transition-shadow duration-300;
   }
+  
+  /* Hide scrollbar but maintain functionality */
+  .hide-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
 }
+
+/* Define a soft purple background color for status cards */
+.bg-soft-purple {
+  @apply bg-wasper-light bg-opacity-70;
+}
+
