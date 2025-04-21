@@ -1,6 +1,7 @@
-
 import { Button } from "@/components/ui/button";
 import { CreditCard, DollarSign, Check, UserPlus, ChevronDown, Save } from "lucide-react";
+import POSPaymentPanel from "./components/POSPaymentPanel";
+import { useState } from "react";
 
 interface POSSummaryProps {
   subtotal?: number;
@@ -19,6 +20,8 @@ export default function POSSummary({
   onSaveAsDraft,
   customerGroupDiscount = 0
 }: POSSummaryProps) {
+  const [isPaymentPanelOpen, setIsPaymentPanelOpen] = useState(false);
+
   const handleComplete = () => {
     if (onComplete) onComplete();
   };
@@ -55,6 +58,16 @@ export default function POSSummary({
           <span>Total</span>
           <span>₦{total.toLocaleString()}</span>
         </div>
+      </div>
+      
+      <div className="w-full">
+        <Button
+          variant="default"
+          className="w-full flex items-center gap-2 bg-gradient-to-r from-wasper-primary to-wasper-accent"
+          onClick={() => setIsPaymentPanelOpen(true)}
+        >
+          Complete with Multiple Payment
+        </Button>
       </div>
       
       <div className="grid grid-cols-2 gap-2 mt-4">
@@ -97,6 +110,12 @@ export default function POSSummary({
           </Button>
         </div>
       </div>
+      
+      <POSPaymentPanel
+        open={isPaymentPanelOpen}
+        onOpenChange={setIsPaymentPanelOpen}
+        totalDue={total}
+      />
     </div>
   );
 }
