@@ -163,6 +163,5 @@ export default function AuditLogs() {
         </div>
       </div>
     </DashboardLayout>
-  </div>
   );
 }
