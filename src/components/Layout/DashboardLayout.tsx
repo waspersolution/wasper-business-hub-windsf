@@ -41,14 +41,14 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         <Sidebar />
       </div>
 
-      {/* Mobile Sidebar with Sheet component */}
-      {isMobile && (
+      {/* Mobile Menu Button - Always visible on mobile */}
+      <div className="md:hidden fixed top-3 left-3 z-50">
         <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
           <SheetTrigger asChild>
             <Button 
               variant="ghost" 
               size="icon" 
-              className="fixed top-3 left-3 z-50 bg-white dark:bg-gray-800 rounded-full shadow-md"
+              className="bg-white dark:bg-gray-800 rounded-full shadow-md"
               aria-label="Menu"
             >
               <Menu className="h-5 w-5" />
@@ -58,7 +58,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             <Sidebar />
           </SheetContent>
         </Sheet>
-      )}
+      </div>
 
       {/* Main content */}
       <div className="flex flex-1 flex-col overflow-hidden">
