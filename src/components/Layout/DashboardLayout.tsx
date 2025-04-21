@@ -41,8 +41,8 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         <Sidebar />
       </div>
 
-      {/* Mobile Menu Button - Always visible on mobile */}
-      <div className="md:hidden fixed top-3 left-3 z-50">
+      {/* Mobile Menu Button - We're moving this out of any conditional rendering */}
+      <div className="fixed top-3 left-3 z-50 md:hidden">
         <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
           <SheetTrigger asChild>
             <Button 
