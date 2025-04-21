@@ -1,8 +1,5 @@
 
-import { useNavigate } from "react-router-dom";
 import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { ChevronLeft } from "lucide-react";
 
 const mockCompanies = [
   {
@@ -29,22 +26,9 @@ const mockCompanies = [
 ];
 
 export default function CompaniesBranches() {
-  const navigate = useNavigate();
-
   return (
     <div>
-      <div className="flex items-center mb-4 space-x-2">
-        <Button 
-          variant="outline" 
-          size="sm" 
-          onClick={() => navigate(-1)}
-          aria-label="Go back to previous page"
-        >
-          <ChevronLeft className="h-4 w-4" />
-          Back
-        </Button>
-        <h1 className="text-xl font-bold">Companies &amp; Branches</h1>
-      </div>
+      <h1 className="text-xl font-bold mb-4">Companies &amp; Branches</h1>
       <Table>
         <TableHeader>
           <TableRow>
