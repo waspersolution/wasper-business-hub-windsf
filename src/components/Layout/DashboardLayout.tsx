@@ -34,6 +34,11 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   const isDashboardRoute = location.pathname === "/dashboard";
   const showBack = !isDashboardRoute;
 
+  // Toggle menu function
+  const toggleMenu = () => {
+    setIsMenuOpen(prev => !prev);
+  };
+
   return (
     <div className="flex h-screen overflow-hidden bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
       {/* Desktop Sidebar - only visible on desktop */}
@@ -50,6 +55,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
               size="icon" 
               className="bg-white dark:bg-gray-800 rounded-full shadow-lg h-10 w-10 border-0"
               aria-label="Menu"
+              onClick={toggleMenu}
             >
               <Menu className="h-5 w-5" />
             </Button>
