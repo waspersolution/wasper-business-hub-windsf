@@ -4,15 +4,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerClose } from "@/components/ui/drawer";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
-import { cash, banknote, creditCard, wallet } from "lucide-react";
+import { Cash, Banknote, CreditCard, Wallet } from "lucide-react";
 
 const paymentOptions = [
-  { value: "cash", label: "Cash", icon: cash },
-  { value: "bank_transfer", label: "Transfer", icon: banknote },
-  { value: "pos", label: "POS", icon: banknote },
-  { value: "card", label: "Card", icon: creditCard },
-  { value: "credit", label: "Credit", icon: banknote },
-  { value: "wallet", label: "Wallet", icon: wallet },
+  { value: "cash", label: "Cash", icon: Cash },
+  { value: "bank_transfer", label: "Transfer", icon: Banknote },
+  { value: "pos", label: "POS", icon: Banknote },
+  { value: "card", label: "Card", icon: CreditCard },
+  { value: "credit", label: "Credit", icon: Banknote },
+  { value: "wallet", label: "Wallet", icon: Wallet },
 ];
 
 type PaymentRow = {
@@ -170,3 +170,4 @@ export default function POSPaymentPanel({
     </Drawer>
   );
 }
+
