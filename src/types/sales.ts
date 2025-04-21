@@ -6,7 +6,7 @@ export type Sale = {
   customer_id?: string;
   total: number;
   payment_method: 'cash' | 'card' | 'transfer' | 'credit';
-  status: 'pending' | 'synced' | 'completed' | 'cancelled';
+  status: 'pending' | 'synced' | 'completed' | 'cancelled' | 'draft';
   created_at: string;
   created_by: string; // user_id
   sync_status?: 'pending' | 'synced' | 'failed';
@@ -33,6 +33,8 @@ export type Customer = {
   address?: string;
   created_at: string;
   updated_at: string;
+  customer_group_id?: string;
+  branch_id?: string;
 };
 
 export type PaymentTransaction = {
@@ -45,3 +47,30 @@ export type PaymentTransaction = {
   created_at: string;
   created_by: string; // user_id
 };
+
+// New types for customer groups and draft sales
+export type CustomerGroup = {
+  id: string;
+  company_id: string;
+  branch_id?: string; // Optional: if null, applies to all branches
+  name: string;
+  discount_rate: number;
+  min_order_value: number;
+  created_at: string;
+  status: 'Active' | 'Inactive';
+  description?: string;
+};
+
+export type DraftSale = {
+  id: string;
+  branch_id: string;
+  customer_id?: string;
+  customer_name?: string;
+  items: SaleLine[];
+  total: number;
+  created_at: string;
+  created_by: string;
+  created_by_name: string;
+  notes?: string;
+};
+

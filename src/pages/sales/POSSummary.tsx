@@ -1,19 +1,30 @@
 
 import { Button } from "@/components/ui/button";
-import { CreditCard, DollarSign, Check, UserPlus, ChevronDown } from "lucide-react";
+import { CreditCard, DollarSign, Check, UserPlus, ChevronDown, Save } from "lucide-react";
 
 interface POSSummaryProps {
+  subtotal?: number;
+  discount?: number;
+  total?: number; 
   onComplete?: () => void;
+  onSaveAsDraft?: () => void;
+  customerGroupDiscount?: number;
 }
 
-export default function POSSummary({ onComplete }: POSSummaryProps) {
-  // Demo summary only
-  const subtotal = 1350;
-  const discount = 100;
-  const total = subtotal - discount;
-
+export default function POSSummary({ 
+  subtotal = 1350, 
+  discount = 100, 
+  total = subtotal - discount,
+  onComplete,
+  onSaveAsDraft,
+  customerGroupDiscount = 0
+}: POSSummaryProps) {
   const handleComplete = () => {
     if (onComplete) onComplete();
+  };
+  
+  const handleSaveAsDraft = () => {
+    if (onSaveAsDraft) onSaveAsDraft();
   };
 
   return (
@@ -25,10 +36,21 @@ export default function POSSummary({ onComplete }: POSSummaryProps) {
           <span>Subtotal</span>
           <span>₦{subtotal.toLocaleString()}</span>
         </div>
-        <div className="flex justify-between">
-          <span>Discount</span>
-          <span className="text-red-500">-₦{discount.toLocaleString()}</span>
-        </div>
+        
+        {customerGroupDiscount > 0 && (
+          <div className="flex justify-between text-green-600">
+            <span>Group Discount ({customerGroupDiscount}%)</span>
+            <span>-₦{((subtotal * customerGroupDiscount) / 100).toLocaleString()}</span>
+          </div>
+        )}
+        
+        {discount > 0 && (
+          <div className="flex justify-between">
+            <span>Additional Discount</span>
+            <span className="text-red-500">-₦{discount.toLocaleString()}</span>
+          </div>
+        )}
+        
         <div className="border-t mt-2 pt-2 flex justify-between font-bold text-wasper-primary text-lg">
           <span>Total</span>
           <span>₦{total.toLocaleString()}</span>
@@ -55,14 +77,25 @@ export default function POSSummary({ onComplete }: POSSummaryProps) {
           <ChevronDown className="h-4 w-4" />
         </Button>
         
-        <Button 
-          onClick={handleComplete}
-          variant="default" 
-          className="w-full flex items-center justify-center gap-2 mt-2 bg-gradient-to-r from-wasper-primary to-wasper-accent"
-        >
-          <Check className="h-5 w-5" />
-          Complete Sale
-        </Button>
+        <div className="grid grid-cols-2 gap-2">
+          <Button 
+            onClick={handleSaveAsDraft} 
+            variant="outline"
+            className="flex items-center justify-center gap-2"
+          >
+            <Save className="h-4 w-4" />
+            Park Sale
+          </Button>
+          
+          <Button 
+            onClick={handleComplete}
+            variant="default" 
+            className="flex items-center justify-center gap-2 bg-gradient-to-r from-wasper-primary to-wasper-accent"
+          >
+            <Check className="h-4 w-4" />
+            Complete
+          </Button>
+        </div>
       </div>
     </div>
   );
