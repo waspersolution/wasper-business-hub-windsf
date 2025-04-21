@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { 
   Coins, 
@@ -10,7 +9,7 @@ import {
   Edit,
   Trash2
 } from "lucide-react";
-import { Layout } from "@/components/Layout/DashboardLayout";
+import { DashboardLayout } from "@/components/Layout/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -222,7 +221,7 @@ export default function ChartOfAccounts() {
   };
   
   return (
-    <Layout>
+    <DashboardLayout>
       <div className="container mx-auto p-4 space-y-6">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
@@ -575,6 +574,6 @@ export default function ChartOfAccounts() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </Layout>
+    </DashboardLayout>
   );
 }

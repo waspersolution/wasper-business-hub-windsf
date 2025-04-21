@@ -1,18 +1,19 @@
-
 import { useState } from "react";
 import { 
   Percent, 
   Plus, 
+  Download, 
   Search, 
+  Filter, 
+  ChevronDown,
   Edit,
   Trash2,
+  Globe,
   Check,
-  X,
-  AlertTriangle,
-  Info
+  X
 } from "lucide-react";
-import { Layout } from "@/components/Layout/DashboardLayout";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { DashboardLayout } from "@/components/Layout/DashboardLayout";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -23,6 +24,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { 
   Table, 
   TableBody, 
@@ -40,9 +46,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Switch } from "@/components/ui/switch";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 type TaxRate = {
   id: string;
@@ -158,7 +163,7 @@ export default function TaxSettings() {
   };
   
   return (
-    <Layout>
+    <DashboardLayout>
       <div className="container mx-auto p-4 space-y-6">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
@@ -743,6 +748,6 @@ export default function TaxSettings() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </Layout>
+    </DashboardLayout>
   );
 }

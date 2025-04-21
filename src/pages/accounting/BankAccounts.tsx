@@ -1,22 +1,19 @@
-
 import { useState } from "react";
 import { 
-  CreditCard, 
+  Building2, 
   Plus, 
+  Download, 
   Search, 
   Filter, 
+  ChevronDown,
   Edit,
   Trash2,
-  Eye,
-  Download,
-  Wallet,
-  BarChart2,
-  RefreshCw,
-  FileText,
-  ChevronDown
+  CreditCard,
+  BanknoteIcon,
+  ArrowLeftRight
 } from "lucide-react";
-import { Layout } from "@/components/Layout/DashboardLayout";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { DashboardLayout } from "@/components/Layout/DashboardLayout";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -50,16 +47,6 @@ import {
 } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
 
 type BankAccount = {
   id: string;
@@ -529,7 +516,7 @@ export default function BankAccounts() {
   };
   
   return (
-    <Layout>
+    <DashboardLayout>
       <div className="container mx-auto p-4 space-y-6">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
@@ -840,6 +827,6 @@ export default function BankAccounts() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </Layout>
+    </DashboardLayout>
   );
 }

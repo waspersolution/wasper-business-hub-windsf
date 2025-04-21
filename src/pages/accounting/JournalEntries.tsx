@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { 
   BookOpen, 
@@ -6,13 +5,14 @@ import {
   Download, 
   Search, 
   Filter, 
-  FileText,
+  ChevronDown,
+  Edit,
+  Trash2,
   Calendar,
-  Eye,
-  ChevronDown
+  Save
 } from "lucide-react";
-import { Layout } from "@/components/Layout/DashboardLayout";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { DashboardLayout } from "@/components/Layout/DashboardLayout";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -44,8 +44,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
+import { Textarea } from "@/components/ui/textarea";
 
 type JournalEntry = {
   id: string;
@@ -379,7 +380,7 @@ export default function JournalEntries() {
   };
 
   return (
-    <Layout>
+    <DashboardLayout>
       <div className="container mx-auto p-4 space-y-6">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
@@ -619,7 +620,7 @@ export default function JournalEntries() {
             
             <div className="space-y-2">
               <label htmlFor="entry-description" className="text-sm font-medium">Description</label>
-              <Input id="entry-description" placeholder="Enter a detailed description" />
+              <Textarea id="entry-description" placeholder="Enter a detailed description" />
             </div>
             
             <div className="space-y-2">
@@ -735,6 +736,6 @@ export default function JournalEntries() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </Layout>
+    </DashboardLayout>
   );
 }
