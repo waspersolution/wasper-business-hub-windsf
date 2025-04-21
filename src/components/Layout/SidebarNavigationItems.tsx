@@ -1,4 +1,3 @@
-
 import {
   Box,
   ClipboardList,
@@ -18,6 +17,7 @@ import {
   Tag as TagIcon,
   Calendar,
   Mail as MailIcon,
+  MessageSquare,
   Settings,
   Home,
   RefreshCw,
@@ -155,9 +155,7 @@ export const navigationItems: SidebarItem[] = [
     title: "Notifications",
     icon: <Bell />,
     children: [
-      { title: "Email Templates", path: "/notifications/email", icon: <MailIcon /> },
-      { title: "SMS Templates", path: "/notifications/sms", icon: <MailIcon /> },
-      { title: "System Alerts", path: "/notifications/system-alerts", icon: <Bell /> },
+      { title: "Templates", path: "/notifications/templates", icon: <MailIcon /> },
     ],
   },
   {

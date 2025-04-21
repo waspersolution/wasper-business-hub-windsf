@@ -55,12 +55,10 @@ const App = () => {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/dashboard" element={<Dashboard />} />
-              {/* Inventory routes */}
               <Route path="/inventory/products" element={<Products />} />
               <Route path="/inventory/stock-adjustments" element={<StockAdjustments />} />
               <Route path="/inventory/transfers" element={<Transfers />} />
               <Route path="/inventory/reorder-alerts" element={<ReorderAlerts />} />
-              {/* Sales routes */}
               <Route path="/sales" element={<Navigate to="/sales/pos" replace />} />
               <Route path="/sales/pos" element={<POS />} />
               <Route path="/sales/history" element={<SalesHistory />} />
@@ -68,27 +66,21 @@ const App = () => {
               <Route path="/sales/customer-groups" element={<CustomerGroups />} />
               <Route path="/sales/discounts" element={<DiscountRules />} />
               <Route path="/sales/payment-plans" element={<PaymentPlans />} />
-              {/* Purchases routes */}
               <Route path="/purchases/orders" element={<Orders />} />
               <Route path="/purchases/goods-received" element={<GoodsReceived />} />
               <Route path="/purchases/suppliers" element={<Suppliers />} />
               <Route path="/purchases/ledger" element={<PurchasesLedger />} />
-              {/* Accounting routes */}
               <Route path="/accounting/ledgers" element={<AccountingLedgers />} />
               <Route path="/accounting/reconciliation" element={<Reconciliation />} />
               <Route path="/accounting/journal" element={<JournalEntries />} />
               <Route path="/accounting/chart-of-accounts" element={<ChartOfAccounts />} />
               <Route path="/accounting/tax-settings" element={<TaxSettings />} />
               <Route path="/accounting/bank-accounts" element={<BankAccounts />} />
-              
-              {/* Reports routes */}
               <Route path="/reports" element={<ReportsDashboard />} />
               <Route path="/reports/stock" element={<StockReports />} />
               <Route path="/reports/sales" element={<SalesReports />} />
               <Route path="/reports/financials" element={<FinancialReports />} />
               <Route path="/reports/dead-stock" element={<DeadStock />} />
-              
-              {/* Additional Report routes for all the sub-menus */}
               <Route path="/reports/stock-movement" element={<StockReports />} />
               <Route path="/reports/valuation" element={<StockReports />} />
               <Route path="/reports/sales-periods" element={<SalesReports />} />
@@ -102,21 +94,17 @@ const App = () => {
               <Route path="/reports/journal" element={<FinancialReports />} />
               <Route path="/reports/custom" element={<ReportsDashboard />} />
               <Route path="/reports/saved" element={<ReportsDashboard />} />
-              
-              {/* Billing routes */}
               <Route path="/billing/subscription" element={<SubscriptionPlans />} />
               <Route path="/billing/history" element={<PaymentHistory />} />
               <Route path="/billing/upgrade" element={<UpgradePlan />} />
-              
-              {/* Notifications routes */}
               <Route path="/notifications/templates" element={<NotificationTemplates />} />
-              {/* Settings routes */}
+              <Route path="/notifications/email" element={<Navigate to="/notifications/templates" replace />} />
+              <Route path="/notifications/sms" element={<Navigate to="/notifications/templates" replace />} />
+              <Route path="/notifications/system-alerts" element={<Navigate to="/notifications/templates" replace />} />
               <Route path="/settings/companies" element={<CompaniesBranches />} />
               <Route path="/settings/users" element={<UsersRoles />} />
               <Route path="/settings/attributes" element={<Attributes />} />
-              {/* Audit logs route */}
               <Route path="/audit-logs" element={<AuditLogs />} />
-              {/* Default catch-all */}
               <Route path="*" element={<NotFound />} />
             </Routes>
             <Sonner />
