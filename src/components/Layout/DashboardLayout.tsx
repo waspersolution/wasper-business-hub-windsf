@@ -32,7 +32,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
   // Show Back button if it's not the dashboard route
   const isDashboardRoute = location.pathname === "/dashboard";
-  const showBack = !isDashboardRoute;
+  const showBack = !isDashboardRoute && !location.pathname.includes("/reports");
 
   // Toggle menu function
   const toggleMenu = () => {
@@ -75,7 +75,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
-          className="flex-1 overflow-y-auto p-6 bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800"
+          className="flex-1 overflow-y-auto p-4 md:p-6 bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800"
         >
           <div className="container mx-auto">
             {showBack && (

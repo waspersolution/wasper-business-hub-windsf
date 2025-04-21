@@ -9,7 +9,7 @@ import {
   TableHeader, 
   TableRow 
 } from "@/components/ui/table";
-import { Eye } from "lucide-react";
+import { Eye, ArrowUpRight } from "lucide-react";
 import { JournalEntry } from "../JournalEntries";
 
 interface JournalEntriesTableProps {
@@ -24,44 +24,48 @@ export function JournalEntriesTable({
   getStatusColor
 }: JournalEntriesTableProps) {
   return (
-    <div className="rounded-md border">
+    <div className="rounded-md border overflow-hidden">
       <Table>
         <TableHeader>
-          <TableRow>
-            <TableHead>Entry #</TableHead>
-            <TableHead>Date</TableHead>
-            <TableHead className="hidden md:table-cell">Description</TableHead>
-            <TableHead>Amount</TableHead>
-            <TableHead className="hidden lg:table-cell">Created By</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead className="text-right">Actions</TableHead>
+          <TableRow className="bg-muted/50">
+            <TableHead className="font-semibold">Entry #</TableHead>
+            <TableHead className="font-semibold">Date</TableHead>
+            <TableHead className="hidden md:table-cell font-semibold">Description</TableHead>
+            <TableHead className="font-semibold">Amount</TableHead>
+            <TableHead className="hidden lg:table-cell font-semibold">Created By</TableHead>
+            <TableHead className="font-semibold">Status</TableHead>
+            <TableHead className="text-right font-semibold">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {journalEntries.map((entry) => (
-            <TableRow key={entry.id}>
-              <TableCell className="font-medium">{entry.entry_number}</TableCell>
+            <TableRow key={entry.id} className="hover:bg-muted/30 group">
+              <TableCell className="font-semibold text-blue-600 dark:text-blue-400">
+                {entry.entry_number}
+              </TableCell>
               <TableCell>{entry.date}</TableCell>
               <TableCell className="hidden md:table-cell max-w-xs truncate">
                 {entry.description}
               </TableCell>
-              <TableCell className="font-mono">
+              <TableCell className="font-mono font-medium">
                 ₦{entry.total_amount.toLocaleString()}
               </TableCell>
               <TableCell className="hidden lg:table-cell">{entry.created_by}</TableCell>
               <TableCell>
-                <Badge variant={getStatusColor(entry.status)}>
-                  {entry.status.charAt(0).toUpperCase() + entry.status.slice(1)}
+                <Badge variant={getStatusColor(entry.status)} className="capitalize">
+                  {entry.status}
                 </Badge>
               </TableCell>
               <TableCell className="text-right">
                 <Button
                   onClick={() => handleViewEntry(entry)}
-                  variant="outline"
+                  variant="ghost"
                   size="sm"
+                  className="hover:bg-blue-100 dark:hover:bg-blue-900 hover:text-blue-700 dark:hover:text-blue-300 transition-colors group-hover:translate-x-1 group-hover:translate-y-0 duration-200"
                 >
-                  <Eye className="h-4 w-4 mr-2" />
+                  <Eye className="h-4 w-4 mr-1" />
                   View
+                  <ArrowUpRight className="h-3 w-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </Button>
               </TableCell>
             </TableRow>

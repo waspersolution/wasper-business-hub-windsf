@@ -28,6 +28,7 @@ import StockReports from "./pages/reports/Stock";
 import SalesReports from "./pages/reports/Sales";
 import FinancialReports from "./pages/reports/Financials";
 import DeadStock from "./pages/reports/DeadStock";
+import ReportsDashboard from "./pages/reports/Dashboard";
 import SubscriptionPlans from "./pages/billing/Subscription";
 import NotificationTemplates from "./pages/notifications/Templates";
 import CompaniesBranches from "./pages/settings/Companies";
@@ -79,6 +80,7 @@ const App = () => {
               <Route path="/accounting/tax-settings" element={<TaxSettings />} />
               <Route path="/accounting/bank-accounts" element={<BankAccounts />} />
               {/* Reports routes */}
+              <Route path="/reports" element={<ReportsDashboard />} />
               <Route path="/reports/stock" element={<StockReports />} />
               <Route path="/reports/sales" element={<SalesReports />} />
               <Route path="/reports/financials" element={<FinancialReports />} />

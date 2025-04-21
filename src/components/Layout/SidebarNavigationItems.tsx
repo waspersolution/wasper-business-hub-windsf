@@ -1,4 +1,3 @@
-
 import {
   Box,
   ClipboardList,
@@ -21,6 +20,12 @@ import {
   Settings,
   Home,
   RefreshCw,
+  TrendingUp,
+  BarChart,
+  PieChart,
+  Layout,
+  Save,
+  Layers,
 } from "lucide-react";
 
 export type SidebarItem = {
@@ -93,24 +98,46 @@ export const navigationItems: SidebarItem[] = [
     title: "Reports",
     icon: <BarChart2 />,
     children: [
-      { title: "Stock Reports", path: "/reports/stock", icon: <BarChart2 /> },
-      { title: "Stock Summary", path: "/reports/stock-summary", icon: <BarChart2 /> },
-      { title: "Stock Movement", path: "/reports/stock-movement", icon: <BarChart2 /> },
-      { title: "Valuation Report", path: "/reports/valuation", icon: <BarChart2 /> },
-      { title: "Sales Reports", path: "/reports/sales", icon: <BarChart2 /> },
-      { title: "Daily/Weekly/Monthly Sales", path: "/reports/sales-periods", icon: <Calendar /> },
-      { title: "Top Selling Products", path: "/reports/top-products", icon: <Box /> },
-      { title: "Customer Sales Summary", path: "/reports/customer-summary", icon: <UsersIcon /> },
-      { title: "Purchase Reports", path: "/reports/purchase", icon: <Archive /> },
-      { title: "Purchase Summary", path: "/reports/purchase-summary", icon: <Archive /> },
-      { title: "Supplier-wise Purchases", path: "/reports/supplier-purchases", icon: <User /> },
-      { title: "Accounting Reports", path: "/reports/accounting", icon: <DollarSign /> },
-      { title: "Trial Balance", path: "/reports/trial-balance", icon: <BarChart2 /> },
-      { title: "Profit & Loss", path: "/reports/profit-loss", icon: <DollarSign /> },
-      { title: "Balance Sheet", path: "/reports/balance-sheet", icon: <BarChart2 /> },
-      { title: "Journal Report", path: "/reports/journal", icon: <BookIcon /> },
-      { title: "Custom Reports", path: "/reports/custom", icon: <FilePlus /> },
-      { title: "Saved Reports", path: "/reports/saved", icon: <File /> },
+      {
+        title: "Stock Reports",
+        icon: <Box />,
+        children: [
+          { title: "Stock Summary", path: "/reports/stock", icon: <BarChart /> },
+          { title: "Stock Movement", path: "/reports/stock-movement", icon: <TrendingUp /> },
+          { title: "Valuation Report", path: "/reports/valuation", icon: <DollarSign /> },
+          { title: "Dead Stock", path: "/reports/dead-stock", icon: <Archive /> },
+        ]
+      },
+      {
+        title: "Sales Reports",
+        icon: <ShoppingCart />,
+        children: [
+          { title: "Sales Summary", path: "/reports/sales", icon: <BarChart /> },
+          { title: "Daily/Weekly/Monthly Sales", path: "/reports/sales-periods", icon: <Calendar /> },
+          { title: "Top Selling Products", path: "/reports/top-products", icon: <TrendingUp /> },
+          { title: "Customer Sales Summary", path: "/reports/customer-summary", icon: <UsersIcon /> },
+        ]
+      },
+      {
+        title: "Purchase Reports",
+        icon: <Archive />,
+        children: [
+          { title: "Purchase Summary", path: "/reports/purchase-summary", icon: <BarChart /> },
+          { title: "Supplier-wise Purchases", path: "/reports/supplier-purchases", icon: <User /> },
+        ]
+      },
+      {
+        title: "Accounting Reports",
+        icon: <BookIcon />,
+        children: [
+          { title: "Trial Balance", path: "/reports/trial-balance", icon: <BarChart /> },
+          { title: "Profit & Loss", path: "/reports/profit-loss", icon: <DollarSign /> },
+          { title: "Balance Sheet", path: "/reports/balance-sheet", icon: <BarChart /> },
+          { title: "Journal Report", path: "/reports/journal", icon: <BookIcon /> },
+        ]
+      },
+      { title: "Custom Reports", path: "/reports/custom", icon: <Layout /> },
+      { title: "Saved Reports", path: "/reports/saved", icon: <Save /> },
     ],
   },
   {
