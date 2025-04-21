@@ -43,6 +43,8 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           powered by waspersolution.com
         </footer>
       </div>
+      
+      <Toaster />
     </div>
   );
 }
