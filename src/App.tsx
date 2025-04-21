@@ -1,3 +1,4 @@
+
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -34,7 +35,9 @@ import UpgradePlan from "./pages/billing/UpgradePlan";
 import NotificationTemplates from "./pages/notifications/Templates";
 import CompaniesBranches from "./pages/settings/Companies";
 import UsersRoles from "./pages/settings/Users";
+import Permissions from "./pages/settings/Permissions";
 import Attributes from "./pages/settings/Attributes";
+import Settings from "./pages/settings/Settings";
 import AuditLogs from "./pages/audit-logs/AuditLogs";
 import SalesHistory from "./pages/sales/History";
 import SalesCustomers from "./pages/sales/Customers";
@@ -101,8 +104,10 @@ const App = () => {
               <Route path="/notifications/email" element={<Navigate to="/notifications/templates" replace />} />
               <Route path="/notifications/sms" element={<Navigate to="/notifications/templates" replace />} />
               <Route path="/notifications/system-alerts" element={<Navigate to="/notifications/templates" replace />} />
+              <Route path="/settings" element={<Settings />} />
               <Route path="/settings/companies" element={<CompaniesBranches />} />
               <Route path="/settings/users" element={<UsersRoles />} />
+              <Route path="/settings/permissions" element={<Permissions />} />
               <Route path="/settings/attributes" element={<Attributes />} />
               <Route path="/audit-logs" element={<AuditLogs />} />
               <Route path="*" element={<NotFound />} />

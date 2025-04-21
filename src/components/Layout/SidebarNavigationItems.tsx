@@ -1,3 +1,4 @@
+
 import {
   Box,
   ClipboardList,
@@ -27,6 +28,10 @@ import {
   Layout,
   Save,
   Layers,
+  Shield,
+  Building,
+  Globe,
+  Smartphone,
 } from "lucide-react";
 
 export type SidebarItem = {
@@ -162,14 +167,15 @@ export const navigationItems: SidebarItem[] = [
     title: "Settings",
     icon: <Settings />,
     children: [
-      { title: "Company & Branches", path: "/settings/companies", icon: <Home /> },
+      { title: "Settings Dashboard", path: "/settings", icon: <Settings /> },
+      { title: "Companies & Branches", path: "/settings/companies", icon: <Building /> },
       { title: "Users & Roles", path: "/settings/users", icon: <UsersIcon /> },
-      { title: "Permissions", path: "/settings/permissions", icon: <User /> },
+      { title: "Permissions", path: "/settings/permissions", icon: <Shield /> },
       { title: "Units / Categories / Brands", path: "/settings/attributes", icon: <TagIcon /> },
       { title: "Tax & Currencies", path: "/settings/tax-currencies", icon: <DollarSign /> },
-      { title: "Language & Localization", path: "/settings/localization", icon: <Settings /> },
-      { title: "POS Settings", path: "/settings/pos", icon: <Settings /> },
-      { title: "Device Management", path: "/settings/devices", icon: <Settings /> },
+      { title: "Language & Localization", path: "/settings/localization", icon: <Globe /> },
+      { title: "POS Settings", path: "/settings/pos", icon: <ShoppingCart /> },
+      { title: "Device Management", path: "/settings/devices", icon: <Smartphone /> },
     ],
   },
   {
