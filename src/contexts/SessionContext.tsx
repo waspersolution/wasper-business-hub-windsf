@@ -1,5 +1,5 @@
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { SessionContext as SessionContextType, UserRole } from '@/types/auth';
 
 // Default session context
