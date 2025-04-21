@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import {
   Table,
@@ -14,9 +13,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Tabs } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { Filter, Plus, Mail, Sms, BellRing, Pencil, Trash2 } from "lucide-react";
+import { Filter, Plus, Mail, MessageSquare, BellRing, Pencil, Trash2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { toast } from "@/hooks/use-toast";
@@ -369,12 +368,10 @@ export default function NotificationTemplatesPage() {
     status: "all",
   });
 
-  // Modal controls
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState<TemplateFormMode>("add");
   const [modalTemplate, setModalTemplate] = useState<NotificationTemplate | null>(null);
 
-  // Handler functions per section
   const handleAdd = () => {
     setModalTemplate(null);
     setModalMode("add");
@@ -430,10 +427,9 @@ export default function NotificationTemplatesPage() {
     }
   };
 
-  // Responsive icon per-tab
   function tabIcon(t: TemplateType) {
     if (t === "email") return <Mail className="mr-2 text-indigo-400" size={18} />;
-    if (t === "sms") return <Sms className="mr-2 text-pink-400" size={18} />;
+    if (t === "sms") return <MessageSquare className="mr-2 text-pink-400" size={18} />;
     if (t === "alert") return <BellRing className="mr-2 text-orange-400" size={18} />;
     return null;
   }
@@ -453,21 +449,20 @@ export default function NotificationTemplatesPage() {
             </span>
           </CardTitle>
           <Tabs value={tab} onValueChange={v => setTab(v as TemplateType)} className="ml-0 md:ml-auto w-full md:w-auto">
-            <Tabs.List>
-              <Tabs.Trigger value="email" className={tab === "email" ? "font-semibold text-indigo-600" : ""}>
+            <TabsList>
+              <TabsTrigger value="email" className={tab === "email" ? "font-semibold text-indigo-600" : ""}>
                 <Mail size={17} className="mr-1" /> Email Templates
-              </Tabs.Trigger>
-              <Tabs.Trigger value="sms" className={tab === "sms" ? "font-semibold text-pink-600" : ""}>
-                <Sms size={17} className="mr-1" /> SMS Templates
-              </Tabs.Trigger>
-              <Tabs.Trigger value="alert" className={tab === "alert" ? "font-semibold text-orange-600" : ""}>
+              </TabsTrigger>
+              <TabsTrigger value="sms" className={tab === "sms" ? "font-semibold text-pink-600" : ""}>
+                <MessageSquare size={17} className="mr-1" /> SMS Templates
+              </TabsTrigger>
+              <TabsTrigger value="alert" className={tab === "alert" ? "font-semibold text-orange-600" : ""}>
                 <BellRing size={17} className="mr-1" /> System Alerts
-              </Tabs.Trigger>
-            </Tabs.List>
+              </TabsTrigger>
+            </TabsList>
           </Tabs>
         </CardHeader>
       </Card>
-      {/* Filters */}
       <div className="flex flex-col md:flex-row gap-2 md:gap-4 mt-4 mb-3 items-start md:items-center">
         <Input
           placeholder={`Search ${tab === "email" ? "email templates" : tab === "sms" ? "SMS templates" : "alerts"}...`}
@@ -512,14 +507,12 @@ export default function NotificationTemplatesPage() {
             : "Add System Alert"}
         </Button>
       </div>
-      {/* Table */}
       <TemplateTable
         templates={currentList}
         onEdit={handleEdit}
         onDelete={handleDelete}
         filters={filters}
       />
-      {/* Modal */}
       <TemplateModal
         open={modalOpen}
         mode={modalMode}
