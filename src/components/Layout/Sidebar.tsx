@@ -1,11 +1,10 @@
-
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useSession } from "@/contexts/SessionContext";
 import { SidebarMenu } from "./SidebarMenu";
 import { navigationItems } from "./SidebarNavigationItems";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ShoppingCart, Plus, Settings } from "lucide-react";
+import { ShoppingCart, Plus, Settings, UserPlus } from "lucide-react";
 import { RoleSwitcher } from "../RoleSwitcher";
 import {
   Sidebar as ShadSidebar,
@@ -52,6 +51,13 @@ export function Sidebar() {
                   <Plus size={26} />
                 </button>
               </Link>
+              <Link to="/sales/customers" title="Add New Customer" tabIndex={0}>
+                <button
+                  className="rounded-xl bg-gradient-to-tr from-orange-400 to-pink-500 text-white shadow-lg hover:scale-110 active:scale-95 transition-all w-12 h-12 flex items-center justify-center focus:ring-2 focus:ring-pink-300"
+                >
+                  <UserPlus size={26} />
+                </button>
+              </Link>
               <Link to="/settings" title="Settings" tabIndex={0}>
                 <button
                   className="rounded-xl bg-gradient-to-tr from-indigo-500 to-violet-400 text-white shadow-lg hover:scale-110 active:scale-95 transition-all w-12 h-12 flex items-center justify-center focus:ring-2 focus:ring-violet-300"
@@ -71,7 +77,6 @@ export function Sidebar() {
           </ScrollArea>
         </SidebarContent>
 
-        {/* Sidebar Footer: Role switcher for testing */}
         <SidebarFooter className="border-t px-4 py-4 bg-gradient-to-t from-gray-100 to-transparent dark:from-gray-900 dark:to-transparent shadow-inner">
           <RoleSwitcher location="sidebar" />
         </SidebarFooter>
