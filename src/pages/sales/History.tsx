@@ -75,12 +75,12 @@ export default function SalesHistory() {
   const [selectedSale, setSelectedSale] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
 
   const filteredSales = mockSalesHistory.filter(sale => {
     const matchesSearch = sale.customer.toLowerCase().includes(searchTerm.toLowerCase()) ||
       sale.id.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = statusFilter === "" || sale.status === statusFilter;
+    const matchesStatus = statusFilter === "all" || sale.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
 

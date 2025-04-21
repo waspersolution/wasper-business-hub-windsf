@@ -86,7 +86,7 @@ export function AccountsFilter({
                 <SelectValue placeholder="Account Type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Types</SelectItem>
+                <SelectItem value="all">All Types</SelectItem>
                 <SelectItem value="current">Current</SelectItem>
                 <SelectItem value="savings">Savings</SelectItem>
                 <SelectItem value="domiciliary">Domiciliary</SelectItem>
@@ -139,7 +139,7 @@ export function AccountsFilter({
                         <SelectValue placeholder="Select currency" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="">All Currencies</SelectItem>
+                        <SelectItem value="all">All Currencies</SelectItem>
                         <SelectItem value="NGN">NGN</SelectItem>
                         <SelectItem value="USD">USD</SelectItem>
                         <SelectItem value="EUR">EUR</SelectItem>
