@@ -4,11 +4,13 @@ import { Sidebar } from "./Sidebar";
 import { Header } from "./Header";
 import { useSession } from "@/contexts/SessionContext";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, Menu } from "lucide-react";
 import { motion } from "framer-motion";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 type DashboardLayoutProps = {
   children: ReactNode;
@@ -18,6 +20,8 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   const { session } = useSession();
   const navigate = useNavigate();
   const location = useLocation();
+  const isMobile = useIsMobile();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // Redirect to login if not authenticated
   useEffect(() => {
@@ -32,10 +36,29 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
   return (
     <div className="flex h-screen overflow-hidden bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
-      {/* Sidebar - only visible on desktop */}
+      {/* Desktop Sidebar - only visible on desktop */}
       <div className="hidden md:flex md:w-64 md:flex-col">
         <Sidebar />
       </div>
+
+      {/* Mobile Sidebar with Sheet component */}
+      {isMobile && (
+        <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
+          <SheetTrigger asChild>
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="fixed top-3 left-3 z-50 bg-white dark:bg-gray-800 rounded-full shadow-md"
+              aria-label="Menu"
+            >
+              <Menu className="h-5 w-5" />
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="left" className="w-[85%] p-0 border-r-0">
+            <Sidebar />
+          </SheetContent>
+        </Sheet>
+      )}
 
       {/* Main content */}
       <div className="flex flex-1 flex-col overflow-hidden">

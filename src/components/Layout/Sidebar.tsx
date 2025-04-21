@@ -21,7 +21,8 @@ export function Sidebar() {
   return (
     <SidebarProvider>
       <ShadSidebar
-        className="bg-gradient-to-b from-white via-slate-50 to-indigo-50 dark:from-gray-900 dark:via-gray-800 dark:to-indigo-950 border-r shadow-lg h-screen flex flex-col overflow-hidden"
+        className="bg-gradient-to-b from-white via-slate-50 to-indigo-50 dark:from-gray-900 dark:via-gray-800 dark:to-indigo-950 border-r shadow-lg h-full flex flex-col overflow-hidden"
+        collapsible="none"
       >
         <SidebarHeader className="!p-0">
           {/* Sidebar Top: App Title and Shortcuts */}
