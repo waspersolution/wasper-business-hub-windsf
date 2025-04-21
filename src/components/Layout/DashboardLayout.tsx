@@ -41,14 +41,14 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         <Sidebar />
       </div>
 
-      {/* Mobile Menu Button - We're moving this out of any conditional rendering */}
-      <div className="fixed top-3 left-3 z-50 md:hidden">
+      {/* Mobile Menu Button - Positioned absolutely with higher z-index */}
+      <div className="fixed top-4 left-4 z-[1000] md:hidden">
         <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
           <SheetTrigger asChild>
             <Button 
-              variant="ghost" 
+              variant="outline" 
               size="icon" 
-              className="bg-white dark:bg-gray-800 rounded-full shadow-md"
+              className="bg-white dark:bg-gray-800 rounded-full shadow-lg h-10 w-10 border-0"
               aria-label="Menu"
             >
               <Menu className="h-5 w-5" />
