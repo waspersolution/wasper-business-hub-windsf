@@ -29,7 +29,7 @@ import {
   Eye, 
   File, 
   FileImage, 
-  FilePdf, 
+  FileText, 
   Filter, 
   Search,
   Trash
@@ -130,7 +130,7 @@ export default function Attachments() {
   const getFileIcon = (fileType: string) => {
     switch (fileType) {
       case 'pdf':
-        return <FilePdf className="h-4 w-4 text-red-500" />;
+        return <FileText className="h-4 w-4 text-red-500" />;
       case 'image':
         return <FileImage className="h-4 w-4 text-blue-500" />;
       default:
@@ -370,7 +370,7 @@ export default function Attachments() {
             <div className="h-[400px] bg-gray-100 rounded-md flex items-center justify-center">
               {selectedAttachment.fileType === 'pdf' ? (
                 <div className="text-center">
-                  <FilePdf className="h-16 w-16 text-red-500 mx-auto mb-4" />
+                  <FileText className="h-16 w-16 text-red-500 mx-auto mb-4" />
                   <p>PDF document preview</p>
                   <p className="text-sm text-muted-foreground">
                     This would display the actual PDF in a real application
