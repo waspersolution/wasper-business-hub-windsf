@@ -62,7 +62,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       {/* Mobile Sidebar */}
       {isMobile && (
         <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
-          <SheetContent side="left" className="w-[85%] p-0 border-r-0">
+          <SheetContent side="left" className="w-[85%] p-0 border-r-0 overflow-hidden flex flex-col">
             <Sidebar />
           </SheetContent>
         </Sheet>

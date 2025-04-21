@@ -70,8 +70,8 @@ export function Sidebar() {
           </motion.div>
         </SidebarHeader>
 
-        <SidebarContent className="py-0 flex-1 min-h-0">
-          <ScrollArea className="h-full">
+        <SidebarContent className="py-0 flex-1 min-h-0 overflow-hidden">
+          <ScrollArea className="h-full w-full">
             <div className="px-3 py-2 space-y-1">
               <SidebarMenu items={navigationItems} />
             </div>
