@@ -33,6 +33,9 @@ import Attributes from "./pages/settings/Attributes";
 import AuditLogs from "./pages/audit-logs/AuditLogs";
 import SalesHistory from "./pages/sales/History";
 import SalesCustomers from "./pages/sales/Customers";
+import CustomerGroups from "./pages/sales/CustomerGroups";
+import DiscountRules from "./pages/sales/Discounts";
+import PaymentPlans from "./pages/sales/PaymentPlans";
 
 const queryClient = new QueryClient();
 
@@ -57,6 +60,9 @@ const App = () => {
               <Route path="/sales/pos" element={<POS />} />
               <Route path="/sales/history" element={<SalesHistory />} />
               <Route path="/sales/customers" element={<SalesCustomers />} />
+              <Route path="/sales/customer-groups" element={<CustomerGroups />} />
+              <Route path="/sales/discounts" element={<DiscountRules />} />
+              <Route path="/sales/payment-plans" element={<PaymentPlans />} />
               {/* Purchases routes */}
               <Route path="/purchases/orders" element={<Orders />} />
               <Route path="/purchases/goods-received" element={<GoodsReceived />} />
