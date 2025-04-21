@@ -7,61 +7,85 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ShoppingCart, Plus, Settings } from "lucide-react";
 import { RoleSwitcher } from "../RoleSwitcher";
+import {
+  Sidebar as ShadSidebar,
+  SidebarProvider,
+  SidebarContent,
+  SidebarFooter,
+  SidebarHeader,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export function Sidebar() {
   const { session } = useSession();
+  const isMobile = useIsMobile();
 
   return (
-    <motion.div 
-      initial={{ x: -20, opacity: 0 }}
-      animate={{ x: 0, opacity: 1 }}
-      transition={{ duration: 0.3 }}
-      className="h-screen border-r bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 shadow-sm flex flex-col"
-    >
-      {/* Sidebar Top: App Title and Shortcuts */}
-      <div>
-        <div className="h-16 flex items-center px-4 border-b">
-          <h2 className="text-lg font-bold bg-gradient-to-r from-blue-500 via-indigo-400 to-green-400 bg-clip-text text-transparent select-none">
-            Wasper Business Hub
-          </h2>
+    <SidebarProvider>
+      {/* Sidebar Toggle Button for Mobile */}
+      {isMobile && (
+        <div className="fixed top-3 left-3 z-50">
+          <SidebarTrigger className="border-none shadow-md bg-gradient-to-tr from-indigo-500 to-blue-500 text-white hover:scale-105 active:scale-95 rounded-full w-11 h-11 flex items-center justify-center" />
         </div>
-        {/* Shortcut buttons row */}
-        <div className="flex gap-2 px-4 pt-4 pb-2">
-          <Link to="/sales/pos" title="POS (New Sale)">
-            <button
-              className="rounded-xl bg-gradient-to-tr from-blue-500 to-indigo-400 text-white shadow-md hover:scale-105 active:scale-95 transition transform-gpu w-12 h-12 flex items-center justify-center"
-            >
-              <ShoppingCart size={26} />
-            </button>
-          </Link>
-          <Link to="/inventory/products" title="Add New Item">
-            <button
-              className="rounded-xl bg-gradient-to-tr from-green-400 to-blue-400 text-white shadow-md hover:scale-105 active:scale-95 transition transform-gpu w-12 h-12 flex items-center justify-center"
-            >
-              <Plus size={26} />
-            </button>
-          </Link>
-          <Link to="/settings" title="Settings">
-            <button
-              className="rounded-xl bg-gradient-to-tr from-indigo-500 to-violet-400 text-white shadow-md hover:scale-105 active:scale-95 transition transform-gpu w-12 h-12 flex items-center justify-center"
-            >
-              <Settings size={26} />
-            </button>
-          </Link>
-        </div>
-      </div>
-      
-      {/* Main navigation */}
-      <ScrollArea className="h-[calc(100vh-10rem)] py-2 flex-1">
-        <div className="px-3 py-2 space-y-1">
-          <SidebarMenu items={navigationItems} />
-        </div>
-      </ScrollArea>
+      )}
 
-      {/* Sidebar Footer: move role switcher here */}
-      <div className="border-t px-4 py-4 bg-gradient-to-t from-gray-100 to-transparent dark:from-gray-900 dark:to-transparent shadow-inner">
-        <RoleSwitcher location="sidebar" />
-      </div>
-    </motion.div>
+      <ShadSidebar
+        className="bg-gradient-to-b from-white via-slate-50 to-indigo-50 dark:from-gray-900 dark:via-gray-800 dark:to-indigo-950 border-r shadow-lg h-screen flex flex-col overflow-hidden"
+      >
+        <SidebarHeader className="!p-0">
+          {/* Sidebar Top: App Title and Shortcuts */}
+          <motion.div
+            initial={{ y: -10, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.35 }}
+            className="border-b"
+          >
+            <div className="h-16 flex items-center px-4">
+              <h2 className="text-lg font-bold bg-gradient-to-r from-blue-500 via-indigo-400 to-green-400 bg-clip-text text-transparent select-none tracking-wide">
+                Wasper Business Hub
+              </h2>
+            </div>
+            <div className="flex gap-3 px-4 pt-3 pb-2">
+              <Link to="/sales/pos" title="POS (New Sale)" tabIndex={0}>
+                <button
+                  className="rounded-xl bg-gradient-to-tr from-blue-500 to-indigo-400 text-white shadow-lg hover:scale-110 active:scale-95 transition-all w-12 h-12 flex items-center justify-center focus:ring-2 focus:ring-blue-300"
+                >
+                  <ShoppingCart size={26} />
+                </button>
+              </Link>
+              <Link to="/inventory/products" title="Add New Item" tabIndex={0}>
+                <button
+                  className="rounded-xl bg-gradient-to-tr from-green-400 to-blue-400 text-white shadow-lg hover:scale-110 active:scale-95 transition-all w-12 h-12 flex items-center justify-center focus:ring-2 focus:ring-green-300"
+                >
+                  <Plus size={26} />
+                </button>
+              </Link>
+              <Link to="/settings" title="Settings" tabIndex={0}>
+                <button
+                  className="rounded-xl bg-gradient-to-tr from-indigo-500 to-violet-400 text-white shadow-lg hover:scale-110 active:scale-95 transition-all w-12 h-12 flex items-center justify-center focus:ring-2 focus:ring-violet-300"
+                >
+                  <Settings size={26} />
+                </button>
+              </Link>
+            </div>
+          </motion.div>
+        </SidebarHeader>
+
+        <SidebarContent className="py-0 flex-1 min-h-0">
+          <ScrollArea className="h-full flex-1">
+            <div className="px-3 py-2 space-y-1">
+              <SidebarMenu items={navigationItems} />
+            </div>
+          </ScrollArea>
+        </SidebarContent>
+
+        {/* Sidebar Footer: Role switcher for testing */}
+        <SidebarFooter className="border-t px-4 py-4 bg-gradient-to-t from-gray-100 to-transparent dark:from-gray-900 dark:to-transparent shadow-inner">
+          <RoleSwitcher location="sidebar" />
+        </SidebarFooter>
+      </ShadSidebar>
+    </SidebarProvider>
   );
 }
+
