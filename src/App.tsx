@@ -90,6 +90,6 @@ const App = () => {
       </QueryClientProvider>
     </BrowserRouter>
   );
-};
+}
 
 export default App;
