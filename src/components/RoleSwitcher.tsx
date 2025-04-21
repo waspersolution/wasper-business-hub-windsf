@@ -9,6 +9,7 @@ import {
   Archive, 
   TrendingUp 
 } from "lucide-react";
+import { useToast } from "@/components/ui/use-toast";
 
 const ROLES: { role: UserRole; label: string; icon: React.ReactNode }[] = [
   { role: "super_admin", label: "Super Admin", icon: <Shield className="h-3 w-3" /> },
@@ -20,6 +21,15 @@ const ROLES: { role: UserRole; label: string; icon: React.ReactNode }[] = [
 
 export function RoleSwitcher() {
   const { session, setRole } = useSession();
+  const { toast } = useToast();
+
+  const handleRoleChange = (role: UserRole) => {
+    setRole(role);
+    toast({
+      title: "Role Changed",
+      description: `You are now viewing the application as a ${role.replace('_', ' ')}`,
+    });
+  };
 
   return (
     <div className="flex items-center gap-2">
@@ -31,7 +41,7 @@ export function RoleSwitcher() {
             variant={session.currentRole === role ? "default" : "outline"}
             size="sm"
             className="px-2 py-1 text-xs gap-1"
-            onClick={() => setRole(role)}
+            onClick={() => handleRoleChange(role)}
             title={label}
           >
             {icon}
