@@ -1,4 +1,3 @@
-
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -30,6 +29,8 @@ import FinancialReports from "./pages/reports/Financials";
 import DeadStock from "./pages/reports/DeadStock";
 import ReportsDashboard from "./pages/reports/Dashboard";
 import SubscriptionPlans from "./pages/billing/Subscription";
+import PaymentHistory from "./pages/billing/PaymentHistory";
+import UpgradePlan from "./pages/billing/UpgradePlan";
 import NotificationTemplates from "./pages/notifications/Templates";
 import CompaniesBranches from "./pages/settings/Companies";
 import UsersRoles from "./pages/settings/Users";
@@ -104,6 +105,9 @@ const App = () => {
               
               {/* Billing routes */}
               <Route path="/billing/subscription" element={<SubscriptionPlans />} />
+              <Route path="/billing/history" element={<PaymentHistory />} />
+              <Route path="/billing/upgrade" element={<UpgradePlan />} />
+              
               {/* Notifications routes */}
               <Route path="/notifications/templates" element={<NotificationTemplates />} />
               {/* Settings routes */}
