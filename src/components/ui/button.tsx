@@ -19,6 +19,10 @@ const buttonVariants = cva(
           "bg-gradient-to-r from-wasper-secondary to-wasper-accent text-secondary-foreground hover:shadow-md hover:translate-y-[-2px]",
         ghost: "hover:bg-muted hover:text-accent-foreground",
         link: "text-wasper-primary underline-offset-4 hover:underline",
+        success:
+          "bg-wasper-success text-white hover:bg-wasper-success/90 hover:shadow-md",
+        info:
+          "bg-wasper-info text-white hover:bg-wasper-info/90 hover:shadow-md",
       },
       size: {
         default: "h-10 px-4 py-2",
@@ -55,3 +59,4 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 Button.displayName = "Button"
 
 export { Button, buttonVariants }
+
