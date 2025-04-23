@@ -1,58 +1,12 @@
-
-import { useState } from "react";
-import { 
-  BookOpen, 
-  Plus, 
-  Download, 
-  Search, 
-  Filter, 
-  ChevronDown,
-  Edit,
-  Trash2,
-  Calendar,
-  Save,
-  Eye
-} from "lucide-react";
 import { DashboardLayout } from "@/components/Layout/DashboardLayout";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { 
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
-  TableRow 
-} from "@/components/ui/table";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Separator } from "@/components/ui/separator";
-import { Textarea } from "@/components/ui/textarea";
+import { useJournalEntries } from "./hooks/useJournalEntries";
+import { JournalEntriesHeader } from "./components/JournalEntriesHeader";
+import { JournalEntriesSummary } from "./components/JournalEntriesSummary";
 import { JournalEntriesFilters } from "./components/JournalEntriesFilters";
 import { JournalEntriesTable } from "./components/JournalEntriesTable";
 import { JournalEntryDialog } from "./components/JournalEntryDialog";
 import { NewJournalEntryDialog } from "./components/NewJournalEntryDialog";
+import { mockJournalEntries } from "./JournalEntries";
 
 export type JournalEntry = {
   id: string;
@@ -76,69 +30,6 @@ export type JournalLine = {
   debit: number;
   credit: number;
 };
-
-const mockJournalEntries: JournalEntry[] = [
-  {
-    id: "J001",
-    entry_number: "JE-2025-0001",
-    date: "2025-04-21",
-    description: "Monthly rent payment",
-    total_amount: 50000,
-    is_balanced: true,
-    status: "posted",
-    created_by: "Jane Smith",
-    created_at: "2025-04-21",
-    updated_at: "2025-04-21"
-  },
-  {
-    id: "J002",
-    entry_number: "JE-2025-0002",
-    date: "2025-04-20",
-    description: "Purchase of office supplies",
-    total_amount: 15000,
-    is_balanced: true,
-    status: "posted",
-    created_by: "John Doe",
-    created_at: "2025-04-20",
-    updated_at: "2025-04-20"
-  },
-  {
-    id: "J003",
-    entry_number: "JE-2025-0003",
-    date: "2025-04-19",
-    description: "Bank loan interest payment",
-    total_amount: 25000,
-    is_balanced: true,
-    status: "posted",
-    created_by: "Jane Smith",
-    created_at: "2025-04-19",
-    updated_at: "2025-04-19"
-  },
-  {
-    id: "J004",
-    entry_number: "JE-2025-0004",
-    date: "2025-04-18",
-    description: "Staff salary payment",
-    total_amount: 350000,
-    is_balanced: true,
-    status: "draft",
-    created_by: "John Doe",
-    created_at: "2025-04-18",
-    updated_at: "2025-04-18"
-  },
-  {
-    id: "J005",
-    entry_number: "JE-2025-0005",
-    date: "2025-04-15",
-    description: "Invoice correction",
-    total_amount: 7500,
-    is_balanced: true,
-    status: "reversed",
-    created_by: "Mike Wilson",
-    created_at: "2025-04-15",
-    updated_at: "2025-04-17"
-  }
-];
 
 export const mockJournalLines: Record<string, JournalLine[]> = {
   "J001": [
@@ -244,25 +135,19 @@ export const mockJournalLines: Record<string, JournalLine[]> = {
 };
 
 export default function JournalEntries() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState("all");
-  const [selectedEntry, setSelectedEntry] = useState<JournalEntry | null>(null);
-  const [viewEntryDialog, setViewEntryDialog] = useState(false);
-  const [newEntryDialog, setNewEntryDialog] = useState(false);
-  
-  const filteredEntries = mockJournalEntries.filter(entry => {
-    const matchesSearch = 
-      entry.entry_number.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      entry.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = statusFilter === "all" || entry.status === statusFilter;
-    
-    return matchesSearch && matchesStatus;
-  });
-  
-  const handleViewEntry = (entry: JournalEntry) => {
-    setSelectedEntry(entry);
-    setViewEntryDialog(true);
-  };
+  const {
+    searchTerm,
+    setSearchTerm,
+    statusFilter,
+    setStatusFilter,
+    selectedEntry,
+    viewEntryDialog,
+    setViewEntryDialog,
+    newEntryDialog,
+    setNewEntryDialog,
+    filteredEntries,
+    handleViewEntry
+  } = useJournalEntries(mockJournalEntries);
   
   const getStatusColor = (status: "draft" | "posted" | "reversed") => {
     switch (status) {
@@ -276,74 +161,14 @@ export default function JournalEntries() {
   return (
     <DashboardLayout>
       <div className="container mx-auto p-4 space-y-6">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <div>
-            <h1 className="text-2xl font-bold">Journal Entries</h1>
-            <p className="text-muted-foreground">Manage and track all accounting entries</p>
-          </div>
-          
-          <div className="flex gap-2">
-            <Button variant="outline">
-              <Download className="mr-2 h-4 w-4" />
-              Export
-            </Button>
-            
-            <Button onClick={() => setNewEntryDialog(true)}>
-              <Plus className="mr-2 h-4 w-4" />
-              New Journal Entry
-            </Button>
-          </div>
-        </div>
-        
-        <div className="grid md:grid-cols-3 gap-4">
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-lg">Total Posted</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-green-600">
-                {mockJournalEntries.filter(e => e.status === "posted").length}
-              </div>
-              <p className="text-sm text-muted-foreground">
-                Posted journal entries
-              </p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-lg">Draft Entries</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-amber-500">
-                {mockJournalEntries.filter(e => e.status === "draft").length}
-              </div>
-              <p className="text-sm text-muted-foreground">
-                Pending journal entries
-              </p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-lg">Monthly Activity</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-blue-500">
-                {mockJournalEntries.length}
-              </div>
-              <p className="text-sm text-muted-foreground">
-                Entries this month
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-        
+        <JournalEntriesHeader onNewEntry={() => setNewEntryDialog(true)} />
+        <JournalEntriesSummary journalEntries={mockJournalEntries} />
         <JournalEntriesFilters
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
           statusFilter={statusFilter}
           setStatusFilter={setStatusFilter}
         />
-        
         <JournalEntriesTable
           journalEntries={filteredEntries}
           handleViewEntry={handleViewEntry}
