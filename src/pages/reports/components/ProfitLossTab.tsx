@@ -1,45 +1,59 @@
-import React from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from "@/components/charts";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import type { ProfitLossItem, MonthlyProfitData } from "../types/financial-reports";
 
-// Mock data for profit and loss
-const profitLossData = [
-  { name: 'Jan', revenue: 120000, expenses: 80000, profit: 40000 },
-  { name: 'Feb', revenue: 150000, expenses: 95000, profit: 55000 },
-  { name: 'Mar', revenue: 185000, expenses: 110000, profit: 75000 },
-  { name: 'Apr', revenue: 220000, expenses: 130000, profit: 90000 },
-  { name: 'May', revenue: 195000, expenses: 125000, profit: 70000 },
-  { name: 'Jun', revenue: 240000, expenses: 145000, profit: 95000 }
-];
+interface ProfitLossTabProps {
+  data: ProfitLossItem[];
+  monthlyData: MonthlyProfitData[];
+  period: string;
+}
 
-export function ProfitLossTab() {
+export function ProfitLossTab({ data, monthlyData, period }: ProfitLossTabProps) {
+  const calculateTotal = (category: string) => {
+    return data
+      .filter((item) => item.category === category)
+      .reduce((acc, item) => acc + item.amount, 0);
+  };
+
+  const totalRevenue = calculateTotal("Revenue");
+  const totalExpenses = calculateTotal("Expenses");
+  const netProfit = totalRevenue + totalExpenses; // Expenses are negative
+
   return (
-    <div className="grid gap-6">
-      <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950 dark:to-indigo-950">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-lg text-blue-600 dark:text-blue-400">Profit & Loss Analysis</CardTitle>
-          <CardDescription>Monthly revenue, expenses, and profit overview</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="h-[350px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={profitLossData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip
-                  formatter={(value) => `₦${value.toLocaleString()}`}
-                  labelFormatter={(label) => `Month: ${label}`}
-                />
-                <Legend />
-                <Line type="monotone" dataKey="revenue" stroke="#4f46e5" strokeWidth={2} />
-                <Line type="monotone" dataKey="expenses" stroke="#ef4444" strokeWidth={2} />
-                <Line type="monotone" dataKey="profit" stroke="#10b981" strokeWidth={2} />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead className="w-[200px]">Category</TableHead>
+          <TableHead>Item</TableHead>
+          <TableHead className="text-right">Amount</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {data.map((item) => (
+          <TableRow key={item.item}>
+            <TableCell className="font-medium">{item.category}</TableCell>
+            <TableCell>{item.item}</TableCell>
+            <TableCell className="text-right">{`₦${item.amount.toLocaleString()}`}</TableCell>
+          </TableRow>
+        ))}
+        <TableRow>
+          <TableCell colSpan={2} className="font-medium">
+            Total Revenue
+          </TableCell>
+          <TableCell className="text-right font-medium">{`₦${totalRevenue.toLocaleString()}`}</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell colSpan={2} className="font-medium">
+            Total Expenses
+          </TableCell>
+          <TableCell className="text-right font-medium">{`₦${totalExpenses.toLocaleString()}`}</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell colSpan={2} className="font-bold">
+            Net Profit
+          </TableCell>
+          <TableCell className="text-right font-bold">{`₦${netProfit.toLocaleString()}`}</TableCell>
+        </TableRow>
+      </TableBody>
+    </Table>
   );
 }
