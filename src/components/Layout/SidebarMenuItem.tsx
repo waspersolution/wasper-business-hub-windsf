@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import type { SidebarItem } from "./SidebarNavigationItems";
 import { ChevronDown } from "lucide-react";
@@ -29,11 +29,15 @@ export function SidebarMenuItem({
   // Check if any child or grandchild is active
   const isAnyChildActive = hasChildren && checkIfAnyChildActive(item.children!, locationPath);
 
-  // Ensure menu is expanded if any child is active
-  const expanded = isOpen || isAnyChildActive;
+  // Initialize expanded state based on active children
+  useEffect(() => {
+    if (isAnyChildActive) {
+      setIsOpen(true);
+    }
+  }, [isAnyChildActive]);
 
   const toggleSubmenu = () => {
-    if (hasChildren) setIsOpen(!expanded);
+    setIsOpen(!isOpen);
   };
 
   if (hasChildren) {
@@ -58,11 +62,11 @@ export function SidebarMenuItem({
           <ChevronDown
             className={cn(
               "ml-auto h-4 w-4 transition-transform duration-200 text-muted-foreground",
-              expanded ? "rotate-180" : ""
+              isOpen ? "rotate-180" : ""
             )}
           />
         </Button>
-        {expanded && (
+        {isOpen && (
           <motion.div 
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
