@@ -8,8 +8,8 @@ import { CashFlowTable } from "./components/tables/CashFlowTable";
 import { CashFlowSummaryCards } from "./components/CashFlowSummaryCards";
 import { CashFlowChart } from "./components/CashFlowChart";
 import { useChartTransformations } from "./hooks/useChartTransformations";
+import { FinancialReportsNav } from "./components/FinancialReportsNav";
 import type { CashFlowItem, MonthlyData } from "./types/financial-reports";
-import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from "@/components/charts";
 
 const cashFlowData: CashFlowItem[] = [
   { category: "Operating Activities", item: "Net Income", amount: 48500 },
@@ -97,6 +97,8 @@ export default function CashFlow() {
           period={period}
           setPeriod={setPeriod}
         />
+
+        <FinancialReportsNav currentReport="cash-flow" />
 
         <div className="grid grid-cols-1 lg:grid-cols-7 gap-4">
           <Card className="lg:col-span-4 overflow-hidden">

@@ -1,17 +1,18 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { DatePickerWithRange } from "@/components/ui/date-range-picker";
-import { Download, Filter, Printer } from "lucide-react";
 import { DashboardLayout } from "@/components/Layout/DashboardLayout";
 import { FinancialReportFilters } from "./components/FinancialReportFilters";
 import { ProfitLossTab } from "./components/ProfitLossTab";
 import { useProfitLossCalculations } from "./hooks/useProfitLossCalculations";
 import { ProfitLossMetrics } from "./components/ProfitLossMetrics";
 import { ExpenseBreakdown } from "./components/ExpenseBreakdown";
+import { ReportPageHeader } from "./components/ReportPageHeader";
+import { FinancialReportsNav } from "./components/FinancialReportsNav";
+import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from "@/components/charts";
 import type { ProfitLossItem, MonthlyProfitData } from "./types/financial-reports";
 import { profitLossData, monthlyProfitData } from "./data/profitLossData";
-import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from "@/components/charts";
 
 export default function ProfitLoss() {
   const [period, setPeriod] = useState("2025-04");
@@ -27,28 +28,10 @@ export default function ProfitLoss() {
   return (
     <DashboardLayout>
       <div className="space-y-4">
-        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
-          <div>
-            <h1 className="text-2xl font-bold">Profit & Loss Statement</h1>
-            <p className="text-muted-foreground mt-1">
-              Analyze your company's financial performance
-            </p>
-          </div>
-          <div className="flex items-center gap-2">
-            <Button variant="outline">
-              <Printer className="w-4 h-4 mr-2" />
-              Print
-            </Button>
-            <Button variant="outline">
-              <Download className="w-4 h-4 mr-2" />
-              Export
-            </Button>
-            <Button>
-              <Filter className="w-4 h-4 mr-2" />
-              Filters
-            </Button>
-          </div>
-        </div>
+        <ReportPageHeader 
+          title="Profit & Loss Statement"
+          description="Analyze your company's financial performance"
+        />
 
         <FinancialReportFilters
           searchTerm={searchTerm}
@@ -56,6 +39,8 @@ export default function ProfitLoss() {
           period={period}
           setPeriod={setPeriod}
         />
+
+        <FinancialReportsNav currentReport="profit-loss" />
 
         <div className="grid grid-cols-1 lg:grid-cols-7 gap-4">
           <Card className="lg:col-span-4 overflow-hidden">

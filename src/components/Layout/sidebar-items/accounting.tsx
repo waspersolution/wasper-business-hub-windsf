@@ -14,6 +14,7 @@ export const accountingSection: SidebarItem = {
       title: "Financial Reports",
       icon: <BarChart2 />,
       children: [
+        { title: "Financial Overview", path: "/reports/financials", icon: <BarChart2 /> },
         { title: "Trial Balance", path: "/reports/trial-balance", icon: <BarChart2 /> },
         { title: "Profit & Loss", path: "/reports/profit-loss", icon: <DollarSign /> },
         { title: "Balance Sheet", path: "/reports/balance-sheet", icon: <Layers /> },

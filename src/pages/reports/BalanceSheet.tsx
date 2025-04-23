@@ -9,6 +9,9 @@ import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis, Tool
 import { DashboardLayout } from "@/components/Layout/DashboardLayout";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ReportPageHeader } from "./components/ReportPageHeader";
+import { FinancialReportsNav } from "./components/FinancialReportsNav";
+import { FinancialReportFilters } from "./components/FinancialReportFilters";
 
 // Mock data for balance sheet
 const balanceSheetData = {
@@ -75,84 +78,19 @@ export default function BalanceSheet() {
   return (
     <DashboardLayout>
       <div className="space-y-4">
-        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
-          <div>
-            <h1 className="text-2xl font-bold">Balance Sheet</h1>
-            <p className="text-muted-foreground mt-1">
-              View your company's financial position
-            </p>
-          </div>
-          <div className="flex items-center gap-2">
-            <Button variant="outline">
-              <Printer className="w-4 h-4 mr-2" />
-              Print
-            </Button>
-            <Button variant="outline">
-              <Download className="w-4 h-4 mr-2" />
-              Export
-            </Button>
-            <Button>
-              <Filter className="w-4 h-4 mr-2" />
-              Filters
-            </Button>
-          </div>
-        </div>
+        <ReportPageHeader 
+          title="Balance Sheet"
+          description="View your company's financial position"
+        />
 
-        {/* Filters */}
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex flex-col md:flex-row gap-4 md:items-end">
-              <div className="flex-1">
-                <label className="text-sm font-medium mb-1 block">Search</label>
-                <div className="relative">
-                  <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    placeholder="Search accounts..."
-                    className="pl-8"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                  />
-                </div>
-              </div>
-              
-              <div className="w-full md:w-48">
-                <label className="text-sm font-medium mb-1 block">Period</label>
-                <Select value={period} onValueChange={setPeriod}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select period" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="2025-04">April 2025</SelectItem>
-                    <SelectItem value="2025-03">March 2025</SelectItem>
-                    <SelectItem value="2025-02">February 2025</SelectItem>
-                    <SelectItem value="2025-01">January 2025</SelectItem>
-                    <SelectItem value="2024-12">December 2024</SelectItem>
-                    <SelectItem value="2024-11">November 2024</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div className="w-full md:w-48">
-                <label className="text-sm font-medium mb-1 block">Comparison</label>
-                <Select value={comparison} onValueChange={setComparison}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select comparison" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="previous-period">Previous Period</SelectItem>
-                    <SelectItem value="previous-year">Previous Year</SelectItem>
-                    <SelectItem value="budget">Budget</SelectItem>
-                    <SelectItem value="none">No Comparison</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+        <FinancialReportFilters
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          period={period}
+          setPeriod={setPeriod}
+        />
 
-              <div className="w-full md:w-auto">
-                <DatePickerWithRange className="w-full md:w-auto" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        <FinancialReportsNav currentReport="balance-sheet" />
 
         {/* Balance Sheet Content */}
         <div className="grid grid-cols-1 lg:grid-cols-7 gap-4">
@@ -510,7 +448,6 @@ export default function BalanceSheet() {
           </div>
         </div>
 
-        {/* Export/Actions Area */}
         <div className="flex justify-end space-x-2 mt-4">
           <Button variant="outline">Save as Favorite</Button>
           <Button variant="outline">Schedule Report</Button>

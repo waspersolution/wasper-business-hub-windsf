@@ -2,10 +2,10 @@
 import { Button } from "@/components/ui/button";
 import { Download, Filter, Printer } from "lucide-react";
 
-type ReportPageHeaderProps = {
+interface ReportPageHeaderProps {
   title: string;
   description: string;
-};
+}
 
 export function ReportPageHeader({ title, description }: ReportPageHeaderProps) {
   return (
