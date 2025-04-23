@@ -16,6 +16,7 @@ import { useBranchSelection } from "@/hooks/use-branch-selection";
 import { Building, ChevronDown, RefreshCw } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useState, useEffect } from "react";
+import { CommandSearch } from "@/components/CommandSearch";
 
 export function Header() {
   const { session, clearSession } = useSession();
@@ -173,6 +174,13 @@ export function Header() {
                   ))}
                 </DropdownMenuContent>
               </DropdownMenu>
+            )}
+            
+            {/* Global search bar */}
+            {session.isAuthenticated && (
+              <div className="hidden md:block">
+                <CommandSearch />
+              </div>
             )}
           </div>
           {/* Right side: Sync now & User menu */}
