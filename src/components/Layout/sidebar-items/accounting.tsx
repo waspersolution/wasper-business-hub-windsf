@@ -1,5 +1,5 @@
 
-import { CreditCard, Book, RefreshCw, BarChart2, DollarSign, Settings, TrendingUp, Layers } from "lucide-react";
+import { CreditCard, Book, RefreshCw, BarChart2, DollarSign, Settings, TrendingUp, Layers, FileCheck } from "lucide-react";
 import type { SidebarItem } from "../SidebarNavigationItems";
 
 export const accountingSection: SidebarItem = {
@@ -10,6 +10,7 @@ export const accountingSection: SidebarItem = {
     { title: "Journal Entries", path: "/accounting/journal", icon: <Book /> },
     { title: "Reconciliation", path: "/accounting/reconciliation", icon: <RefreshCw /> },
     { title: "Bank Accounts", path: "/accounting/bank-accounts", icon: <CreditCard /> },
+    { title: "Year-End Closing", path: "/accounting/year-end-closing", icon: <FileCheck /> },
     { 
       title: "Financial Reports",
       icon: <BarChart2 />,
