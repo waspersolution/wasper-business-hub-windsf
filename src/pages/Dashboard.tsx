@@ -1,7 +1,7 @@
-
 import { useSession } from "@/contexts/SessionContext";
 import { DashboardLayout } from "@/components/Layout/DashboardLayout";
 import { SuperAdminDashboard } from "@/components/SuperAdmin/SuperAdminDashboard";
+import { AccountingDashboard } from "@/components/Accounting/AccountingDashboard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
@@ -23,6 +23,15 @@ export default function Dashboard() {
     return (
       <DashboardLayout>
         <SuperAdminDashboard />
+      </DashboardLayout>
+    );
+  }
+
+  // Show accounting dashboard for accounting roles
+  if (session.currentRole === "accountant" || session.currentRole === "finance_manager") {
+    return (
+      <DashboardLayout>
+        <AccountingDashboard />
       </DashboardLayout>
     );
   }
