@@ -76,7 +76,6 @@ const monthlyCashFlowData: MonthlyData[] = [
 export default function CashFlow() {
   const [period, setPeriod] = useState("2025-04");
   const [searchTerm, setSearchTerm] = useState("");
-  const [cashFlowType, setCashFlowType] = useState("direct");
   
   const filteredCashFlowData = cashFlowData.filter(item => 
     item.item.toLowerCase().includes(searchTerm.toLowerCase()));
@@ -91,18 +90,12 @@ export default function CashFlow() {
           description="Analyze your company's cash inflows and outflows"
         />
 
-        <Card>
-          <CardContent className="p-4">
-            <FinancialReportFilters
-              searchTerm={searchTerm}
-              setSearchTerm={setSearchTerm}
-              period={period}
-              setPeriod={setPeriod}
-              cashFlowType={cashFlowType}
-              setCashFlowType={setCashFlowType}
-            />
-          </CardContent>
-        </Card>
+        <FinancialReportFilters
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          period={period}
+          setPeriod={setPeriod}
+        />
 
         <div className="grid grid-cols-1 lg:grid-cols-7 gap-4">
           <Card className="lg:col-span-4 overflow-hidden">

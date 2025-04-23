@@ -11,8 +11,8 @@ type FinancialReportFiltersProps = {
   setSearchTerm: (value: string) => void;
   period: string;
   setPeriod: (value: string) => void;
-  accountType: string;
-  setAccountType: (value: string) => void;
+  accountType?: string;
+  setAccountType?: (value: string) => void;
 };
 
 export function FinancialReportFilters({
@@ -57,25 +57,27 @@ export function FinancialReportFilters({
             </Select>
           </div>
           
-          <div className="w-full md:w-48">
-            <label className="text-sm font-medium mb-1 block">Account Type</label>
-            <Select value={accountType} onValueChange={setAccountType}>
-              <SelectTrigger>
-                <SelectValue placeholder="Filter by type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Types</SelectItem>
-                <SelectItem value="asset">Asset</SelectItem>
-                <SelectItem value="liability">Liability</SelectItem>
-                <SelectItem value="equity">Equity</SelectItem>
-                <SelectItem value="income">Income</SelectItem>
-                <SelectItem value="expense">Expense</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+          {setAccountType && (
+            <div className="w-full md:w-48">
+              <label className="text-sm font-medium mb-1 block">Account Type</label>
+              <Select value={accountType} onValueChange={setAccountType}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Filter by type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Types</SelectItem>
+                  <SelectItem value="asset">Asset</SelectItem>
+                  <SelectItem value="liability">Liability</SelectItem>
+                  <SelectItem value="equity">Equity</SelectItem>
+                  <SelectItem value="income">Income</SelectItem>
+                  <SelectItem value="expense">Expense</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          )}
 
           <div className="w-full md:w-auto">
-            <Button className="w-full md:w-auto">
+            <Button>
               <Filter className="w-4 h-4 mr-2" />
               Custom Range
             </Button>

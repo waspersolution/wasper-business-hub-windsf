@@ -1,36 +1,16 @@
 
-import type { MonthlyProfitData, MonthlyData } from "../types/financial-reports";
-
 export function useChartTransformations() {
-  const formatProfitChartData = (data: MonthlyProfitData[]) => {
-    return data.map(item => ({
-      ...item,
-      month: item.month,
-      revenue: item.revenue,
-      expenses: Math.abs(item.expenses),
-      profit: item.profit
-    }));
+  const tooltipFormatter = (value: number | string | Array<number | string>): [string, string] => {
+    const formattedValue = typeof value === 'number' ? 
+      `₦${value.toLocaleString()}` : 
+      Array.isArray(value) ? `₦${value[0].toLocaleString()}` : value.toString();
+    return [formattedValue, ''];
   };
 
-  const formatCashFlowChartData = (data: MonthlyData[]) => {
-    return data.map(item => ({
-      ...item,
-      month: item.month,
-      operating: item.operating,
-      investing: Math.abs(item.investing),
-      financing: Math.abs(item.financing),
-      netCashFlow: item.netCashFlow
-    }));
-  };
-
-  const tooltipFormatter = (value: number | string | Array<number | string>) => {
-    const numValue = typeof value === 'number' ? value : 0;
-    return [`₦${numValue < 0 ? '(' + Math.abs(numValue).toLocaleString() + ')' : numValue.toLocaleString()}`, ''];
-  };
+  const formatProfitChartData = (data: MonthlyProfitData[]) => data;
 
   return {
-    formatProfitChartData,
-    formatCashFlowChartData,
-    tooltipFormatter
+    tooltipFormatter,
+    formatProfitChartData
   };
 }
