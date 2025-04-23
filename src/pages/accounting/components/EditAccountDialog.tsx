@@ -17,7 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Account } from "../ChartOfAccounts";
+import { Account } from "@/types/accounting";
 
 interface EditAccountDialogProps {
   open: boolean;

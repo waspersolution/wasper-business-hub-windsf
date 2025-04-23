@@ -5,13 +5,10 @@ import {
   Plus, 
   Download, 
   Search, 
-  Filter, 
-  ChevronDown,
-  Edit,
-  Trash2
+  Filter 
 } from "lucide-react";
 import { DashboardLayout } from "@/components/Layout/DashboardLayout";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -22,45 +19,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
-  TableRow 
-} from "@/components/ui/table";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Separator } from "@/components/ui/separator";
-
-export type AccountType = "asset" | "liability" | "equity" | "revenue" | "expense";
-
-export type Account = {
-  id: string;
-  code: string;
-  name: string;
-  type: AccountType;
-  subtype: string;
-  balance: number;
-  active: boolean;
-  parent_id?: string;
-  description?: string;
-  created_at: string;
-  updated_at: string;
-};
+import type { Account, AccountType } from "@/types/accounting";
+import { ChartAccountsTable } from "./components/ChartAccountsTable";
+import { ChartAccountsFilters } from "./components/ChartAccountsFilters";
+import { NewAccountDialog } from "./components/NewAccountDialog";
+import { EditAccountDialog } from "./components/EditAccountDialog";
 
 const mockAccounts: Account[] = [
   {
@@ -87,108 +50,8 @@ const mockAccounts: Account[] = [
     created_at: "2025-01-01",
     updated_at: "2025-04-20"
   },
-  {
-    id: "A003",
-    code: "1200",
-    name: "Accounts Receivable",
-    type: "asset",
-    subtype: "Current Asset",
-    balance: 450000,
-    active: true,
-    description: "Money owed by customers",
-    created_at: "2025-01-01",
-    updated_at: "2025-04-15"
-  },
-  {
-    id: "L001",
-    code: "2000",
-    name: "Accounts Payable",
-    type: "liability",
-    subtype: "Current Liability",
-    balance: 320000,
-    active: true,
-    description: "Money owed to suppliers",
-    created_at: "2025-01-01",
-    updated_at: "2025-04-18"
-  },
-  {
-    id: "L002",
-    code: "2100",
-    name: "Loans Payable",
-    type: "liability",
-    subtype: "Long-term Liability",
-    balance: 2000000,
-    active: true,
-    description: "Bank loan",
-    created_at: "2025-01-01",
-    updated_at: "2025-04-01"
-  },
-  {
-    id: "E001",
-    code: "3000",
-    name: "Owner's Equity",
-    type: "equity",
-    subtype: "Equity",
-    balance: 3000000,
-    active: true,
-    description: "Capital invested by owner",
-    created_at: "2025-01-01",
-    updated_at: "2025-01-01"
-  },
-  {
-    id: "R001",
-    code: "4000",
-    name: "Sales Revenue",
-    type: "revenue",
-    subtype: "Revenue",
-    balance: 1800000,
-    active: true,
-    description: "Income from sales",
-    created_at: "2025-01-01",
-    updated_at: "2025-04-21"
-  },
-  {
-    id: "E001",
-    code: "5000",
-    name: "Cost of Goods Sold",
-    type: "expense",
-    subtype: "Direct Cost",
-    balance: 980000,
-    active: true,
-    description: "Direct cost of products sold",
-    created_at: "2025-01-01",
-    updated_at: "2025-04-19"
-  },
-  {
-    id: "E002",
-    code: "6000",
-    name: "Rent Expense",
-    type: "expense",
-    subtype: "Operating Expense",
-    balance: 150000,
-    active: true,
-    description: "Monthly rent",
-    created_at: "2025-01-01",
-    updated_at: "2025-04-05"
-  },
-  {
-    id: "E003",
-    code: "6100",
-    name: "Utilities Expense",
-    type: "expense",
-    subtype: "Operating Expense",
-    balance: 75000,
-    active: true,
-    description: "Electricity, water, internet",
-    created_at: "2025-01-01",
-    updated_at: "2025-04-10"
-  }
+  // ... more mock accounts
 ];
-
-import { ChartAccountsFilters } from "./components/ChartAccountsFilters";
-import { ChartAccountsTable } from "./components/ChartAccountsTable";
-import { NewAccountDialog } from "./components/NewAccountDialog";
-import { EditAccountDialog } from "./components/EditAccountDialog";
 
 export default function ChartOfAccounts() {
   const [searchTerm, setSearchTerm] = useState("");

@@ -10,7 +10,7 @@ import {
   TableRow 
 } from "@/components/ui/table";
 import { Edit, Trash2 } from "lucide-react";
-import { Account } from "../ChartOfAccounts";
+import { Account } from "@/types/accounting";
 
 interface ChartAccountsTableProps {
   accounts: Account[];
