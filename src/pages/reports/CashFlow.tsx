@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
@@ -10,7 +9,6 @@ import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis, Tool
 import { DashboardLayout } from "@/components/Layout/DashboardLayout";
 import { Input } from "@/components/ui/input";
 
-// Mock data for cash flow report
 const cashFlowData = [
   { category: "Operating Activities", item: "Net Income", amount: 48500 },
   { category: "Operating Activities", item: "Depreciation", amount: 12500 },
@@ -29,7 +27,6 @@ const cashFlowData = [
   { category: "", item: "Cash at End of Period", amount: 190000, isInfo: true },
 ];
 
-// Monthly cash flow data for chart
 const monthlyCashFlowData = [
   { 
     month: "Jan", 
@@ -80,17 +77,20 @@ export default function CashFlow() {
   const [searchTerm, setSearchTerm] = useState("");
   const [cashFlowType, setCashFlowType] = useState("direct");
   
-  // Filter cash flow data based on search
   const filteredCashFlowData = cashFlowData.filter(item => 
     item.item.toLowerCase().includes(searchTerm.toLowerCase()));
     
-  // Calculate totals by category
   const getTotalByCategoryType = (category: string) => {
     return filteredCashFlowData
       .filter(item => item.category === category && !item.isTotal)
       .reduce((acc, item) => acc + item.amount, 0);
   };
-  
+
+  const tooltipFormatter = (value: number | string | Array<number | string>) => {
+    const numValue = typeof value === 'number' ? value : 0;
+    return [`₦${numValue < 0 ? '(' + Math.abs(numValue).toLocaleString() + ')' : numValue.toLocaleString()}`, ''];
+  };
+
   return (
     <DashboardLayout>
       <div className="space-y-4">
@@ -117,7 +117,6 @@ export default function CashFlow() {
           </div>
         </div>
 
-        {/* Filters */}
         <Card>
           <CardContent className="p-4">
             <div className="flex flex-col md:flex-row gap-4 md:items-end">
@@ -172,7 +171,6 @@ export default function CashFlow() {
         </Card>
 
         <div className="grid grid-cols-1 lg:grid-cols-7 gap-4">
-          {/* Cash Flow Statement */}
           <Card className="lg:col-span-4 overflow-hidden">
             <CardHeader>
               <CardTitle>Cash Flow Statement</CardTitle>
@@ -191,10 +189,6 @@ export default function CashFlow() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {/* Operating Activities */}
-                    <TableRow className="bg-blue-50 dark:bg-blue-900/20 font-bold">
-                      <TableCell colSpan={3}>Operating Activities</TableCell>
-                    </TableRow>
                     {filteredCashFlowData
                       .filter(item => item.category === "Operating Activities" && !item.isTotal)
                       .map((item, index) => (
@@ -206,7 +200,6 @@ export default function CashFlow() {
                           </TableCell>
                         </TableRow>
                       ))}
-                    {/* Operating Total */}
                     {filteredCashFlowData
                       .filter(item => item.category === "Operating Activities" && item.isTotal)
                       .map((item, index) => (
@@ -218,11 +211,6 @@ export default function CashFlow() {
                           </TableCell>
                         </TableRow>
                       ))}
-
-                    {/* Investing Activities */}
-                    <TableRow className="bg-green-50 dark:bg-green-900/20 font-bold">
-                      <TableCell colSpan={3}>Investing Activities</TableCell>
-                    </TableRow>
                     {filteredCashFlowData
                       .filter(item => item.category === "Investing Activities" && !item.isTotal)
                       .map((item, index) => (
@@ -234,7 +222,6 @@ export default function CashFlow() {
                           </TableCell>
                         </TableRow>
                       ))}
-                    {/* Investing Total */}
                     {filteredCashFlowData
                       .filter(item => item.category === "Investing Activities" && item.isTotal)
                       .map((item, index) => (
@@ -246,11 +233,6 @@ export default function CashFlow() {
                           </TableCell>
                         </TableRow>
                       ))}
-
-                    {/* Financing Activities */}
-                    <TableRow className="bg-purple-50 dark:bg-purple-900/20 font-bold">
-                      <TableCell colSpan={3}>Financing Activities</TableCell>
-                    </TableRow>
                     {filteredCashFlowData
                       .filter(item => item.category === "Financing Activities" && !item.isTotal)
                       .map((item, index) => (
@@ -262,7 +244,6 @@ export default function CashFlow() {
                           </TableCell>
                         </TableRow>
                       ))}
-                    {/* Financing Total */}
                     {filteredCashFlowData
                       .filter(item => item.category === "Financing Activities" && item.isTotal)
                       .map((item, index) => (
@@ -274,8 +255,6 @@ export default function CashFlow() {
                           </TableCell>
                         </TableRow>
                       ))}
-
-                    {/* Net Change and Ending Balance */}
                     {filteredCashFlowData
                       .filter(item => item.isGrandTotal)
                       .map((item, index) => (
@@ -287,8 +266,6 @@ export default function CashFlow() {
                           </TableCell>
                         </TableRow>
                       ))}
-                    
-                    {/* Cash Balances */}
                     {filteredCashFlowData
                       .filter(item => item.isInfo)
                       .map((item, index) => (
@@ -306,9 +283,7 @@ export default function CashFlow() {
             </CardContent>
           </Card>
           
-          {/* Cash Flow Chart & Summary */}
           <div className="lg:col-span-3 space-y-4">
-            {/* Summary Cards */}
             <Card>
               <CardHeader>
                 <CardTitle>Cash Flow Summary</CardTitle>
@@ -366,7 +341,6 @@ export default function CashFlow() {
               </CardContent>
             </Card>
             
-            {/* Cash Flow Chart */}
             <Card>
               <CardHeader>
                 <CardTitle>6-Month Cash Flow Trend</CardTitle>
@@ -378,7 +352,7 @@ export default function CashFlow() {
                     <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
                     <XAxis dataKey="month" />
                     <YAxis />
-                    <Tooltip formatter={(value) => [`₦${value < 0 ? '(' + Math.abs(value).toLocaleString() + ')' : value.toLocaleString()}`, '']} />
+                    <Tooltip formatter={tooltipFormatter} />
                     <Legend />
                     <Line type="monotone" dataKey="operating" stroke="#4f46e5" strokeWidth={2} name="Operating" />
                     <Line type="monotone" dataKey="investing" stroke="#10b981" strokeWidth={2} name="Investing" />
@@ -391,7 +365,6 @@ export default function CashFlow() {
           </div>
         </div>
         
-        {/* Export/Actions Area */}
         <div className="flex justify-end space-x-2 mt-4">
           <Button variant="outline">Save as Favorite</Button>
           <Button variant="outline">Schedule Report</Button>
