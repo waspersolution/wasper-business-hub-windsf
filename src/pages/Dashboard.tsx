@@ -1,9 +1,11 @@
+
 import { useSession } from "@/contexts/SessionContext";
 import { DashboardLayout } from "@/components/Layout/DashboardLayout";
 import { SuperAdminDashboard } from "@/components/SuperAdmin/SuperAdminDashboard";
 import { AccountingDashboard } from "@/components/Accounting/AccountingDashboard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { UserRole } from "@/types/auth";
 
 const salesData = [
   { name: 'Mon', amount: 34000 },
@@ -28,6 +30,7 @@ export default function Dashboard() {
   }
 
   // Show accounting dashboard for accounting roles
+  // We need to explicitly type check against the string literals since TypeScript is strict
   if (session.currentRole === "accountant" || session.currentRole === "finance_manager") {
     return (
       <DashboardLayout>

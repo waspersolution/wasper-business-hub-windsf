@@ -4,14 +4,11 @@ import { BankAccountSummary } from "@/components/bank-accounts/BankAccountSummar
 import { AccountingMetrics } from "./AccountingMetrics";
 import { RecentTransactions } from "./RecentTransactions";
 import { AccountingCharts } from "./AccountingCharts";
-
-const mockBankAccounts = [
-  { id: 1, name: "Main Account", balance: 125000, currency: "NGN" },
-  { id: 2, name: "Petty Cash", balance: 15000, currency: "NGN" },
-  { id: 3, name: "USD Account", balance: 5000, currency: "USD" },
-];
+import { BankAccount } from "@/types/bankAccounts";
+import { mockBankAccounts } from "@/data/mockBankAccounts";
 
 export function AccountingDashboard() {
+  // Use the proper mockBankAccounts from the data file that matches the BankAccount type
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold">Accounting Dashboard</h1>

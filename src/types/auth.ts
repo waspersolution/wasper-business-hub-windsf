@@ -8,7 +8,15 @@ export type User = {
   last_sign_in?: string;
 };
 
-export type UserRole = 'super_admin' | 'company_admin' | 'branch_manager' | 'inventory_manager' | 'sales_manager' | 'staff';
+export type UserRole = 
+  | 'super_admin' 
+  | 'company_admin' 
+  | 'branch_manager' 
+  | 'inventory_manager' 
+  | 'sales_manager' 
+  | 'staff'
+  | 'accountant'
+  | 'finance_manager';
 
 export type UserRoleAssignment = {
   id: string;
