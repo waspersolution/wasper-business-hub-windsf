@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -11,6 +12,7 @@ import { ProfitLossMetrics } from "./components/ProfitLossMetrics";
 import { ExpenseBreakdown } from "./components/ExpenseBreakdown";
 import type { ProfitLossItem, MonthlyProfitData } from "./types/financial-reports";
 import { profitLossData, monthlyProfitData } from "./data/profitLossData";
+import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from "@/components/ui/charts";
 
 export default function ProfitLoss() {
   const [period, setPeriod] = useState("2025-04");
