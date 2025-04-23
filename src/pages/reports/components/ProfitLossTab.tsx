@@ -1,58 +1,45 @@
-
 import React from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from "@/components/ui/charts";
-import { ProfitLossTable } from "./tables/ProfitLossTable";
-import { useChartTransformations } from "../hooks/useChartTransformations";
-import type { ProfitLossItem, MonthlyProfitData } from "../types/financial-reports";
+import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from "@/components/charts";
 
-type ProfitLossTabProps = {
-  data: ProfitLossItem[];
-  monthlyData: MonthlyProfitData[];
-  period: string;
-};
+// Mock data for profit and loss
+const profitLossData = [
+  { name: 'Jan', revenue: 120000, expenses: 80000, profit: 40000 },
+  { name: 'Feb', revenue: 150000, expenses: 95000, profit: 55000 },
+  { name: 'Mar', revenue: 185000, expenses: 110000, profit: 75000 },
+  { name: 'Apr', revenue: 220000, expenses: 130000, profit: 90000 },
+  { name: 'May', revenue: 195000, expenses: 125000, profit: 70000 },
+  { name: 'Jun', revenue: 240000, expenses: 145000, profit: 95000 }
+];
 
-export function ProfitLossTab({ data, monthlyData, period }: ProfitLossTabProps) {
-  const { formatProfitChartData, tooltipFormatter } = useChartTransformations();
-  
-  const totals = data.reduce(
-    (acc, item) => {
-      if (item.category === "Revenue") {
-        acc.revenue += item.amount;
-      } else {
-        acc.expenses += Math.abs(item.amount);
-      }
-      return acc;
-    },
-    { revenue: 0, expenses: 0, netProfit: 0 }
-  );
-  
-  totals.netProfit = totals.revenue - totals.expenses;
-
+export function ProfitLossTab() {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 p-4">
-      <div className="overflow-x-auto">
-        <ProfitLossTable data={data} totals={totals} />
-      </div>
-
-      <div className="h-80 flex flex-col">
-        <h4 className="font-medium mb-2 text-center">6-Month Profit Trend</h4>
-        <div className="flex-1">
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={formatProfitChartData(monthlyData)}>
-              <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
-              <XAxis dataKey="month" />
-              <YAxis />
-              <Tooltip formatter={tooltipFormatter} />
-              <Legend />
-              <Line type="monotone" dataKey="revenue" stroke="#4f46e5" strokeWidth={2} name="Revenue" />
-              <Line type="monotone" dataKey="expenses" stroke="#ef4444" strokeWidth={2} name="Expenses" />
-              <Line type="monotone" dataKey="profit" stroke="#10b981" strokeWidth={2} dot={{ r: 4 }} name="Profit" />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
-      </div>
+    <div className="grid gap-6">
+      <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950 dark:to-indigo-950">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-lg text-blue-600 dark:text-blue-400">Profit & Loss Analysis</CardTitle>
+          <CardDescription>Monthly revenue, expenses, and profit overview</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="h-[350px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={profitLossData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip
+                  formatter={(value) => `₦${value.toLocaleString()}`}
+                  labelFormatter={(label) => `Month: ${label}`}
+                />
+                <Legend />
+                <Line type="monotone" dataKey="revenue" stroke="#4f46e5" strokeWidth={2} />
+                <Line type="monotone" dataKey="expenses" stroke="#ef4444" strokeWidth={2} />
+                <Line type="monotone" dataKey="profit" stroke="#10b981" strokeWidth={2} />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
