@@ -1,68 +1,94 @@
 
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import type { CashFlowItem } from "../types/financial-reports";
-import { useCashFlowCalculations } from "../hooks/useCashFlowCalculations";
+import { TrendingUp, TrendingDown, DollarSign } from "lucide-react";
 
 type CashFlowSummaryCardsProps = {
   data: CashFlowItem[];
 };
 
 export function CashFlowSummaryCards({ data }: CashFlowSummaryCardsProps) {
-  const { getTotalByCategoryType } = useCashFlowCalculations();
+  // Find specific totals
+  const operatingTotal = data.find(
+    item => item.category === "Operating Activities" && item.isTotal
+  )?.amount || 0;
+  
+  const investingTotal = data.find(
+    item => item.category === "Investing Activities" && item.isTotal
+  )?.amount || 0;
+  
+  const financingTotal = data.find(
+    item => item.category === "Financing Activities" && item.isTotal
+  )?.amount || 0;
+  
+  const netCashFlow = data.find(item => item.isGrandTotal)?.amount || 0;
+  const endingBalance = data.find(item => item.item === "Cash at End of Period")?.amount || 0;
 
   return (
-    <Card>
-      <CardContent>
-        <div className="grid grid-cols-1 gap-4">
-          <div className="flex justify-between p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-            <div>
-              <p className="text-sm font-medium text-muted-foreground">Operating Cash Flow</p>
-              <p className="text-2xl font-bold">₦{getTotalByCategoryType(data, "Operating Activities").toLocaleString()}</p>
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <Card>
+        <CardHeader className="pb-2">
+          <CardTitle className="text-base">Net Cash Flow</CardTitle>
+          <CardDescription>Current period</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex justify-between items-center">
+            <span className="text-2xl font-bold">₦{netCashFlow.toLocaleString()}</span>
+            <span className={`p-2 rounded-full ${netCashFlow >= 0 ? 'bg-green-100' : 'bg-red-100'}`}>
+              {netCashFlow >= 0 ? 
+                <TrendingUp className="h-5 w-5 text-green-600" /> : 
+                <TrendingDown className="h-5 w-5 text-red-600" />}
+            </span>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader className="pb-2">
+          <CardTitle className="text-base">Ending Cash Balance</CardTitle>
+          <CardDescription>As of period end</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex justify-between items-center">
+            <span className="text-2xl font-bold">₦{endingBalance.toLocaleString()}</span>
+            <span className="p-2 rounded-full bg-blue-100">
+              <DollarSign className="h-5 w-5 text-blue-600" />
+            </span>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card className="sm:col-span-2">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-base">Cash Flow Breakdown</CardTitle>
+          <CardDescription>By activity type</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-3 gap-2">
+            <div className="p-3 border rounded-lg">
+              <p className="text-sm font-medium text-muted-foreground">Operating</p>
+              <p className={`text-lg font-bold ${operatingTotal >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                ₦{Math.abs(operatingTotal).toLocaleString()}
+                {operatingTotal < 0 && " (-)"}
+              </p>
             </div>
-            <div className="flex items-center bg-blue-200 dark:bg-blue-800 h-12 w-12 justify-center rounded-full">
-              <span className="text-blue-700 dark:text-blue-300">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"></path></svg>
-              </span>
+            <div className="p-3 border rounded-lg">
+              <p className="text-sm font-medium text-muted-foreground">Investing</p>
+              <p className={`text-lg font-bold ${investingTotal >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                ₦{Math.abs(investingTotal).toLocaleString()}
+                {investingTotal < 0 && " (-)"}
+              </p>
+            </div>
+            <div className="p-3 border rounded-lg">
+              <p className="text-sm font-medium text-muted-foreground">Financing</p>
+              <p className={`text-lg font-bold ${financingTotal >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                ₦{Math.abs(financingTotal).toLocaleString()}
+                {financingTotal < 0 && " (-)"}
+              </p>
             </div>
           </div>
-          
-          <div className="flex justify-between p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
-            <div>
-              <p className="text-sm font-medium text-muted-foreground">Investing Cash Flow</p>
-              <p className="text-2xl font-bold">₦{Math.abs(getTotalByCategoryType(data, "Investing Activities")).toLocaleString()}</p>
-            </div>
-            <div className="flex items-center bg-green-200 dark:bg-green-800 h-12 w-12 justify-center rounded-full">
-              <span className="text-green-700 dark:text-green-300">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4.2 20h15.6V4.2H4.2V20Z"></path><path d="M16 9h1"></path><path d="M12 9h1"></path><path d="M8 9h1"></path><path d="M16 13h1"></path><path d="M12 13h1"></path><path d="M8 13h1"></path><path d="M16 17h1"></path><path d="M12 17h1"></path><path d="M8 17h1"></path></svg>
-              </span>
-            </div>
-          </div>
-          
-          <div className="flex justify-between p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
-            <div>
-              <p className="text-sm font-medium text-muted-foreground">Financing Cash Flow</p>
-              <p className="text-2xl font-bold">₦{Math.abs(getTotalByCategoryType(data, "Financing Activities")).toLocaleString()}</p>
-            </div>
-            <div className="flex items-center bg-purple-200 dark:bg-purple-800 h-12 w-12 justify-center rounded-full">
-              <span className="text-purple-700 dark:text-purple-300">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v20"></path><path d="m17 5-5-3-5 3"></path><path d="M19 15v6"></path><path d="M19 18h-7"></path><path d="M5 15v6"></path><path d="M5 9v6"></path><path d="M19 9v6"></path><path d="M12 19v3"></path><path d="m12 12-7-4"></path><path d="m12 12 7-4"></path></svg>
-              </span>
-            </div>
-          </div>
-          
-          <div className="flex justify-between p-4 bg-amber-50 dark:bg-amber-900/20 rounded-lg border-2 border-amber-200 dark:border-amber-800">
-            <div>
-              <p className="text-sm font-medium text-muted-foreground">Net Cash Flow</p>
-              <p className="text-2xl font-bold">₦{data.find(item => item.isGrandTotal)?.amount.toLocaleString() || 0}</p>
-            </div>
-            <div className="flex items-center bg-amber-200 dark:bg-amber-800 h-12 w-12 justify-center rounded-full">
-              <span className="text-amber-700 dark:text-amber-300">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"></rect><line x1="2" x2="22" y1="10" y2="10"></line></svg>
-              </span>
-            </div>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+    </div>
   );
 }

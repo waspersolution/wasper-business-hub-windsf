@@ -1,18 +1,11 @@
 
-import type { MonthlyProfitData } from "../types/financial-reports";
-
 export function useChartTransformations() {
-  const tooltipFormatter = (value: number | string | Array<number | string>): [string, string] => {
-    const formattedValue = typeof value === 'number' ? 
-      `₦${value.toLocaleString()}` : 
-      Array.isArray(value) ? `₦${value[0].toLocaleString()}` : value.toString();
-    return [formattedValue, ''];
+  const tooltipFormatter = (value: number | string | Array<number | string>) => {
+    if (typeof value === 'number') {
+      return [`₦${value.toLocaleString()}`, ''];
+    }
+    return [value.toString(), ''];
   };
 
-  const formatProfitChartData = (data: MonthlyProfitData[]) => data;
-
-  return {
-    tooltipFormatter,
-    formatProfitChartData
-  };
+  return { tooltipFormatter };
 }
