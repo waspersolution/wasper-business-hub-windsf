@@ -15,7 +15,7 @@ import { RoleSwitcher } from "../RoleSwitcher";
 import { useBranchSelection } from "@/hooks/use-branch-selection";
 import { Building, ChevronDown, RefreshCw } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export function Header() {
   const { session, clearSession } = useSession();
@@ -23,6 +23,23 @@ export function Header() {
   const { toast } = useToast();
   const location = useLocation();
   const [syncing, setSyncing] = useState(false);
+  const [lastSyncTime, setLastSyncTime] = useState<Date | null>(null);
+
+  // Auto sync functionality - runs in background every 5 minutes
+  useEffect(() => {
+    // Only set up auto sync if user is authenticated and on dashboard
+    if (!session.isAuthenticated || !location.pathname.startsWith("/dashboard")) {
+      return;
+    }
+    
+    // Initial sync when component mounts
+    handleAutoSync();
+    
+    // Set up interval for auto sync
+    const interval = setInterval(handleAutoSync, 5 * 60 * 1000); // 5 minutes
+    
+    return () => clearInterval(interval);
+  }, [session.isAuthenticated, location.pathname]);
 
   // Get user initials for avatar
   const getUserInitials = () => {
@@ -48,21 +65,71 @@ export function Header() {
     });
   };
 
-  // Handle Sync Now button
+  // Handle automatic sync (background sync)
+  const handleAutoSync = async () => {
+    if (syncing) return; // Don't start a new sync if one is already in progress
+    
+    try {
+      // Perform sync silently (no toast at start)
+      setSyncing(true);
+      
+      // Placeholder for sync logic
+      await new Promise((res) => setTimeout(res, 1500));
+      
+      // Update last sync time
+      const now = new Date();
+      setLastSyncTime(now);
+      
+      // Toast for auto-sync completion (optional, can be removed for truly silent syncs)
+      toast({
+        title: "Background sync complete",
+        description: `Last synced: ${now.toLocaleTimeString()}`,
+        variant: "default"
+      });
+    } catch (error) {
+      // Handle sync errors
+      toast({
+        title: "Sync error",
+        description: "Failed to sync data. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setSyncing(false);
+    }
+  };
+
+  // Handle manual Sync Now button click
   const handleSyncNow = async () => {
+    if (syncing) return; // Prevent multiple clicks while syncing
+    
     setSyncing(true);
     toast({
       title: "Syncing...",
       description: "Data sync in progress.",
     });
-    // Placeholder for sync logic
-    await new Promise((res) => setTimeout(res, 2000));
-    setSyncing(false);
-    toast({
-      title: "Sync complete!",
-      description: "Your data is up to date.",
-      variant: "default"
-    });
+    
+    try {
+      // Placeholder for sync logic
+      await new Promise((res) => setTimeout(res, 2000));
+      
+      // Update last sync time
+      const now = new Date();
+      setLastSyncTime(now);
+      
+      toast({
+        title: "Sync complete!",
+        description: `Your data is up to date. Last synced: ${now.toLocaleTimeString()}`,
+        variant: "default"
+      });
+    } catch (error) {
+      toast({
+        title: "Sync failed",
+        description: "There was an error syncing your data. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setSyncing(false);
+    }
   };
 
   // Only show Sync if authenticated and on dashboard or child pages
@@ -114,12 +181,16 @@ export function Header() {
               <Button
                 variant="outline"
                 size="icon"
-                className="relative"
+                className="relative group"
                 onClick={handleSyncNow}
                 disabled={syncing}
                 aria-label="Sync Now"
+                title={lastSyncTime ? `Last synced: ${lastSyncTime.toLocaleTimeString()}` : "Sync Now"}
               >
-                <RefreshCw className={`h-5 w-5 transition-transform ${syncing ? 'animate-spin' : ''}`} />
+                <RefreshCw className={`h-5 w-5 transition-transform ${syncing ? 'animate-spin' : 'group-hover:rotate-180'}`} />
+                {lastSyncTime && (
+                  <span className="sr-only">Last synced: {lastSyncTime.toLocaleTimeString()}</span>
+                )}
               </Button>
             )}
             {session.isAuthenticated ? (
