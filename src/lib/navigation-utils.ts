@@ -2,10 +2,10 @@
 import { SidebarItem } from "@/components/Layout/SidebarNavigationItems";
 
 // Function to flatten navigation items including children
-export function flattenNavigationItems(items: SidebarItem[]): SidebarItem[] {
-  return items.reduce((acc: SidebarItem[], item) => {
+export function flattenNavigationItems(items: SidebarItem[]): Array<SidebarItem & { shortcut?: string }> {
+  return items.reduce((acc: Array<SidebarItem & { shortcut?: string }>, item) => {
     // Add the current item if it has a path
-    if (item.title && (item.path || item.type === "item")) {
+    if (item.title && item.path) {
       acc.push(item);
     }
     
