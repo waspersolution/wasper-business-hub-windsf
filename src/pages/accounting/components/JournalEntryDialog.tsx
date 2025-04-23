@@ -1,5 +1,3 @@
-
-// This moves the JournalEntryDialog from JournalEntries.tsx
 import { 
   Dialog,
   DialogContent,
@@ -14,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import { Download, BookOpen } from "lucide-react";
 import { JournalEntry, JournalLine } from "../JournalEntries";
-import { mockJournalLines } from "../JournalEntries";
+import { mockJournalLines } from "../data/mockJournalData";
 
 interface JournalEntryDialogProps {
   entry: JournalEntry | null;
