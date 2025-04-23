@@ -3,7 +3,6 @@ import { useState } from "react";
 import { Plus, Download } from "lucide-react";
 import { DashboardLayout } from "@/components/Layout/DashboardLayout";
 import { Button } from "@/components/ui/button";
-
 import { mockBankAccounts } from "@/data/mockBankAccounts";
 import { BankAccount } from "@/types/bankAccounts";
 import { BankAccountSummary } from "@/components/bank-accounts/BankAccountSummary";
