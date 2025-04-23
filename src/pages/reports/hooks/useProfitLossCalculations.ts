@@ -15,6 +15,7 @@ export function useProfitLossCalculations(data: ProfitLossItem[]) {
   );
   
   const netProfit = totals.revenue - totals.expenses;
+  const profitMargin = (netProfit / totals.revenue * 100).toFixed(1);
 
-  return { totals, netProfit };
+  return { totals, netProfit, profitMargin };
 }
