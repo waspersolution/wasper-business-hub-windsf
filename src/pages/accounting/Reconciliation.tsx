@@ -325,7 +325,7 @@ export default function Reconciliation() {
                 <div>
                   <div className="text-sm text-muted-foreground mb-1">System Balance</div>
                   <div className="text-lg font-semibold">
-                    ₦{selectedAccount?.closing_balance.toLocaleString() || "0.00"}
+                    ₦{selectedAccount?.closing_balance?.toLocaleString() || "0.00"}
                   </div>
                 </div>
                 <div>
@@ -337,7 +337,9 @@ export default function Reconciliation() {
               <div>
                 <div className="text-sm text-muted-foreground mb-1">Difference</div>
                 <div className="text-lg font-semibold text-amber-500">
-                  ₦{selectedAccount?.difference !== null ? selectedAccount.difference.toLocaleString() : "0.00"}
+                  ₦{selectedAccount?.difference !== null && selectedAccount?.difference !== undefined 
+                      ? selectedAccount.difference.toLocaleString() 
+                      : "0.00"}
                 </div>
               </div>
               
