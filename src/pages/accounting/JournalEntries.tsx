@@ -134,6 +134,69 @@ export const mockJournalLines: Record<string, JournalLine[]> = {
   ]
 };
 
+export const mockJournalEntries: JournalEntry[] = [
+  {
+    id: "J001",
+    entry_number: "JE-2025-001",
+    date: "2025-04-01",
+    description: "Monthly office rent payment",
+    total_amount: 50000,
+    is_balanced: true,
+    status: "posted",
+    created_by: "John Doe",
+    created_at: "2025-04-01T10:00:00",
+    updated_at: "2025-04-01T10:00:00"
+  },
+  {
+    id: "J002",
+    entry_number: "JE-2025-002",
+    date: "2025-04-05",
+    description: "Office supplies purchase",
+    total_amount: 15000,
+    is_balanced: true,
+    status: "posted",
+    created_by: "Jane Smith",
+    created_at: "2025-04-05T14:30:00",
+    updated_at: "2025-04-05T14:30:00"
+  },
+  {
+    id: "J003",
+    entry_number: "JE-2025-003",
+    date: "2025-04-10",
+    description: "Monthly loan interest payment",
+    total_amount: 25000,
+    is_balanced: true,
+    status: "draft",
+    created_by: "Mike Wilson",
+    created_at: "2025-04-10T09:15:00",
+    updated_at: "2025-04-10T09:15:00"
+  },
+  {
+    id: "J004",
+    entry_number: "JE-2025-004",
+    date: "2025-04-15",
+    description: "Staff salary payments",
+    total_amount: 350000,
+    is_balanced: true,
+    status: "draft",
+    created_by: "Jane Smith",
+    created_at: "2025-04-15T16:45:00",
+    updated_at: "2025-04-15T16:45:00"
+  },
+  {
+    id: "J005",
+    entry_number: "JE-2025-005",
+    date: "2025-04-20",
+    description: "Sales revenue adjustment",
+    total_amount: 7500,
+    is_balanced: true,
+    status: "reversed",
+    created_by: "John Doe",
+    created_at: "2025-04-20T11:20:00",
+    updated_at: "2025-04-20T11:20:00"
+  }
+];
+
 export default function JournalEntries() {
   const {
     searchTerm,
