@@ -1,17 +1,15 @@
-
 import { useState } from "react";
-import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { DatePickerWithRange } from "@/components/ui/date-range-picker";
-import { Calendar, Download, Filter, Printer, Search } from "lucide-react";
-import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from "@/components/ui/charts";
+import { Download, Filter, Printer } from "lucide-react";
 import { DashboardLayout } from "@/components/Layout/DashboardLayout";
+import { FinancialReportFilters } from "./components/FinancialReportFilters";
+import { TrialBalanceTab } from "./components/TrialBalanceTab";
+import { ProfitLossTab } from "./components/ProfitLossTab";
+import { CashFlowTab } from "./components/CashFlowTab";
 
-// Mock data for financial reports
+// Mock data imports
 const trialBalanceData = [
   { account_code: "1000", account_name: "Cash in Hand", account_type: "Asset", debit: 25000, credit: 0, balance: 25000 },
   { account_code: "1010", account_name: "Bank Current Account", account_type: "Asset", debit: 165000, credit: 0, balance: 165000 },
@@ -60,7 +58,6 @@ const cashFlowData = [
   { category: "", item: "Cash at End of Period", amount: 190000, isInfo: true },
 ];
 
-// Monthly profit data for chart
 const monthlyProfitData = [
   { month: "Jan", revenue: 280000, expenses: 232000, profit: 48000 },
   { month: "Feb", revenue: 290000, expenses: 235000, profit: 55000 },
@@ -84,31 +81,6 @@ export default function FinancialReports() {
     const matchesType = accountType === "all" || item.account_type.toLowerCase() === accountType.toLowerCase();
     return matchesSearch && matchesType;
   });
-
-  // Calculate trial balance totals
-  const trialBalanceTotals = filteredTrialBalance.reduce(
-    (acc, item) => {
-      acc.debit += item.debit;
-      acc.credit += item.credit;
-      return acc;
-    },
-    { debit: 0, credit: 0 }
-  );
-
-  // Calculate P&L totals
-  const profitLossTotals = profitLossData.reduce(
-    (acc, item) => {
-      if (item.category === "Revenue") {
-        acc.revenue += item.amount;
-      } else {
-        acc.expenses += Math.abs(item.amount);
-      }
-      return acc;
-    },
-    { revenue: 0, expenses: 0 }
-  );
-  
-  const netProfit = profitLossTotals.revenue - profitLossTotals.expenses;
 
   return (
     <DashboardLayout>
@@ -136,68 +108,15 @@ export default function FinancialReports() {
           </div>
         </div>
 
-        {/* Filters */}
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex flex-col md:flex-row gap-4 md:items-end">
-              <div className="flex-1">
-                <label className="text-sm font-medium mb-1 block">Search</label>
-                <div className="relative">
-                  <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    placeholder="Search accounts..."
-                    className="pl-8"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                  />
-                </div>
-              </div>
-              
-              <div className="w-full md:w-48">
-                <label className="text-sm font-medium mb-1 block">Period</label>
-                <Select value={period} onValueChange={setPeriod}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select period" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="2025-04">April 2025</SelectItem>
-                    <SelectItem value="2025-03">March 2025</SelectItem>
-                    <SelectItem value="2025-02">February 2025</SelectItem>
-                    <SelectItem value="2025-01">January 2025</SelectItem>
-                    <SelectItem value="2024-12">December 2024</SelectItem>
-                    <SelectItem value="2024-11">November 2024</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div className="w-full md:w-48">
-                <label className="text-sm font-medium mb-1 block">Account Type</label>
-                <Select value={accountType} onValueChange={setAccountType}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Filter by type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Types</SelectItem>
-                    <SelectItem value="asset">Asset</SelectItem>
-                    <SelectItem value="liability">Liability</SelectItem>
-                    <SelectItem value="equity">Equity</SelectItem>
-                    <SelectItem value="income">Income</SelectItem>
-                    <SelectItem value="expense">Expense</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+        <FinancialReportFilters
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          period={period}
+          setPeriod={setPeriod}
+          accountType={accountType}
+          setAccountType={setAccountType}
+        />
 
-              <div className="w-full md:w-auto">
-                <Button className="w-full md:w-auto">
-                  <Calendar className="w-4 h-4 mr-2" />
-                  Custom Range
-                </Button>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Reports Content */}
         <Card className="overflow-hidden">
           <Tabs defaultValue="trialBalance" onValueChange={setActiveTab} className="w-full">
             <CardHeader className="pb-0">
@@ -217,281 +136,25 @@ export default function FinancialReports() {
             </CardHeader>
             
             <CardContent className="p-0 pt-4">
-              {/* Trial Balance Tab */}
               <TabsContent value="trialBalance" className="m-0">
-                <div className="p-4 border-b bg-muted/20">
-                  <h3 className="font-semibold text-lg">Trial Balance</h3>
-                  <p className="text-sm text-muted-foreground">Period: {period}</p>
-                </div>
-                <div className="overflow-x-auto">
-                  <Table>
-                    <TableHeader className="bg-muted/30">
-                      <TableRow>
-                        <TableHead>Account Code</TableHead>
-                        <TableHead>Account Name</TableHead>
-                        <TableHead>Type</TableHead>
-                        <TableHead className="text-right">Debit (₦)</TableHead>
-                        <TableHead className="text-right">Credit (₦)</TableHead>
-                        <TableHead className="text-right">Balance (₦)</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {filteredTrialBalance.map((item, index) => (
-                        <TableRow key={index} className="hover:bg-muted/30">
-                          <TableCell>{item.account_code}</TableCell>
-                          <TableCell className="font-medium">{item.account_name}</TableCell>
-                          <TableCell>{item.account_type}</TableCell>
-                          <TableCell className="text-right font-mono">
-                            {item.debit > 0 ? item.debit.toLocaleString() : "—"}
-                          </TableCell>
-                          <TableCell className="text-right font-mono">
-                            {item.credit > 0 ? item.credit.toLocaleString() : "—"}
-                          </TableCell>
-                          <TableCell className={`text-right font-mono ${item.balance < 0 ? "text-red-600" : "text-green-600"}`}>
-                            {item.balance.toLocaleString()}
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                    <tfoot className="border-t bg-muted/50">
-                      <tr>
-                        <td colSpan={3} className="p-4 font-bold">Total</td>
-                        <td className="p-4 text-right font-mono font-bold">{trialBalanceTotals.debit.toLocaleString()}</td>
-                        <td className="p-4 text-right font-mono font-bold">{trialBalanceTotals.credit.toLocaleString()}</td>
-                        <td></td>
-                      </tr>
-                    </tfoot>
-                  </Table>
-                </div>
+                <TrialBalanceTab data={filteredTrialBalance} period={period} />
               </TabsContent>
 
-              {/* Profit and Loss Tab */}
               <TabsContent value="profitLoss" className="m-0">
-                <div className="p-4 border-b bg-muted/20">
-                  <h3 className="font-semibold text-lg">Profit & Loss Statement</h3>
-                  <p className="text-sm text-muted-foreground">Period: {period}</p>
-                </div>
-
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 p-4">
-                  <div className="overflow-x-auto">
-                    <Table>
-                      <TableHeader className="bg-muted/30">
-                        <TableRow>
-                          <TableHead>Category</TableHead>
-                          <TableHead>Item</TableHead>
-                          <TableHead className="text-right">Amount (₦)</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {/* Revenue Section */}
-                        <TableRow className="bg-blue-50 dark:bg-blue-900/20">
-                          <TableCell colSpan={3} className="font-bold">Revenue</TableCell>
-                        </TableRow>
-                        {profitLossData
-                          .filter(item => item.category === "Revenue")
-                          .map((item, index) => (
-                            <TableRow key={`revenue-${index}`} className="hover:bg-muted/30">
-                              <TableCell>{item.category}</TableCell>
-                              <TableCell>{item.item}</TableCell>
-                              <TableCell className="text-right font-mono text-green-600">
-                                {item.amount.toLocaleString()}
-                              </TableCell>
-                            </TableRow>
-                          ))}
-                        <TableRow className="bg-muted/30">
-                          <TableCell colSpan={2} className="font-semibold">Total Revenue</TableCell>
-                          <TableCell className="text-right font-mono font-semibold text-green-600">
-                            {profitLossTotals.revenue.toLocaleString()}
-                          </TableCell>
-                        </TableRow>
-
-                        {/* Expenses Section */}
-                        <TableRow className="bg-red-50 dark:bg-red-900/20">
-                          <TableCell colSpan={3} className="font-bold">Expenses</TableCell>
-                        </TableRow>
-                        {profitLossData
-                          .filter(item => item.category === "Expenses")
-                          .map((item, index) => (
-                            <TableRow key={`expense-${index}`} className="hover:bg-muted/30">
-                              <TableCell>{item.category}</TableCell>
-                              <TableCell>{item.item}</TableCell>
-                              <TableCell className="text-right font-mono text-red-600">
-                                {Math.abs(item.amount).toLocaleString()}
-                              </TableCell>
-                            </TableRow>
-                          ))}
-                        <TableRow className="bg-muted/30">
-                          <TableCell colSpan={2} className="font-semibold">Total Expenses</TableCell>
-                          <TableCell className="text-right font-mono font-semibold text-red-600">
-                            {profitLossTotals.expenses.toLocaleString()}
-                          </TableCell>
-                        </TableRow>
-
-                        {/* Net Profit/Loss */}
-                        <TableRow className="bg-gray-100 dark:bg-gray-800">
-                          <TableCell colSpan={2} className="font-bold">Net Profit</TableCell>
-                          <TableCell className={`text-right font-mono font-bold ${netProfit >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                            {netProfit.toLocaleString()}
-                          </TableCell>
-                        </TableRow>
-                      </TableBody>
-                    </Table>
-                  </div>
-
-                  <div className="h-80 flex flex-col">
-                    <h4 className="font-medium mb-2 text-center">6-Month Profit Trend</h4>
-                    <div className="flex-1">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <LineChart data={monthlyProfitData}>
-                          <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
-                          <XAxis dataKey="month" />
-                          <YAxis />
-                          <Tooltip formatter={(value) => [`₦${value.toLocaleString()}`, '']} />
-                          <Legend />
-                          <Line type="monotone" dataKey="revenue" stroke="#4f46e5" strokeWidth={2} name="Revenue" />
-                          <Line type="monotone" dataKey="expenses" stroke="#ef4444" strokeWidth={2} name="Expenses" />
-                          <Line type="monotone" dataKey="profit" stroke="#10b981" strokeWidth={2} dot={{ r: 4 }} name="Profit" />
-                        </LineChart>
-                      </ResponsiveContainer>
-                    </div>
-                  </div>
-                </div>
+                <ProfitLossTab 
+                  data={profitLossData}
+                  monthlyData={monthlyProfitData}
+                  period={period}
+                />
               </TabsContent>
 
-              {/* Cash Flow Tab */}
               <TabsContent value="cashFlow" className="m-0">
-                <div className="p-4 border-b bg-muted/20">
-                  <h3 className="font-semibold text-lg">Cash Flow Statement</h3>
-                  <p className="text-sm text-muted-foreground">Period: {period}</p>
-                </div>
-                <div className="overflow-x-auto">
-                  <Table>
-                    <TableHeader className="bg-muted/30">
-                      <TableRow>
-                        <TableHead>Category</TableHead>
-                        <TableHead>Item</TableHead>
-                        <TableHead className="text-right">Amount (₦)</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {/* Operating Activities */}
-                      <TableRow className="bg-blue-50 dark:bg-blue-900/20 font-bold">
-                        <TableCell colSpan={3}>Operating Activities</TableCell>
-                      </TableRow>
-                      {cashFlowData
-                        .filter(item => item.category === "Operating Activities" && !item.isTotal)
-                        .map((item, index) => (
-                          <TableRow key={`op-${index}`} className="hover:bg-muted/30">
-                            <TableCell></TableCell>
-                            <TableCell>{item.item}</TableCell>
-                            <TableCell className={`text-right font-mono ${item.amount < 0 ? 'text-red-600' : 'text-green-600'}`}>
-                              {item.amount < 0 ? `(${Math.abs(item.amount).toLocaleString()})` : item.amount.toLocaleString()}
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                      {/* Operating Total */}
-                      {cashFlowData
-                        .filter(item => item.category === "Operating Activities" && item.isTotal)
-                        .map((item, index) => (
-                          <TableRow key={`op-total-${index}`} className="bg-muted/30">
-                            <TableCell></TableCell>
-                            <TableCell className="font-semibold">{item.item}</TableCell>
-                            <TableCell className={`text-right font-mono font-semibold ${item.amount < 0 ? 'text-red-600' : 'text-green-600'}`}>
-                              {item.amount < 0 ? `(${Math.abs(item.amount).toLocaleString()})` : item.amount.toLocaleString()}
-                            </TableCell>
-                          </TableRow>
-                        ))}
-
-                      {/* Investing Activities */}
-                      <TableRow className="bg-green-50 dark:bg-green-900/20 font-bold">
-                        <TableCell colSpan={3}>Investing Activities</TableCell>
-                      </TableRow>
-                      {cashFlowData
-                        .filter(item => item.category === "Investing Activities" && !item.isTotal)
-                        .map((item, index) => (
-                          <TableRow key={`inv-${index}`} className="hover:bg-muted/30">
-                            <TableCell></TableCell>
-                            <TableCell>{item.item}</TableCell>
-                            <TableCell className={`text-right font-mono ${item.amount < 0 ? 'text-red-600' : 'text-green-600'}`}>
-                              {item.amount < 0 ? `(${Math.abs(item.amount).toLocaleString()})` : item.amount.toLocaleString()}
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                      {/* Investing Total */}
-                      {cashFlowData
-                        .filter(item => item.category === "Investing Activities" && item.isTotal)
-                        .map((item, index) => (
-                          <TableRow key={`inv-total-${index}`} className="bg-muted/30">
-                            <TableCell></TableCell>
-                            <TableCell className="font-semibold">{item.item}</TableCell>
-                            <TableCell className={`text-right font-mono font-semibold ${item.amount < 0 ? 'text-red-600' : 'text-green-600'}`}>
-                              {item.amount < 0 ? `(${Math.abs(item.amount).toLocaleString()})` : item.amount.toLocaleString()}
-                            </TableCell>
-                          </TableRow>
-                        ))}
-
-                      {/* Financing Activities */}
-                      <TableRow className="bg-purple-50 dark:bg-purple-900/20 font-bold">
-                        <TableCell colSpan={3}>Financing Activities</TableCell>
-                      </TableRow>
-                      {cashFlowData
-                        .filter(item => item.category === "Financing Activities" && !item.isTotal)
-                        .map((item, index) => (
-                          <TableRow key={`fin-${index}`} className="hover:bg-muted/30">
-                            <TableCell></TableCell>
-                            <TableCell>{item.item}</TableCell>
-                            <TableCell className={`text-right font-mono ${item.amount < 0 ? 'text-red-600' : 'text-green-600'}`}>
-                              {item.amount < 0 ? `(${Math.abs(item.amount).toLocaleString()})` : item.amount.toLocaleString()}
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                      {/* Financing Total */}
-                      {cashFlowData
-                        .filter(item => item.category === "Financing Activities" && item.isTotal)
-                        .map((item, index) => (
-                          <TableRow key={`fin-total-${index}`} className="bg-muted/30">
-                            <TableCell></TableCell>
-                            <TableCell className="font-semibold">{item.item}</TableCell>
-                            <TableCell className={`text-right font-mono font-semibold ${item.amount < 0 ? 'text-red-600' : 'text-green-600'}`}>
-                              {item.amount < 0 ? `(${Math.abs(item.amount).toLocaleString()})` : item.amount.toLocaleString()}
-                            </TableCell>
-                          </TableRow>
-                        ))}
-
-                      {/* Net Change and Ending Balance */}
-                      {cashFlowData
-                        .filter(item => item.isGrandTotal)
-                        .map((item, index) => (
-                          <TableRow key={`total-${index}`} className="bg-gray-100 dark:bg-gray-800">
-                            <TableCell></TableCell>
-                            <TableCell className="font-bold">{item.item}</TableCell>
-                            <TableCell className={`text-right font-mono font-bold ${item.amount < 0 ? 'text-red-600' : 'text-green-600'}`}>
-                              {item.amount < 0 ? `(${Math.abs(item.amount).toLocaleString()})` : item.amount.toLocaleString()}
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                      
-                      {/* Cash Balances */}
-                      {cashFlowData
-                        .filter(item => item.isInfo)
-                        .map((item, index) => (
-                          <TableRow key={`info-${index}`} className="bg-muted/10">
-                            <TableCell></TableCell>
-                            <TableCell>{item.item}</TableCell>
-                            <TableCell className="text-right font-mono">
-                              {item.amount.toLocaleString()}
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                    </TableBody>
-                  </Table>
-                </div>
+                <CashFlowTab data={cashFlowData} period={period} />
               </TabsContent>
             </CardContent>
           </Tabs>
         </Card>
 
-        {/* Export/Actions Area */}
         <div className="flex justify-end space-x-2 mt-4">
           <Button variant="outline">Save as Favorite</Button>
           <Button variant="outline">Schedule Report</Button>
