@@ -1,7 +1,5 @@
 
-import React from "react";
 import {
-  ResponsiveContainer as RechartsResponsiveContainer,
   LineChart as RechartsLineChart,
   Line as RechartsLine,
   CartesianGrid as RechartsCartesianGrid,
@@ -11,7 +9,7 @@ import {
   Legend as RechartsLegend,
 } from "recharts";
 
-export const ResponsiveContainer = RechartsResponsiveContainer;
+// Base chart components
 export const LineChart = RechartsLineChart;
 export const Line = RechartsLine;
 export const CartesianGrid = RechartsCartesianGrid;
@@ -19,3 +17,4 @@ export const XAxis = RechartsXAxis;
 export const YAxis = RechartsYAxis;
 export const Tooltip = RechartsTooltip;
 export const Legend = RechartsLegend;
+

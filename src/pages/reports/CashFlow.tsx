@@ -9,6 +9,7 @@ import { CashFlowSummaryCards } from "./components/CashFlowSummaryCards";
 import { CashFlowChart } from "./components/CashFlowChart";
 import { useChartTransformations } from "./hooks/useChartTransformations";
 import type { CashFlowItem, MonthlyData } from "./types/financial-reports";
+import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from "@/components/charts";
 
 const cashFlowData: CashFlowItem[] = [
   { category: "Operating Activities", item: "Net Income", amount: 48500 },
