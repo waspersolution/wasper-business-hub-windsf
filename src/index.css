@@ -1,50 +1,43 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 210 40% 98%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 20 14% 4%;
+    --foreground: 60 9.1% 97.8%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 20 14% 4%;
+    --card-foreground: 60 9.1% 97.8%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 20 14% 4%;
+    --popover-foreground: 60 9.1% 97.8%;
 
-    /* Updated primary colors to match new design */
-    --primary: 227 70% 67%; /* indigo */
-    --primary-foreground: 210 40% 98%;
+    /* Updated to yellow/green theme */
+    --primary: 65 92% 50%;
+    --primary-foreground: 60 9.1% 97.8%;
 
-    /* Updated secondary colors */
-    --secondary: 250 95% 67%; /* violet */
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 12 6.5% 15.1%;
+    --secondary-foreground: 60 9.1% 97.8%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 12 6.5% 15.1%;
+    --muted-foreground: 24 5.4% 63.9%;
 
-    --accent: 327 73% 65%; /* pink */
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Accent colors for highlights */
+    --accent: 65 92% 50%;
+    --accent-foreground: 60 9.1% 97.8%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 72.2% 50.6%;
+    --destructive-foreground: 60 9.1% 97.8%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 227 70% 67%; /* Match indigo */
+    --border: 12 6.5% 15.1%;
+    --input: 12 6.5% 15.1%;
+    --ring: 65 92% 50%;
 
-    --radius: 0.75rem;
-
-    --sidebar-background: 240 40% 98%;
-    --sidebar-foreground: 240 10% 23%;
-    --sidebar-primary: 227 70% 67%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 30% 96%;
-    --sidebar-accent-foreground: 240 10% 23%;
-    --sidebar-border: 240 30% 90%;
-    --sidebar-ring: 227 70% 67%;
+    /* Custom colors for charts and stats */
+    --chart-green: 145 80% 40%;
+    --chart-red: 0 80% 40%;
+    --chart-yellow: 45 80% 50%;
   }
 
   .dark {
@@ -91,41 +84,33 @@
   * {
     @apply border-border;
   }
-
   body {
-    @apply bg-background text-foreground;
+    @apply bg-[#0a0a0a] text-foreground;
   }
 }
 
 @layer components {
-  .card-gradient {
-    @apply bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900;
+  .inventory-card {
+    @apply bg-gradient-to-br from-secondary to-secondary/50 backdrop-blur-lg border border-border/50 rounded-xl shadow-xl;
   }
   
-  .card-hover {
-    @apply transition-all duration-300 hover:shadow-md hover:-translate-y-1;
+  .stats-card {
+    @apply bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border border-border/50 rounded-xl p-4;
   }
   
-  .nav-link {
-    @apply transition-colors duration-200;
+  .chart-container {
+    @apply bg-black/40 backdrop-blur-sm rounded-xl p-4;
   }
   
-  .btn-glow {
-    @apply hover:shadow-glow transition-shadow duration-300;
+  .data-table {
+    @apply bg-black/40 backdrop-blur-sm rounded-xl;
   }
   
-  /* Hide scrollbar but maintain functionality */
-  .hide-scrollbar {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+  .status-high {
+    @apply bg-[#CCFF00] text-black px-2 py-0.5 rounded text-xs font-medium;
   }
-  .hide-scrollbar::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
+  
+  .status-low {
+    @apply bg-red-500 text-white px-2 py-0.5 rounded text-xs font-medium;
   }
 }
-
-/* Define a soft purple background color for status cards */
-.bg-soft-purple {
-  @apply bg-wasper-light bg-opacity-70;
-}
-
