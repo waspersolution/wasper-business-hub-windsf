@@ -99,51 +99,195 @@ export function BrandingSettings({ form, logoPreview, onLogoUpload }: BrandingSe
             Toggle which information appears on your receipts
           </p>
 
-          {[
-            { label: "Business Name", field: "businessName", toggle: "showBusinessName" },
-            { label: "Address", field: "address", toggle: "showAddress" },
-            { label: "Tax ID / TIN", field: "tin", toggle: "showTIN" },
-            { label: "Phone", field: "phone", toggle: "showPhone" },
-            { label: "Website", field: "website", toggle: "showWebsite" },
-          ].map(({ label, field, toggle }) => (
-            <div key={field} className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
-              <div className="md:col-span-4">
-                <FormField
-                  control={form.control}
-                  name={`branding.${toggle}`}
-                  render={({ field: toggleField }) => (
-                    <FormItem className="flex items-center justify-between gap-2 space-y-0">
-                      <Label>{label}</Label>
-                      <FormControl>
-                        <Switch
-                          checked={toggleField.value}
-                          onCheckedChange={toggleField.onChange}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className="md:col-span-8">
-                <FormField
-                  control={form.control}
-                  name={`branding.${field}`}
-                  render={({ field: inputField }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input 
-                          {...inputField} 
-                          placeholder={`Your ${label}`}
-                          disabled={!form.watch(`branding.${toggle}`)} 
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+            <div className="md:col-span-4">
+              <FormField
+                control={form.control}
+                name="branding.showBusinessName"
+                render={({ field }) => (
+                  <FormItem className="flex items-center justify-between gap-2 space-y-0">
+                    <Label>Business Name</Label>
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
             </div>
-          ))}
+            <div className="md:col-span-8">
+              <FormField
+                control={form.control}
+                name="branding.businessName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input 
+                        {...field} 
+                        placeholder="Your Business Name"
+                        disabled={!form.watch("branding.showBusinessName")} 
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+            <div className="md:col-span-4">
+              <FormField
+                control={form.control}
+                name="branding.showAddress"
+                render={({ field }) => (
+                  <FormItem className="flex items-center justify-between gap-2 space-y-0">
+                    <Label>Address</Label>
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="md:col-span-8">
+              <FormField
+                control={form.control}
+                name="branding.address"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input 
+                        {...field} 
+                        placeholder="Your Address"
+                        disabled={!form.watch("branding.showAddress")} 
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+            <div className="md:col-span-4">
+              <FormField
+                control={form.control}
+                name="branding.showTIN"
+                render={({ field }) => (
+                  <FormItem className="flex items-center justify-between gap-2 space-y-0">
+                    <Label>Tax ID / TIN</Label>
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="md:col-span-8">
+              <FormField
+                control={form.control}
+                name="branding.tin"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input 
+                        {...field} 
+                        placeholder="Your Tax ID / TIN"
+                        disabled={!form.watch("branding.showTIN")} 
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+            <div className="md:col-span-4">
+              <FormField
+                control={form.control}
+                name="branding.showPhone"
+                render={({ field }) => (
+                  <FormItem className="flex items-center justify-between gap-2 space-y-0">
+                    <Label>Phone</Label>
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="md:col-span-8">
+              <FormField
+                control={form.control}
+                name="branding.phone"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input 
+                        {...field} 
+                        placeholder="Your Phone"
+                        disabled={!form.watch("branding.showPhone")} 
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+            <div className="md:col-span-4">
+              <FormField
+                control={form.control}
+                name="branding.showWebsite"
+                render={({ field }) => (
+                  <FormItem className="flex items-center justify-between gap-2 space-y-0">
+                    <Label>Website</Label>
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="md:col-span-8">
+              <FormField
+                control={form.control}
+                name="branding.website"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input 
+                        {...field} 
+                        placeholder="Your Website"
+                        disabled={!form.watch("branding.showWebsite")} 
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div>
         </div>
       </CardContent>
     </Card>
