@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -63,23 +62,7 @@ export default {
           warning: '#F59E0B',
           error: '#EF4444',
           info: '#3B82F6',
-        },
-        sidebar: {
-          DEFAULT: 'hsl(var(--sidebar-background))',
-          foreground: 'hsl(var(--sidebar-foreground))',
-          primary: 'hsl(var(--sidebar-primary))',
-          'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
-          accent: 'hsl(var(--sidebar-accent))',
-          'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
-          border: 'hsl(var(--sidebar-border))',
-          ring: 'hsl(var(--sidebar-ring))'
-        },
-        'inventory-yellow': '#BBFF00',
-        'inventory-dark': '#0a0a0a',
-        'inventory-card': '#1a1a1a',
-        'chart-green': 'hsl(var(--chart-green))',
-        'chart-red': 'hsl(var(--chart-red))',
-        'chart-yellow': 'hsl(var(--chart-yellow))',
+        }
       },
       borderRadius: {
         lg: 'var(--radius)',
