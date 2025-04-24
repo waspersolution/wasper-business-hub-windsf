@@ -22,6 +22,7 @@ import { useCart } from "./hooks/useCart";
 import { useCustomerSelection } from "./hooks/useCustomerSelection";
 import { usePOSUIState } from "./hooks/usePOSUIState";
 import { useProducts } from "./hooks/useProducts";
+import { Card, CardContent } from "@/components/ui/card";
 
 const categories = [
   { id: "all", name: "All Items", icon: Grid },
