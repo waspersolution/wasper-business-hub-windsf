@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,7 +15,7 @@ import { Switch } from "@/components/ui/switch";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useToast } from "@/hooks/use-toast";
-import { Printer, Save, Undo, Image, EyeOff, Eye, ColorPicker } from "lucide-react";
+import { Printer, Save, Undo, Image, EyeOff, Eye, Palette } from "lucide-react";
 
 // Define the receipt template schema
 const receiptSchema = z.object({
@@ -383,7 +382,7 @@ export default function ReceiptSettings() {
                         />
                         <FormControl>
                           <div className="flex items-center gap-2">
-                            <ColorPicker className="h-4 w-4 text-muted-foreground" />
+                            <Palette className="h-4 w-4 text-muted-foreground" />
                             <Input
                               {...field}
                               type="color"
