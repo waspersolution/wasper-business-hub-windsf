@@ -1,14 +1,6 @@
-import { useState, useEffect, useRef } from "react";
-import { Wifi, WifiOff, Loader2, Grid, List, Search, User, Plus, X, ChevronRight, Save, Clock, ShoppingCart } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Card, CardContent } from "@/components/ui/card";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { useIsMobile } from "@/hooks/use-mobile";
-import { useToast } from "@/hooks/use-toast";
+import { useRef } from "react";
 import { DashboardLayout } from "@/components/Layout/DashboardLayout";
+import { useIsMobile } from "@/hooks/use-mobile";
 import POSHeader from "./components/POSHeader";
 import POSAddItem from "./POSAddItem";
 import POSCart from "./POSCart";
@@ -21,8 +13,12 @@ import POSQuantityInput from "./components/POSQuantityInput";
 import POSProductList from "./components/POSProductList";
 import CustomerGroupSelector from "./components/CustomerGroupSelector";
 import DraftSales from "./components/DraftSales";
-import { useKeyboardNavigation, useInitialFocus } from "@/hooks/use-keyboard-navigation";
-import { Customer, CustomerGroup, DraftSale } from "@/types/sales";
+import { useKeyboardNavigation } from "@/hooks/use-keyboard-navigation";
+import { useCart } from "./hooks/useCart";
+import { useCustomerSelection } from "./hooks/useCustomerSelection";
+import { usePOSUIState } from "./hooks/usePOSUIState";
+import { useProducts } from "./hooks/usePOSData";
+import { Grid, List, Search, User, Plus, X, ChevronRight, Save, Clock, ShoppingCart } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 // Categories moved to separate constant at the top
@@ -35,36 +31,52 @@ const categories = [
   { id: "personal", name: "Personal Care", icon: Grid },
 ];
 
-// Mock products
-const products = [
-  { id: 1, name: "Coca-Cola 50cl", price: 200, category: "beverages", stock: 24 },
-  { id: 2, name: "Bread Sliced 600g", price: 950, category: "food", stock: 15 },
-  { id: 3, name: "iPhone Charger", price: 3500, category: "electronics", stock: 8 },
-  { id: 4, name: "T-Shirt Plain", price: 2500, category: "clothing", stock: 30 },
-  { id: 5, name: "Hand Soap", price: 800, category: "personal", stock: 12 },
-  { id: 6, name: "Pepsi 50cl", price: 200, category: "beverages", stock: 20 },
-  { id: 7, name: "Rice 1kg", price: 1800, category: "food", stock: 25 },
-  { id: 8, name: "USB Cable", price: 1500, category: "electronics", stock: 14 },
-  { id: 9, name: "Water 50cl", price: 150, category: "beverages", stock: 48 },
-];
-
 export default function POS() {
-  // Demo online/offline UI
-  const [isOnline, setIsOnline] = useState(true);
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("all");
-  const [isReceiptOpen, setIsReceiptOpen] = useState(false);
-  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
-  const [selectedGroup, setSelectedGroup] = useState<string | null>(null);
-  const [cartItems, setCartItems] = useState<any[]>([]);
-  const [isDraftDialogOpen, setIsDraftDialogOpen] = useState(false);
-  const [currentQuantity, setCurrentQuantity] = useState<number>(1);
-  const [selectedProductForEdit, setSelectedProductForEdit] = useState<any>(null);
-  const [selectedCartIndex, setSelectedCartIndex] = useState<number>(-1);
-  const [isAddingPayment, setIsAddingPayment] = useState(false);
-  const [isMobileCartOpen, setIsMobileCartOpen] = useState(false);
-  
+  // Custom hooks
+  const {
+    cartItems,
+    addToCart,
+    updateQuantity,
+    removeItem,
+    clearCart
+  } = useCart();
+
+  const {
+    selectedCustomer,
+    selectedGroup,
+    handleCustomerSelect,
+    handleCustomerGroupSelect
+  } = useCustomerSelection();
+
+  const {
+    isOnline,
+    viewMode,
+    searchQuery,
+    selectedCategory,
+    isReceiptOpen,
+    isDraftDialogOpen,
+    currentQuantity,
+    selectedProductForEdit,
+    selectedCartIndex,
+    isAddingPayment,
+    isMobileCartOpen,
+    setIsOnline,
+    setViewMode,
+    setSearchQuery,
+    setSelectedCategory,
+    setIsReceiptOpen,
+    setIsDraftDialogOpen,
+    setCurrentQuantity,
+    setSelectedProductForEdit,
+    setSelectedCartIndex,
+    setIsAddingPayment,
+    setIsMobileCartOpen
+  } = usePOSUIState();
+
+  // Fetch products using React Query
+  const { data: productsData } = useProducts(selectedCategory, searchQuery);
+  const filteredProducts = productsData?.products || [];
+
   // Refs for keyboard navigation
   const searchInputRef = useRef<HTMLInputElement>(null);
   const quantityInputRef = useRef<HTMLInputElement>(null);
@@ -74,22 +86,8 @@ export default function POS() {
   const completeButtonRef = useRef<HTMLButtonElement>(null);
   
   const isMobile = useIsMobile();
-  const { toast } = useToast();
 
-  // Current branch ID (would come from user context in a real app)
-  const currentBranchId = "B001";
-
-  // Filter products by search and category
-  const filteredProducts = products.filter(product => {
-    const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = selectedCategory === "all" || product.category === selectedCategory;
-    return matchesSearch && matchesCategory;
-  });
-
-  // Set initial focus on search input when component mounts
-  useInitialFocus(searchInputRef, []);
-
-  // Define keyboard navigation map
+  // Handle keyboard navigation
   useKeyboardNavigation(
     {
       searchInput: searchInputRef,
@@ -129,42 +127,7 @@ export default function POS() {
     }
   );
 
-  // Handle adding product to cart
-  const handleAddProduct = (product: any) => {
-    if (product) {
-      // Check if product is already in cart
-      const existingItem = cartItems.find(item => item.id === product.id);
-      
-      if (existingItem) {
-        // Increase quantity if product already in cart
-        setCartItems(cartItems.map(item => 
-          item.id === product.id 
-            ? { ...item, qty: item.qty + (currentQuantity || 1) } 
-            : item
-        ));
-      } else {
-        // Add new product to cart
-        setCartItems([...cartItems, { ...product, qty: currentQuantity || 1 }]);
-      }
-      
-      toast({
-        title: "Item added to cart",
-        description: `${product.name} added to cart`,
-        duration: 2000,
-      });
-
-      // Reset quantity and search
-      setCurrentQuantity(1);
-      setSearchQuery("");
-      
-      // Return focus to search input for next product
-      setTimeout(() => {
-        searchInputRef.current?.focus();
-      }, 10);
-    }
-  };
-
-  // Handle quantity change
+  // Event handlers
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value);
     if (!isNaN(value) && value > 0) {
@@ -174,160 +137,23 @@ export default function POS() {
     }
   };
 
-  // Handle cart item selection
-  const handleCartItemKeyDown = (e: React.KeyboardEvent, index: number) => {
-    if (e.key === "Enter") {
-      // Set the selected product for editing
-      setSelectedCartIndex(index);
-      setSelectedProductForEdit(cartItems[index]);
-      setCurrentQuantity(cartItems[index].qty);
-      
-      // Move focus to quantity input for editing
-      setTimeout(() => {
-        quantityInputRef.current?.focus();
-      }, 10);
-    }
-  };
-
-  // Handle customer group selection
-  const handleCustomerGroupSelect = (groupId: string) => {
-    setSelectedGroup(groupId);
-    // In a real app, you would fetch group-specific pricing here
-  };
-
-  // Handle customer selection
-  const handleCustomerSelect = (customer: Customer) => {
-    setSelectedCustomer(customer);
-    toast({
-      title: "Customer selected",
-      description: `${customer.name} selected`,
-      duration: 2000,
-    });
-  };
-
-  // Handle update quantity for cart items
-  const handleUpdateQuantity = (id: number, qty: number) => {
-    const product = products.find(p => p.id === id);
-    
-    // Check if quantity exceeds stock
-    if (product && qty > product.stock) {
-      toast({
-        title: "Insufficient stock",
-        description: `Only ${product.stock} units available`,
-        variant: "destructive",
-      });
-      return;
-    }
-    
-    setCartItems(cartItems.map(item => 
-      item.id === id ? { ...item, qty } : item
-    ));
-    
-    // Reset edit state and return focus to search
-    setSelectedProductForEdit(null);
-    setCurrentQuantity(1);
-    setTimeout(() => {
-      searchInputRef.current?.focus();
-    }, 10);
-  };
-
-  // Handle remove item from cart
-  const handleRemoveItem = (id: number) => {
-    setCartItems(cartItems.filter(item => item.id !== id));
-    toast({
-      title: "Item removed",
-      description: "Item has been removed from cart",
-      duration: 2000,
-    });
-  };
-
-  // Handle saving draft
-  const handleSaveDraft = () => {
-    if (cartItems.length === 0) {
-      toast({
-        title: "Cannot save empty cart",
-        description: "Add items to your cart before saving as draft",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    toast({
-      title: "Draft saved",
-      description: "Your sale has been saved as a draft",
-    });
-    
-    // Clear cart and return focus to search
-    setCartItems([]);
-    setTimeout(() => {
-      searchInputRef.current?.focus();
-    }, 10);
-  };
-
-  // Handle key navigation in search field
-  const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && filteredProducts.length > 0) {
-      // If enter is pressed and we have products, select the first one
-      e.preventDefault();
-      handleAddProduct(filteredProducts[0]);
-      
-      // Move to quantity input
-      setTimeout(() => {
-        quantityInputRef.current?.focus();
-      }, 10);
-    }
-  };
-
-  // Handle key navigation in quantity field
-  const handleQuantityKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      
-      if (selectedProductForEdit) {
-        // If editing an existing item
-        handleUpdateQuantity(selectedProductForEdit.id, currentQuantity);
-      } else if (filteredProducts.length > 0) {
-        // If adding a new item
-        handleAddProduct(filteredProducts[0]);
-      }
-    }
-  };
-
-  // Handle add to cart button key events
-  const handleAddToCartKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
-    if (e.key === 'Enter' && filteredProducts.length > 0) {
-      e.preventDefault();
-      handleAddProduct(filteredProducts[0]);
-    }
-  };
-
-  // Handle completing the sale
   const handleCompleteSale = () => {
     if (cartItems.length === 0) {
-      toast({
-        title: "Cannot complete sale",
-        description: "Add items to your cart first",
-        variant: "destructive"
-      });
       return;
     }
-    
     setIsReceiptOpen(true);
-    
-    // In a real app, you would process the payment and create the sale here
   };
 
-  // Handle resuming draft
-  const handleResumeDraft = (draft: DraftSale) => {
-    // In a real app, this would convert the draft items to cart items
-    toast({
-      title: "Draft resumed",
-      description: `Draft #${draft.id} has been loaded`,
-    });
-    
-    setTimeout(() => {
-      searchInputRef.current?.focus();
-    }, 10);
+  const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && filteredProducts.length > 0) {
+      e.preventDefault();
+      addToCart(filteredProducts[0], currentQuantity);
+      setCurrentQuantity(1);
+      setSearchQuery("");
+      setTimeout(() => {
+        quantityInputRef.current?.focus();
+      }, 10);
+    }
   };
 
   return (
@@ -342,17 +168,17 @@ export default function POS() {
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-3">
                   <h3 className="font-medium">Branch: <span className="font-bold text-wasper-primary">Main Branch</span></h3>
-                  <Badge variant="outline">Branch ID: {currentBranchId}</Badge>
+                  <Badge variant="outline">Branch ID: B001</Badge>
                 </div>
                 <CustomerGroupSelector 
-                  currentBranchId={currentBranchId}
+                  currentBranchId="B001"
                   onCustomerGroupSelect={handleCustomerGroupSelect}
                   onCustomerSelect={handleCustomerSelect}
                 />
               </CardContent>
             </Card>
 
-            <DraftSales onResumeDraft={handleResumeDraft} />
+            <DraftSales onResumeDraft={() => {}} />
 
             <POSSearchBar 
               searchQuery={searchQuery}
@@ -366,8 +192,8 @@ export default function POS() {
             <POSQuantityInput 
               quantity={currentQuantity}
               onQuantityChange={handleQuantityChange}
-              onKeyDown={handleQuantityKeyDown}
-              onAddToCart={() => handleAddProduct(filteredProducts[0])}
+              onKeyDown={handleSearchKeyDown}
+              onAddToCart={() => addToCart(filteredProducts[0], currentQuantity)}
               inputRef={quantityInputRef}
               buttonRef={addToCartButtonRef}
               disabled={filteredProducts.length === 0}
@@ -394,7 +220,7 @@ export default function POS() {
             <POSProductList 
               viewMode={viewMode}
               products={filteredProducts}
-              onProductSelect={handleAddProduct}
+              onProductSelect={(product) => addToCart(product, currentQuantity)}
             />
           </div>
 
@@ -414,9 +240,9 @@ export default function POS() {
             >
               <POSCart 
                 items={cartItems}
-                onUpdateQuantity={handleUpdateQuantity}
-                onRemoveItem={handleRemoveItem}
-                onCartItemKeyDown={handleCartItemKeyDown}
+                onUpdateQuantity={updateQuantity}
+                onRemoveItem={removeItem}
+                onCartItemKeyDown={() => {}}
               />
             </div>
             
@@ -458,9 +284,9 @@ export default function POS() {
                   >
                     <POSCart 
                       items={cartItems}
-                      onUpdateQuantity={handleUpdateQuantity}
-                      onRemoveItem={handleRemoveItem}
-                      onCartItemKeyDown={handleCartItemKeyDown}
+                      onUpdateQuantity={updateQuantity}
+                      onRemoveItem={removeItem}
+                      onCartItemKeyDown={() => {}}
                     />
                   </div>
                   <div className="p-4 border-t">
@@ -485,7 +311,7 @@ export default function POS() {
             cartItems={cartItems}
             onClose={() => {
               setIsReceiptOpen(false);
-              setCartItems([]);
+              clearCart();
               setTimeout(() => {
                 searchInputRef.current?.focus();
               }, 10);
