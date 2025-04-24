@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import type { TrialBalanceItem } from "../types/financial-reports";
 
-export function useTrialBalanceReporting(data: TrialBalanceItem[]) {
+export function useTrialBalance(data: TrialBalanceItem[]) {
   const [period, setPeriod] = useState("2025-04");
   const [searchTerm, setSearchTerm] = useState("");
   const [accountType, setAccountType] = useState<string>("all");
@@ -22,10 +22,9 @@ export function useTrialBalanceReporting(data: TrialBalanceItem[]) {
     (acc, item) => {
       acc.debit += item.debit;
       acc.credit += item.credit;
-      acc.balance += item.balance;
       return acc;
     },
-    { debit: 0, credit: 0, balance: 0 }
+    { debit: 0, credit: 0 }
   );
 
   const isBalanced = Math.abs(totals.debit - totals.credit) < 0.01;
@@ -42,3 +41,4 @@ export function useTrialBalanceReporting(data: TrialBalanceItem[]) {
     isBalanced
   };
 }
+
