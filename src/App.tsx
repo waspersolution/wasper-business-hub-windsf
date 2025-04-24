@@ -1,4 +1,3 @@
-
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -35,8 +34,8 @@ import SubscriptionPlans from "./pages/billing/Subscription";
 import PaymentHistory from "./pages/billing/PaymentHistory";
 import UpgradePlan from "./pages/billing/UpgradePlan";
 import NotificationTemplates from "./pages/notifications/Templates";
-import CompaniesBranches from "./pages/settings/Companies";
-import UsersRoles from "./pages/settings/Users";
+import Companies from "./pages/settings/Companies";
+import Users from "./pages/settings/Users";
 import Permissions from "./pages/settings/Permissions";
 import Attributes from "./pages/settings/Attributes";
 import Settings from "./pages/settings/Settings";
@@ -58,7 +57,7 @@ import Localization from "./pages/settings/Localization";
 import TaxCurrencies from "./pages/settings/TaxCurrencies";
 import POSSettings from "./pages/settings/POSSettings";
 import DeviceManagement from "./pages/settings/DeviceManagement";
-// Import newly created pages
+import DeveloperTools from "./pages/settings/DeveloperTools";
 import Quotations from "./pages/sales/Quotations";
 import SalesReturns from "./pages/sales/Returns";
 import Deliveries from "./pages/sales/Deliveries";
@@ -87,7 +86,6 @@ const App = () => {
               <Route path="/sales/customer-groups" element={<CustomerGroups />} />
               <Route path="/sales/discounts" element={<DiscountRules />} />
               <Route path="/sales/payment-plans" element={<PaymentPlans />} />
-              {/* Add new sales routes */}
               <Route path="/sales/quotations" element={<Quotations />} />
               <Route path="/sales/returns" element={<SalesReturns />} />
               <Route path="/sales/deliveries" element={<Deliveries />} />
@@ -95,7 +93,6 @@ const App = () => {
               <Route path="/purchases/goods-received" element={<GoodsReceived />} />
               <Route path="/purchases/suppliers" element={<Suppliers />} />
               <Route path="/purchases/ledger" element={<PurchasesLedger />} />
-              {/* Add new purchases routes */}
               <Route path="/purchases/returns" element={<PurchaseReturns />} />
               <Route path="/purchases/supplier-groups" element={<SupplierGroups />} />
               <Route path="/accounting/ledgers" element={<AccountingLedgers />} />
@@ -131,8 +128,8 @@ const App = () => {
               <Route path="/notifications/sms" element={<Navigate to="/notifications/templates" replace />} />
               <Route path="/notifications/system-alerts" element={<Navigate to="/notifications/templates" replace />} />
               <Route path="/settings" element={<Settings />} />
-              <Route path="/settings/companies" element={<CompaniesBranches />} />
-              <Route path="/settings/users" element={<UsersRoles />} />
+              <Route path="/settings/companies" element={<Companies />} />
+              <Route path="/settings/users" element={<Users />} />
               <Route path="/settings/permissions" element={<Permissions />} />
               <Route path="/settings/attributes" element={<Attributes />} />
               <Route path="/settings/tax-currencies" element={<TaxCurrencies />} />
@@ -141,6 +138,7 @@ const App = () => {
               <Route path="/settings/receipt" element={<ReceiptSettings />} />
               <Route path="/settings/devices" element={<DeviceManagement />} />
               <Route path="/settings/backup-restore" element={<BackupRestore />} />
+              <Route path="/settings/developer-tools" element={<DeveloperTools />} />
               <Route path="/audit-logs" element={<AuditLogs />} />
               <Route path="/audit-logs/user-activities" element={<Navigate to="/audit-logs" replace state={{ tab: "user-activities" }} />} />
               <Route path="/audit-logs/login-history" element={<Navigate to="/audit-logs" replace state={{ tab: "login-history" }} />} />

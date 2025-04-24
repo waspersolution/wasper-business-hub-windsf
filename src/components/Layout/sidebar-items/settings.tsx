@@ -17,5 +17,7 @@ export const settingsSection: SidebarItem = {
     { title: "Receipt Settings", path: "/settings/receipt", icon: <Printer /> },
     { title: "Device Management", path: "/settings/devices", icon: <Smartphone /> },
     { title: "Backup & Restore", path: "/settings/backup-restore", icon: <Database /> },
+    // Add Developer Tools (only visible to super_admin)
+    { title: "Developer Tools", path: "/settings/developer-tools", icon: <Database /> },
   ],
 };
