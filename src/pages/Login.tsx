@@ -16,7 +16,6 @@ import {
 } from "@/components/ui/form";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useSession } from "@/contexts/SessionContext";
-import { useToast } from "@/components/ui/use-toast";
 
 // Form validation schema
 const loginSchema = z.object({
@@ -29,7 +28,6 @@ type LoginFormValues = z.infer<typeof loginSchema>;
 const Login = () => {
   const navigate = useNavigate();
   const { setSession } = useSession();
-  const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<LoginFormValues>({
@@ -57,20 +55,10 @@ const Login = () => {
         isAuthenticated: true,
       });
       
-      toast({
-        title: "Login successful",
-        description: "Welcome to Wasper Business Hub",
-      });
-      
       // Redirect to dashboard
       navigate("/dashboard");
     } catch (error) {
       console.error("Login failed", error);
-      toast({
-        title: "Login failed",
-        description: "Please check your credentials and try again",
-        variant: "destructive",
-      });
     } finally {
       setIsLoading(false);
     }

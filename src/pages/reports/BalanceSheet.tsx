@@ -1,32 +1,79 @@
 import { useState } from "react";
-import { DashboardLayout } from "@/components/Layout/DashboardLayout";
+import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from "@/components/ui/table";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { DatePickerWithRange } from "@/components/ui/date-range-picker";
+import { Calendar, Download, Filter, Printer, Search } from "lucide-react";
 import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from "@/components/charts";
-import { BalanceSheetChart } from "./components/BalanceSheetChart";
-import { BalanceSheetMetrics } from "./components/BalanceSheetMetrics";
-import { BalanceSheetRatios } from "./components/BalanceSheetRatios";
-import { useBalanceSheetCalculations } from "./hooks/useBalanceSheetCalculations";
+import { DashboardLayout } from "@/components/Layout/DashboardLayout";
+import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ReportPageHeader } from "./components/ReportPageHeader";
 import { FinancialReportsNav } from "./components/FinancialReportsNav";
 import { FinancialReportFilters } from "./components/FinancialReportFilters";
-import { balanceSheetData, monthlyBalanceData } from "./data/balanceSheetData";
+
+// Mock data for balance sheet
+const balanceSheetData = {
+  assets: [
+    { category: "Current Assets", item: "Cash", amount: 190000 },
+    { category: "Current Assets", item: "Accounts Receivable", amount: 87500 },
+    { category: "Current Assets", item: "Inventory", amount: 145000 },
+    { category: "Current Assets", item: "Prepaid Expenses", amount: 12500 },
+    { category: "Current Assets", item: "Other Current Assets", amount: 8500 },
+    { category: "Fixed Assets", item: "Property & Equipment", amount: 325000 },
+    { category: "Fixed Assets", item: "Less: Accumulated Depreciation", amount: -75000 },
+    { category: "Fixed Assets", item: "Intangible Assets", amount: 120000 },
+    { category: "Other Assets", item: "Long-term Investments", amount: 200000 },
+    { category: "Other Assets", item: "Other Non-current Assets", amount: 15000 },
+  ],
+  liabilities: [
+    { category: "Current Liabilities", item: "Accounts Payable", amount: 45000 },
+    { category: "Current Liabilities", item: "Short-term Loans", amount: 75000 },
+    { category: "Current Liabilities", item: "Current Portion of Long-term Debt", amount: 25000 },
+    { category: "Current Liabilities", item: "Accrued Expenses", amount: 18500 },
+    { category: "Current Liabilities", item: "Taxes Payable", amount: 32500 },
+    { category: "Current Liabilities", item: "Deferred Revenue", amount: 22000 },
+    { category: "Long-term Liabilities", item: "Long-term Debt", amount: 280000 },
+    { category: "Long-term Liabilities", item: "Deferred Tax Liabilities", amount: 35000 },
+    { category: "Long-term Liabilities", item: "Other Long-term Liabilities", amount: 17500 },
+  ],
+  equity: [
+    { category: "Equity", item: "Common Stock", amount: 100000 },
+    { category: "Equity", item: "Additional Paid-in Capital", amount: 150000 },
+    { category: "Equity", item: "Retained Earnings", amount: 182000 },
+    { category: "Equity", item: "Other Comprehensive Income", amount: 8500 },
+  ]
+};
+
+// Monthly asset data for chart
+const monthlyAssetData = [
+  { month: "Jan", assets: 750000, liabilities: 510000, equity: 240000 },
+  { month: "Feb", assets: 765000, liabilities: 520000, equity: 245000 },
+  { month: "Mar", assets: 780000, liabilities: 525000, equity: 255000 },
+  { month: "Apr", assets: 795000, liabilities: 530000, equity: 265000 },
+  { month: "May", assets: 810000, liabilities: 535000, equity: 275000 },
+  { month: "Jun", assets: 830000, liabilities: 540000, equity: 290000 },
+];
 
 export default function BalanceSheet() {
   const [period, setPeriod] = useState("2025-04");
-  const {
-    searchTerm,
-    setSearchTerm,
-    totalAssets,
-    totalLiabilities,
-    totalEquity,
-    liabilitiesAndEquity,
-    filteredAssets,
-    filteredLiabilities,
-    filteredEquity,
-  } = useBalanceSheetCalculations(balanceSheetData);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [comparison, setComparison] = useState("previous-period");
+  
+  // Calculate totals
+  const totalAssets = balanceSheetData.assets.reduce((sum, item) => sum + item.amount, 0);
+  const totalLiabilities = balanceSheetData.liabilities.reduce((sum, item) => sum + item.amount, 0);
+  const totalEquity = balanceSheetData.equity.reduce((sum, item) => sum + item.amount, 0);
+  const liabilitiesAndEquity = totalLiabilities + totalEquity;
+  
+  // Filter data based on search term
+  const filteredAssets = balanceSheetData.assets.filter(item => 
+    item.item.toLowerCase().includes(searchTerm.toLowerCase()));
+  const filteredLiabilities = balanceSheetData.liabilities.filter(item => 
+    item.item.toLowerCase().includes(searchTerm.toLowerCase()));
+  const filteredEquity = balanceSheetData.equity.filter(item => 
+    item.item.toLowerCase().includes(searchTerm.toLowerCase()));
 
   return (
     <DashboardLayout>
@@ -351,7 +398,7 @@ export default function BalanceSheet() {
               </CardHeader>
               <CardContent className="h-80">
                 <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={monthlyBalanceData}>
+                  <LineChart data={monthlyAssetData}>
                     <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
                     <XAxis dataKey="month" />
                     <YAxis />

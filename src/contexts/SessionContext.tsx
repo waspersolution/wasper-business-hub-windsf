@@ -20,7 +20,7 @@ const SessionContextData = createContext<{
   session: SessionContextType;
   setSession: (session: SessionContextType) => void;
   clearSession: () => void;
-  setRole: (role: UserRole) => void; // For mock role switching
+  setRole: (role: UserRole) => void; // NEW for mock role switching
 }>({
   session: defaultSession,
   setSession: () => {},
@@ -56,7 +56,7 @@ export const SessionProvider: React.FC<SessionContextProviderProps> = ({ childre
     localStorage.removeItem('wasper_session');
   };
 
-  // Set only the current role (mock, for switching)
+  // NEW: Set only the current role (mock, for switching)
   const setRole = (role: UserRole) => {
     setSessionState((prev) => ({ ...prev, currentRole: role, isAuthenticated: true }));
   };
