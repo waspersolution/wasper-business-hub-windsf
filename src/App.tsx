@@ -41,6 +41,7 @@ import Permissions from "./pages/settings/Permissions";
 import Attributes from "./pages/settings/Attributes";
 import Settings from "./pages/settings/Settings";
 import BackupRestore from "./pages/settings/BackupRestore";
+import ReceiptSettings from "./pages/settings/ReceiptSettings";
 import AuditLogs from "./pages/audit-logs/AuditLogs";
 import SalesHistory from "./pages/sales/History";
 import SalesCustomers from "./pages/sales/Customers";
@@ -137,6 +138,7 @@ const App = () => {
               <Route path="/settings/tax-currencies" element={<TaxCurrencies />} />
               <Route path="/settings/localization" element={<Localization />} />
               <Route path="/settings/pos" element={<POSSettings />} />
+              <Route path="/settings/receipt" element={<ReceiptSettings />} />
               <Route path="/settings/devices" element={<DeviceManagement />} />
               <Route path="/settings/backup-restore" element={<BackupRestore />} />
               <Route path="/audit-logs" element={<AuditLogs />} />
