@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { DashboardLayout } from "@/components/Layout/DashboardLayout";
 import { ReportPageHeader } from "./components/ReportPageHeader";
 import { FinancialReportsNav } from "./components/FinancialReportsNav";
@@ -9,6 +8,7 @@ import { BalanceSheetHeader } from "./components/balance-sheet/BalanceSheetHeade
 import { BalanceSheetMetrics } from "./components/balance-sheet/BalanceSheetMetrics";
 import { BalanceSheetChart } from "./components/balance-sheet/BalanceSheetChart";
 import { BalanceSheetTable } from "./components/balance-sheet/BalanceSheetTable";
+import { FinancialRatios } from "./components/balance-sheet/FinancialRatios";
 
 // Mock data for balance sheet
 const balanceSheetData = {
@@ -64,6 +64,15 @@ export default function BalanceSheet() {
   const totalEquity = balanceSheetData.equity.reduce((sum, item) => sum + item.amount, 0);
   const liabilitiesAndEquity = totalLiabilities + totalEquity;
 
+  // Calculate current assets and liabilities
+  const currentAssets = balanceSheetData.assets
+    .filter(item => item.category === "Current Assets")
+    .reduce((sum, item) => sum + item.amount, 0);
+  
+  const currentLiabilities = balanceSheetData.liabilities
+    .filter(item => item.category === "Current Liabilities")
+    .reduce((sum, item) => sum + item.amount, 0);
+
   return (
     <DashboardLayout>
       <div className="space-y-4">
@@ -112,36 +121,13 @@ export default function BalanceSheet() {
             
             <BalanceSheetChart data={monthlyAssetData} />
 
-            {/* Financial Ratios Card */}
-            <Card>
-              <CardContent className="pt-6">
-                <div className="space-y-3">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm">Current Ratio</span>
-                    <span className="font-medium">
-                      {(balanceSheetData.assets
-                        .filter(item => item.category === "Current Assets")
-                        .reduce((sum, item) => sum + item.amount, 0) / 
-                        balanceSheetData.liabilities
-                        .filter(item => item.category === "Current Liabilities")
-                        .reduce((sum, item) => sum + item.amount, 0)).toFixed(2)}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm">Debt to Equity</span>
-                    <span className="font-medium">
-                      {(totalLiabilities / totalEquity).toFixed(2)}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm">Debt to Assets</span>
-                    <span className="font-medium">
-                      {(totalLiabilities / totalAssets).toFixed(2)}
-                    </span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            <FinancialRatios
+              currentAssets={currentAssets}
+              currentLiabilities={currentLiabilities}
+              totalLiabilities={totalLiabilities}
+              totalEquity={totalEquity}
+              totalAssets={totalAssets}
+            />
           </div>
         </div>
 
