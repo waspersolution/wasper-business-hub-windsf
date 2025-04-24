@@ -1,3 +1,4 @@
+
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -50,6 +51,10 @@ import SalesImport from "./pages/extras/imports/SalesImport";
 import Attachments from "./pages/extras/documents/Attachments";
 import BalanceSheet from "./pages/reports/BalanceSheet";
 import CashFlow from "./pages/reports/CashFlow";
+import Localization from "./pages/settings/Localization";
+import TaxCurrencies from "./pages/settings/TaxCurrencies";
+import POSSettings from "./pages/settings/POSSettings";
+import DeviceManagement from "./pages/settings/DeviceManagement";
 
 const queryClient = new QueryClient();
 
@@ -116,6 +121,10 @@ const App = () => {
               <Route path="/settings/users" element={<UsersRoles />} />
               <Route path="/settings/permissions" element={<Permissions />} />
               <Route path="/settings/attributes" element={<Attributes />} />
+              <Route path="/settings/tax-currencies" element={<TaxCurrencies />} />
+              <Route path="/settings/localization" element={<Localization />} />
+              <Route path="/settings/pos" element={<POSSettings />} />
+              <Route path="/settings/devices" element={<DeviceManagement />} />
               <Route path="/settings/backup-restore" element={<BackupRestore />} />
               <Route path="/audit-logs" element={<AuditLogs />} />
               <Route path="/audit-logs/user-activities" element={<Navigate to="/audit-logs" replace state={{ tab: "user-activities" }} />} />
