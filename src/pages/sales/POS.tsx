@@ -1,27 +1,13 @@
 import { useRef } from "react";
 import { DashboardLayout } from "@/components/Layout/DashboardLayout";
 import { useIsMobile } from "@/hooks/use-mobile";
-import POSHeader from "./components/POSHeader";
-import POSAddItem from "./POSAddItem";
-import POSCart from "./POSCart";
-import POSSummary from "./POSSummary";
-import POSReceipt from "./components/POSReceipt";
-import POSCustomerInfo from "./components/POSCustomerInfo";
-import POSOfflineIndicator from "./components/POSOfflineIndicator";
-import POSSearchBar from "./components/POSSearchBar";
-import POSQuantityInput from "./components/POSQuantityInput";
-import POSProductList from "./components/POSProductList";
-import CustomerGroupSelector from "./components/CustomerGroupSelector";
-import DraftSales from "./components/DraftSales";
-import { useKeyboardNavigation } from "@/hooks/use-keyboard-navigation";
-import { useCart } from "./hooks/useCart";
-import { useCustomerSelection } from "./hooks/useCustomerSelection";
-import { usePOSUIState } from "./hooks/usePOSUIState";
-import { useProducts } from "./hooks/usePOSData";
 import { Grid, List, Search, User, Plus, X, ChevronRight, Save, Clock, ShoppingCart } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-// Categories moved to separate constant at the top
 const categories = [
   { id: "all", name: "All Items", icon: Grid },
   { id: "beverages", name: "Beverages", icon: Grid },
@@ -73,11 +59,9 @@ export default function POS() {
     setIsMobileCartOpen
   } = usePOSUIState();
 
-  // Fetch products using React Query
   const { data: productsData } = useProducts(selectedCategory, searchQuery);
   const filteredProducts = productsData?.products || [];
 
-  // Refs for keyboard navigation
   const searchInputRef = useRef<HTMLInputElement>(null);
   const quantityInputRef = useRef<HTMLInputElement>(null);
   const addToCartButtonRef = useRef<HTMLButtonElement>(null);
@@ -87,7 +71,6 @@ export default function POS() {
   
   const isMobile = useIsMobile();
 
-  // Handle keyboard navigation
   useKeyboardNavigation(
     {
       searchInput: searchInputRef,
@@ -127,7 +110,6 @@ export default function POS() {
     }
   );
 
-  // Event handlers
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value);
     if (!isNaN(value) && value > 0) {
@@ -162,7 +144,6 @@ export default function POS() {
         <POSHeader isOnline={isOnline} isMobile={isMobile} />
 
         <div className="flex flex-col md:flex-row gap-4 md:gap-6 w-full min-h-[80vh]">
-          {/* Left: Product Selection Area */}
           <div className="flex-1 flex flex-col gap-4">
             <Card className="overflow-hidden">
               <CardContent className="p-4">
@@ -199,7 +180,6 @@ export default function POS() {
               disabled={filteredProducts.length === 0}
             />
 
-            {/* Category Tabs */}
             <div className="bg-white rounded-lg shadow p-3">
               <Tabs value={selectedCategory} onValueChange={setSelectedCategory}>
                 <TabsList className="flex w-full overflow-x-auto pb-1 hide-scrollbar">
@@ -224,7 +204,6 @@ export default function POS() {
             />
           </div>
 
-          {/* Right: Cart & Checkout */}
           <div className="w-full md:max-w-sm md:flex flex-col gap-4 hidden">
             <POSOfflineIndicator isOnline={isOnline} />
             <POSCustomerInfo 
@@ -255,7 +234,6 @@ export default function POS() {
             </div>
           </div>
 
-          {/* Mobile Cart Sheet */}
           {isMobile && (
             <Sheet open={isMobileCartOpen} onOpenChange={setIsMobileCartOpen}>
               <SheetTrigger asChild>
@@ -304,7 +282,6 @@ export default function POS() {
             </Sheet>
           )}
 
-          {/* Receipt Modal */}
           <POSReceipt 
             isOpen={isReceiptOpen}
             onOpenChange={setIsReceiptOpen}
