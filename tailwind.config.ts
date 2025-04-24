@@ -62,7 +62,23 @@ export default {
           warning: '#F59E0B',
           error: '#EF4444',
           info: '#3B82F6',
-        }
+        },
+        sidebar: {
+          DEFAULT: 'hsl(var(--sidebar-background))',
+          foreground: 'hsl(var(--sidebar-foreground))',
+          primary: 'hsl(var(--sidebar-primary))',
+          'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
+          accent: 'hsl(var(--sidebar-accent))',
+          'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
+          border: 'hsl(var(--sidebar-border))',
+          ring: 'hsl(var(--sidebar-ring))'
+        },
+        'inventory-yellow': '#CCFF00',
+        'inventory-dark': '#0a0a0a',
+        'inventory-card': '#1a1a1a',
+        'chart-green': 'hsl(var(--chart-green))',
+        'chart-red': 'hsl(var(--chart-red))',
+        'chart-yellow': 'hsl(var(--chart-yellow))',
       },
       borderRadius: {
         lg: 'var(--radius)',
@@ -108,7 +124,7 @@ export default {
       boxShadow: {
         'soft': '0 4px 12px 0 rgba(0, 0, 0, 0.05)',
         'card': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
-        'glow': '0 0 15px rgba(187, 255, 0, 0.5)'
+        'glow': '0 0 15px rgba(99, 102, 241, 0.5)'
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
