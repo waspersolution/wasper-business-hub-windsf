@@ -54,8 +54,8 @@ export function SalesTable({ sales, onView }: SalesTableProps) {
               onClick={() => handleRowClick(sale)}
             >
               <TableCell>{sale.id}</TableCell>
-              <TableCell>{sale.invoice_number}</TableCell>
-              <TableCell>{sale.customer_id}</TableCell>
+              <TableCell>{sale.id}</TableCell> {/* Using sale.id instead of invoice_number */}
+              <TableCell>{sale.customer_id || "N/A"}</TableCell>
               <TableCell className="hidden md:table-cell">{sale.created_at}</TableCell>
               <TableCell className="hidden lg:table-cell">{getPaymentMethodDisplay(sale.payment_method)}</TableCell>
               <TableCell>₦{sale.total.toLocaleString()}</TableCell>

@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { DashboardLayout } from "@/components/Layout/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,85 +6,103 @@ import { Calendar, Download } from "lucide-react";
 import { SalesFilters } from "./components/SalesFilters";
 import { SalesTable } from "./components/SalesTable";
 import { SaleDetailsDialog } from "./components/SaleDetailsDialog";
+import { Sale } from "@/types/sales";
 
-const mockSalesHistory = [
+const mockSalesHistory: Sale[] = [
   {
     id: "S001",
-    customer: "Acme Corp",
+    branch_id: "B001",
     customer_id: "C001",
     total: 12000,
     payment_method: "card",
     status: "completed",
     created_at: "2025-04-21",
-    items: 4,
-    invoice_number: "INV-2025-0421",
-    staff: "Jane Smith"
+    created_by: "U001",
+    _customer: "Acme Corp",
+    _items: 4,
+    _invoice_number: "INV-2025-0421",
+    _staff: "Jane Smith"
   },
   {
     id: "S004",
-    customer: "Delta Ltd",
+    branch_id: "B001",
     customer_id: "C004",
     total: 8000,
     payment_method: "cash",
     status: "cancelled",
     created_at: "2025-04-20",
-    items: 2,
-    invoice_number: "INV-2025-0420",
-    staff: "John Doe"
+    created_by: "U002",
+    _customer: "Delta Ltd",
+    _items: 2,
+    _invoice_number: "INV-2025-0420",
+    _staff: "John Doe"
   },
   {
     id: "S002",
-    customer: "Jane Doe",
+    branch_id: "B001",
     customer_id: "C002",
     total: 5000,
     payment_method: "cash",
     status: "pending",
     created_at: "2025-04-21",
-    items: 1,
-    invoice_number: "INV-2025-0421-2",
-    staff: "Alex Johnson"
+    created_by: "U003",
+    _customer: "Jane Doe",
+    _items: 1,
+    _invoice_number: "INV-2025-0421-2",
+    _staff: "Alex Johnson"
   },
   {
     id: "S003",
-    customer: "Bravo Enterprises",
+    branch_id: "B001",
     customer_id: "C003",
     total: 15700,
     payment_method: "transfer",
     status: "completed",
     created_at: "2025-04-19",
-    items: 6,
-    invoice_number: "INV-2025-0419",
-    staff: "Jane Smith"
+    created_by: "U001",
+    _customer: "Bravo Enterprises",
+    _items: 6,
+    _invoice_number: "INV-2025-0419",
+    _staff: "Jane Smith"
   },
   {
     id: "S005",
-    customer: "Echo Systems",
+    branch_id: "B001",
     customer_id: "C005",
     total: 23400,
     payment_method: "card",
     status: "completed",
     created_at: "2025-04-18",
-    items: 7,
-    invoice_number: "INV-2025-0418",
-    staff: "Mike Wilson"
+    created_by: "U004",
+    _customer: "Echo Systems",
+    _items: 7,
+    _invoice_number: "INV-2025-0418",
+    _staff: "Mike Wilson"
   },
 ];
 
+type SaleWithUIDetails = Sale & {
+  _customer?: string;
+  _items?: number;
+  _invoice_number?: string;
+  _staff?: string;
+};
+
 export default function SalesHistory() {
-  const [selectedSale, setSelectedSale] = useState(null);
+  const [selectedSale, setSelectedSale] = useState<SaleWithUIDetails | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
 
   const filteredSales = mockSalesHistory.filter(sale => {
-    const matchesSearch = sale.customer.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    const matchesSearch = (sale._customer?.toLowerCase().includes(searchTerm.toLowerCase()) || false) ||
       sale.id.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === "all" || sale.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
 
-  const handleViewSale = (sale) => {
-    setSelectedSale(sale);
+  const handleViewSale = (sale: Sale) => {
+    setSelectedSale(sale as SaleWithUIDetails);
     setDialogOpen(true);
   };
 

@@ -19,22 +19,18 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Sale } from "@/types/sales";
 
-type Sale = {
-  id: string;
-  customer: string;
-  customer_id: string;
-  total: number;
-  payment_method: string;
-  status: string;
-  created_at: string;
-  items: number;
-  invoice_number: string;
-  staff: string;
+// Extended type for UI display
+type SaleWithUIDetails = Sale & {
+  _customer?: string;
+  _items?: number;
+  _invoice_number?: string;
+  _staff?: string;
 };
 
 type SaleDetailsDialogProps = {
-  sale: Sale | null;
+  sale: SaleWithUIDetails | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 };
@@ -52,10 +48,10 @@ export function SaleDetailsDialog({
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold flex items-center gap-2">
             <FileText size={20} />
-            Sale Details - {sale.invoice_number}
+            Sale Details - {sale._invoice_number || sale.id}
           </DialogTitle>
           <DialogDescription>
-            Sale {sale.id} for {sale.customer} on {sale.created_at}
+            Sale {sale.id} for {sale._customer || sale.customer_id} on {sale.created_at}
           </DialogDescription>
         </DialogHeader>
 
@@ -70,7 +66,7 @@ export function SaleDetailsDialog({
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <div className="text-sm text-muted-foreground">Customer</div>
-                <div className="font-medium">{sale.customer}</div>
+                <div className="font-medium">{sale._customer || sale.customer_id}</div>
               </div>
               <div className="space-y-2">
                 <div className="text-sm text-muted-foreground">Date</div>
@@ -98,11 +94,11 @@ export function SaleDetailsDialog({
               </div>
               <div className="space-y-2">
                 <div className="text-sm text-muted-foreground">Processed By</div>
-                <div className="font-medium">{sale.staff}</div>
+                <div className="font-medium">{sale._staff || sale.created_by}</div>
               </div>
               <div className="space-y-2">
                 <div className="text-sm text-muted-foreground">Total Items</div>
-                <div className="font-medium">{sale.items}</div>
+                <div className="font-medium">{sale._items || "N/A"}</div>
               </div>
             </div>
 
