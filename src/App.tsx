@@ -17,7 +17,9 @@ import ReorderAlerts from "./pages/inventory/ReorderAlerts";
 import Orders from "./pages/purchases/Orders";
 import GoodsReceived from "./pages/purchases/GoodsReceived";
 import Suppliers from "./pages/purchases/Suppliers";
+import SupplierGroups from "./pages/purchases/SupplierGroups";
 import PurchasesLedger from "./pages/purchases/Ledger";
+import PurchaseReturns from "./pages/purchases/Returns";
 import AccountingLedgers from "./pages/accounting/Ledgers";
 import Reconciliation from "./pages/accounting/Reconciliation";
 import JournalEntries from "./pages/accounting/JournalEntries";
@@ -55,6 +57,10 @@ import Localization from "./pages/settings/Localization";
 import TaxCurrencies from "./pages/settings/TaxCurrencies";
 import POSSettings from "./pages/settings/POSSettings";
 import DeviceManagement from "./pages/settings/DeviceManagement";
+// Import newly created pages
+import Quotations from "./pages/sales/Quotations";
+import SalesReturns from "./pages/sales/Returns";
+import Deliveries from "./pages/sales/Deliveries";
 
 const queryClient = new QueryClient();
 
@@ -80,10 +86,17 @@ const App = () => {
               <Route path="/sales/customer-groups" element={<CustomerGroups />} />
               <Route path="/sales/discounts" element={<DiscountRules />} />
               <Route path="/sales/payment-plans" element={<PaymentPlans />} />
+              {/* Add new sales routes */}
+              <Route path="/sales/quotations" element={<Quotations />} />
+              <Route path="/sales/returns" element={<SalesReturns />} />
+              <Route path="/sales/deliveries" element={<Deliveries />} />
               <Route path="/purchases/orders" element={<Orders />} />
               <Route path="/purchases/goods-received" element={<GoodsReceived />} />
               <Route path="/purchases/suppliers" element={<Suppliers />} />
               <Route path="/purchases/ledger" element={<PurchasesLedger />} />
+              {/* Add new purchases routes */}
+              <Route path="/purchases/returns" element={<PurchaseReturns />} />
+              <Route path="/purchases/supplier-groups" element={<SupplierGroups />} />
               <Route path="/accounting/ledgers" element={<AccountingLedgers />} />
               <Route path="/accounting/reconciliation" element={<Reconciliation />} />
               <Route path="/accounting/journal" element={<JournalEntries />} />
