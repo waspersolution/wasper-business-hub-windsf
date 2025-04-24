@@ -15,6 +15,8 @@ export default function TrialBalance() {
   const {
     period,
     setPeriod,
+    searchTerm,
+    setSearchTerm,
     accountType,
     setAccountType,
     filteredData,
@@ -33,6 +35,8 @@ export default function TrialBalance() {
         <FinancialReportFilters
           period={period}
           setPeriod={setPeriod}
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
           accountType={accountType}
           setAccountType={setAccountType}
         />

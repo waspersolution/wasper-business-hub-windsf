@@ -4,11 +4,19 @@ import type { TrialBalanceItem } from "../types/financial-reports";
 
 export function useTrialBalanceReporting(data: TrialBalanceItem[]) {
   const [period, setPeriod] = useState("2025-04");
+  const [searchTerm, setSearchTerm] = useState("");
   const [accountType, setAccountType] = useState<string>("all");
 
-  const filteredData = data.filter(item => 
-    accountType === "all" || item.account_type.toLowerCase() === accountType.toLowerCase()
-  );
+  const filteredData = data.filter(item => {
+    const matchesAccountType = accountType === "all" || 
+      item.account_type.toLowerCase() === accountType.toLowerCase();
+    
+    const matchesSearch = searchTerm === "" || 
+      item.account_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.account_code.includes(searchTerm);
+    
+    return matchesAccountType && matchesSearch;
+  });
 
   const totals = filteredData.reduce(
     (acc, item) => {
@@ -25,6 +33,8 @@ export function useTrialBalanceReporting(data: TrialBalanceItem[]) {
   return {
     period,
     setPeriod,
+    searchTerm,
+    setSearchTerm,
     accountType,
     setAccountType,
     filteredData,
