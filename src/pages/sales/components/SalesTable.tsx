@@ -47,7 +47,7 @@ export function SalesTable({ sales, onView }: SalesTableProps) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {sales.map((sale) => (
+          {sales.map((sale: Sale) => (
             <TableRow key={sale.id} className="cursor-pointer hover:bg-muted/50" onClick={() => onView(sale)}>
               <TableCell>{sale.id}</TableCell>
               <TableCell>{sale.invoice_number}</TableCell>
@@ -61,7 +61,7 @@ export function SalesTable({ sales, onView }: SalesTableProps) {
                 </Badge>
               </TableCell>
               <TableCell className="text-right">
-                <Button onClick={(e) => {
+                <Button onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                   e.stopPropagation();
                   onView(sale);
                 }} variant="outline" size="sm">
