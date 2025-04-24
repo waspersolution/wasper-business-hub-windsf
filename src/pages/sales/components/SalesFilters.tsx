@@ -88,7 +88,7 @@ export function SalesFilters({
                     <SelectValue placeholder="All Payment Methods" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">All Methods</SelectItem>
+                    <SelectItem value="all-methods">All Methods</SelectItem>
                     <SelectItem value="card">Card</SelectItem>
                     <SelectItem value="cash">Cash</SelectItem>
                     <SelectItem value="transfer">Transfer</SelectItem>
