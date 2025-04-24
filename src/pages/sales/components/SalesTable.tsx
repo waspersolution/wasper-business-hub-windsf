@@ -11,19 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import React from 'react';
 import { getStatusColor, getPaymentMethodDisplay } from "./salesTableUtils";
-
-type Sale = {
-  id: string;
-  customer: string;
-  customer_id: string;
-  total: number;
-  payment_method: string;
-  status: string;
-  created_at: string;
-  items: number;
-  invoice_number: string;
-  staff: string;
-};
+import { Sale } from "@/types/sales";
 
 type SalesTableProps = {
   sales: Sale[];
@@ -31,6 +19,18 @@ type SalesTableProps = {
 };
 
 export function SalesTable({ sales, onView }: SalesTableProps) {
+  const handleRowClick = (sale: Sale) => {
+    onView(sale);
+  };
+
+  const handleButtonClick = (
+    e: React.MouseEvent<HTMLButtonElement>, 
+    sale: Sale
+  ) => {
+    e.stopPropagation();
+    onView(sale);
+  };
+
   return (
     <div className="rounded-md border">
       <Table>
@@ -48,10 +48,14 @@ export function SalesTable({ sales, onView }: SalesTableProps) {
         </TableHeader>
         <TableBody>
           {sales.map((sale: Sale) => (
-            <TableRow key={sale.id} className="cursor-pointer hover:bg-muted/50" onClick={() => onView(sale)}>
+            <TableRow 
+              key={sale.id} 
+              className="cursor-pointer hover:bg-muted/50" 
+              onClick={() => handleRowClick(sale)}
+            >
               <TableCell>{sale.id}</TableCell>
               <TableCell>{sale.invoice_number}</TableCell>
-              <TableCell>{sale.customer}</TableCell>
+              <TableCell>{sale.customer_id}</TableCell>
               <TableCell className="hidden md:table-cell">{sale.created_at}</TableCell>
               <TableCell className="hidden lg:table-cell">{getPaymentMethodDisplay(sale.payment_method)}</TableCell>
               <TableCell>₦{sale.total.toLocaleString()}</TableCell>
@@ -61,10 +65,11 @@ export function SalesTable({ sales, onView }: SalesTableProps) {
                 </Badge>
               </TableCell>
               <TableCell className="text-right">
-                <Button onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-                  e.stopPropagation();
-                  onView(sale);
-                }} variant="outline" size="sm">
+                <Button 
+                  onClick={(e: React.MouseEvent<HTMLButtonElement>) => handleButtonClick(e, sale)} 
+                  variant="outline" 
+                  size="sm"
+                >
                   View
                 </Button>
               </TableCell>
