@@ -1,11 +1,28 @@
 
 import { useQuery } from "@tanstack/react-query";
 
-export function useProducts(category: string, search: string) {
+/**
+ * @api {get} /api/products Get Products
+ * @apiDescription Fetch products with optional category and search filters
+ * 
+ * @apiQuery {string} [category] - Optional category filter
+ * @apiQuery {string} [search] - Optional search term
+ * 
+ * @apiSuccess {Object} response Product list response
+ * @apiSuccess {Array} response.products List of products
+ * @apiSuccess {number} response.products[].id Product ID
+ * @apiSuccess {string} response.products[].name Product name
+ * @apiSuccess {number} response.products[].price Product price in cents
+ * @apiSuccess {string} response.products[].category Product category
+ * @apiSuccess {number} response.products[].stock Current stock level
+ * @apiSuccess {string} [response.products[].barcode] Optional barcode
+ * @apiSuccess {string} response.products[].status Product status ('active'|'inactive')
+ */
+export function useProducts(category?: string, search?: string) {
   return useQuery({
     queryKey: ['products', category, search],
     queryFn: () => ({ products: mockProducts.filter(product => {
-      const matchesSearch = product.name.toLowerCase().includes(search.toLowerCase());
+      const matchesSearch = product.name.toLowerCase().includes(search?.toLowerCase() ?? '');
       const matchesCategory = category === "all" || product.category === category;
       return matchesSearch && matchesCategory;
     })})
