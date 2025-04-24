@@ -1,4 +1,3 @@
-
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -49,6 +48,8 @@ import ProductImport from "./pages/extras/imports/ProductImport";
 import CustomerImport from "./pages/extras/imports/CustomerImport";
 import SalesImport from "./pages/extras/imports/SalesImport";
 import Attachments from "./pages/extras/documents/Attachments";
+import BalanceSheet from "./pages/reports/BalanceSheet";
+import CashFlow from "./pages/reports/CashFlow";
 
 const queryClient = new QueryClient();
 
@@ -98,7 +99,8 @@ const App = () => {
               <Route path="/reports/supplier-purchases" element={<FinancialReports />} />
               <Route path="/reports/trial-balance" element={<FinancialReports />} />
               <Route path="/reports/profit-loss" element={<FinancialReports />} />
-              <Route path="/reports/balance-sheet" element={<FinancialReports />} />
+              <Route path="/reports/balance-sheet" element={<BalanceSheet />} />
+              <Route path="/reports/cash-flow" element={<CashFlow />} />
               <Route path="/reports/journal" element={<FinancialReports />} />
               <Route path="/reports/custom" element={<ReportsDashboard />} />
               <Route path="/reports/saved" element={<ReportsDashboard />} />
