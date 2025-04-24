@@ -20,7 +20,7 @@ export function BalanceSheetChart({ monthlyData }: BalanceSheetChartProps) {
             <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
             <XAxis dataKey="month" />
             <YAxis />
-            <Tooltip formatter={(value) => [`₦${value.toLocaleString()}`, '']} />
+            <Tooltip formatter={(value): [string, string] => [`₦${(value as number).toLocaleString()}`, '']} />
             <Legend />
             <Line type="monotone" dataKey="assets" stroke="#4f46e5" strokeWidth={2} name="Assets" />
             <Line type="monotone" dataKey="liabilities" stroke="#ef4444" strokeWidth={2} name="Liabilities" />

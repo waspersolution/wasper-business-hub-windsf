@@ -3,6 +3,8 @@ import { DashboardLayout } from "@/components/Layout/DashboardLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from "@/components/ui/table";
+import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from "@/components/charts";
 import { BalanceSheetChart } from "./components/BalanceSheetChart";
 import { BalanceSheetMetrics } from "./components/BalanceSheetMetrics";
 import { BalanceSheetRatios } from "./components/BalanceSheetRatios";
@@ -11,7 +13,6 @@ import { ReportPageHeader } from "./components/ReportPageHeader";
 import { FinancialReportsNav } from "./components/FinancialReportsNav";
 import { FinancialReportFilters } from "./components/FinancialReportFilters";
 import { balanceSheetData, monthlyBalanceData } from "./data/balanceSheetData";
-import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from "@/components/ui/table";
 
 export default function BalanceSheet() {
   const [period, setPeriod] = useState("2025-04");
