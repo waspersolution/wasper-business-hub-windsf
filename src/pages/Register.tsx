@@ -13,6 +13,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { startOfYear } from "date-fns";
 import { CompanyDetailsForm } from "./auth/components/CompanyDetailsForm";
 import { AccountingSettingsForm } from "./auth/components/AccountingSettingsForm";
 import { registerSchema, type RegisterFormValues } from "./auth/schemas/registerSchema";
@@ -21,6 +22,10 @@ const Register = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [selectedLogo, setSelectedLogo] = useState<File | null>(null);
+
+  const currentYear = new Date().getFullYear();
+  const fiscalYearStart = startOfYear(new Date());
+  const accountingStart = new Date();
 
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
@@ -31,6 +36,8 @@ const Register = () => {
       companyName: "",
       currency: "NGN",
       timezone: "Africa/Lagos",
+      fiscalYearStart: fiscalYearStart,
+      accountingStart: accountingStart,
     },
   });
 
