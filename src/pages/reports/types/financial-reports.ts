@@ -1,4 +1,3 @@
-
 export type TrialBalanceItem = {
   account_code: string;
   account_name: string;
@@ -36,4 +35,10 @@ export type MonthlyData = {
   investing: number;
   financing: number;
   netCashFlow: number;
+};
+
+export type BalanceSheetItem = {
+  category: string;
+  item: string;
+  amount: number;
 };
