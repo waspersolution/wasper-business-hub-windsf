@@ -1,12 +1,27 @@
 import { useRef } from "react";
 import { DashboardLayout } from "@/components/Layout/DashboardLayout";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Grid, List, Search, User, Plus, X, ChevronRight, Save, Clock, ShoppingCart } from "lucide-react";
+import { Grid } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { useKeyboardNavigation } from "@/hooks/use-keyboard-navigation";
+import POSCart from "./POSCart";
+import POSReceipt from "./components/POSReceipt";
+import POSHeader from "./components/POSHeader";
+import POSCustomerInfo from "./components/POSCustomerInfo";
+import POSOfflineIndicator from "./components/POSOfflineIndicator";
+import POSSearchBar from "./components/POSSearchBar";
+import POSQuantityInput from "./components/POSQuantityInput";
+import POSProductList from "./components/POSProductList";
+import POSSummary from "./POSSummary";
+import DraftSales from "./components/DraftSales";
+import CustomerGroupSelector from "./components/CustomerGroupSelector";
+import { useCart } from "./hooks/useCart";
+import { useCustomerSelection } from "./hooks/useCustomerSelection";
+import { usePOSUIState } from "./hooks/usePOSUIState";
+import { useProducts } from "./hooks/useProducts";
 
 const categories = [
   { id: "all", name: "All Items", icon: Grid },
@@ -18,7 +33,6 @@ const categories = [
 ];
 
 export default function POS() {
-  // Custom hooks
   const {
     cartItems,
     addToCart,

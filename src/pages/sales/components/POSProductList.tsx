@@ -1,6 +1,4 @@
 
-import { Card, CardContent } from "@/components/ui/card";
-
 interface Product {
   id: number;
   name: string;
@@ -23,26 +21,26 @@ export default function POSProductList({ viewMode, products, onProductSelect }: 
       >
         {products.map((product) => (
           viewMode === 'grid' ? (
-            <Card 
+            <div 
               key={product.id} 
-              className="overflow-hidden hover:shadow-md transition-shadow cursor-pointer focus:ring-2 focus:ring-wasper-primary focus:outline-none"
+              className="overflow-hidden hover:shadow-md transition-shadow cursor-pointer focus:ring-2 focus:ring-wasper-primary focus:outline-none p-3 border rounded-lg"
               onClick={() => onProductSelect(product)}
               tabIndex={0}
               onKeyDown={(e) => e.key === 'Enter' && onProductSelect(product)}
             >
-              <div className="bg-wasper-light h-24 flex items-center justify-center">
+              <div className="bg-wasper-light h-24 flex items-center justify-center rounded-md">
                 <div className="text-2xl font-bold text-wasper-primary">
                   {product.name.substring(0, 1)}
                 </div>
               </div>
-              <CardContent className="p-3">
+              <div className="mt-3">
                 <div className="font-medium truncate">{product.name}</div>
                 <div className="flex items-center justify-between mt-2">
                   <div className="text-sm font-semibold">₦{product.price.toLocaleString()}</div>
                   <div className="text-xs text-muted-foreground">Stock: {product.stock}</div>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           ) : (
             <div 
               key={product.id} 
