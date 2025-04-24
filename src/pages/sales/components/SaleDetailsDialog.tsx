@@ -19,15 +19,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Sale } from "@/types/sales";
-
-// Extended type for UI display
-type SaleWithUIDetails = Sale & {
-  _customer?: string;
-  _items?: number;
-  _invoice_number?: string;
-  _staff?: string;
-};
+import { SaleWithUIDetails } from "../History";
 
 type SaleDetailsDialogProps = {
   sale: SaleWithUIDetails | null;

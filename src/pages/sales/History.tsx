@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { DashboardLayout } from "@/components/Layout/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,7 +9,15 @@ import { SalesTable } from "./components/SalesTable";
 import { SaleDetailsDialog } from "./components/SaleDetailsDialog";
 import { Sale } from "@/types/sales";
 
-const mockSalesHistory: Sale[] = [
+// Extend the Sale type with UI-specific display properties
+export type SaleWithUIDetails = Sale & {
+  _customer?: string;
+  _items?: number;
+  _invoice_number?: string;
+  _staff?: string;
+};
+
+const mockSalesHistory: SaleWithUIDetails[] = [
   {
     id: "S001",
     branch_id: "B001",
@@ -81,13 +90,6 @@ const mockSalesHistory: Sale[] = [
   },
 ];
 
-type SaleWithUIDetails = Sale & {
-  _customer?: string;
-  _items?: number;
-  _invoice_number?: string;
-  _staff?: string;
-};
-
 export default function SalesHistory() {
   const [selectedSale, setSelectedSale] = useState<SaleWithUIDetails | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -101,8 +103,8 @@ export default function SalesHistory() {
     return matchesSearch && matchesStatus;
   });
 
-  const handleViewSale = (sale: Sale) => {
-    setSelectedSale(sale as SaleWithUIDetails);
+  const handleViewSale = (sale: SaleWithUIDetails) => {
+    setSelectedSale(sale);
     setDialogOpen(true);
   };
 

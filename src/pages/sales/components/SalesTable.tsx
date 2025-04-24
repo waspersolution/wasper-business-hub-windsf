@@ -12,20 +12,21 @@ import { Button } from "@/components/ui/button";
 import React from 'react';
 import { getStatusColor, getPaymentMethodDisplay } from "./salesTableUtils";
 import { Sale } from "@/types/sales";
+import { SaleWithUIDetails } from "../History";
 
 type SalesTableProps = {
-  sales: Sale[];
-  onView: (sale: Sale) => void;
+  sales: SaleWithUIDetails[];
+  onView: (sale: SaleWithUIDetails) => void;
 };
 
 export function SalesTable({ sales, onView }: SalesTableProps) {
-  const handleRowClick = (sale: Sale) => {
+  const handleRowClick = (sale: SaleWithUIDetails) => {
     onView(sale);
   };
 
   const handleButtonClick = (
     e: React.MouseEvent<HTMLButtonElement>, 
-    sale: Sale
+    sale: SaleWithUIDetails
   ) => {
     e.stopPropagation();
     onView(sale);
@@ -47,15 +48,15 @@ export function SalesTable({ sales, onView }: SalesTableProps) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {sales.map((sale: Sale) => (
+          {sales.map((sale: SaleWithUIDetails) => (
             <TableRow 
               key={sale.id} 
               className="cursor-pointer hover:bg-muted/50" 
               onClick={() => handleRowClick(sale)}
             >
               <TableCell>{sale.id}</TableCell>
-              <TableCell>{sale.id}</TableCell> {/* Using sale.id instead of invoice_number */}
-              <TableCell>{sale.customer_id || "N/A"}</TableCell>
+              <TableCell>{sale._invoice_number || sale.id}</TableCell>
+              <TableCell>{sale._customer || sale.customer_id || "N/A"}</TableCell>
               <TableCell className="hidden md:table-cell">{sale.created_at}</TableCell>
               <TableCell className="hidden lg:table-cell">{getPaymentMethodDisplay(sale.payment_method)}</TableCell>
               <TableCell>₦{sale.total.toLocaleString()}</TableCell>
