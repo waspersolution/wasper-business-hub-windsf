@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useSession } from "@/contexts/SessionContext";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,6 +15,7 @@ import {
 
 export const UserMenu = () => {
   const { clearSession } = useSession();
+  const { toast } = useToast();
 
   const getUserInitials = () => {
     // This is a placeholder - in a real app you would use the user's name
@@ -22,6 +24,10 @@ export const UserMenu = () => {
 
   const handleLogout = () => {
     clearSession();
+    toast({
+      title: "Logged out",
+      description: "You have been successfully logged out",
+    });
     // Redirect to login page
     window.location.href = "/login";
   };
