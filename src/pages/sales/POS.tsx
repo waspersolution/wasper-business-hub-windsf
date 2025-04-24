@@ -7,6 +7,8 @@ import POSReceipt from "./components/POSReceipt";
 import POSContainer from "./components/POSContainer";
 import POSLeftPanel from "./components/POSLeftPanel";
 import POSRightPanel from "./components/POSRightPanel";
+import POSCart from "./components/POSCart";
+import POSSummary from "./components/POSSummary";
 import { useCart } from "./hooks/useCart";
 import { useCustomerSelection } from "./hooks/useCustomerSelection";
 import { usePOSUIState } from "./hooks/usePOSUIState";

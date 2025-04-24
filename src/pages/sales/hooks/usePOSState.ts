@@ -3,6 +3,9 @@ import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Customer, CustomerGroup } from '@/types/sales';
 
+// Import mockProducts from useProducts.ts
+import { useProducts } from './useProducts';
+
 export function usePOSState() {
   const [isOnline, setIsOnline] = useState(true);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
@@ -20,11 +23,9 @@ export function usePOSState() {
   const [isMobileCartOpen, setIsMobileCartOpen] = useState(false);
   const { toast } = useToast();
 
-  const filteredProducts = mockProducts.filter(product => {
-    const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = selectedCategory === "all" || product.category === selectedCategory;
-    return matchesSearch && matchesCategory;
-  });
+  // Use the useProducts hook directly to get filtered products
+  const { data } = useProducts(selectedCategory, searchQuery);
+  const filteredProducts = data?.products || [];
 
   return {
     isOnline,
