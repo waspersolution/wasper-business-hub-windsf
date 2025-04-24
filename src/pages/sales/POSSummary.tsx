@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { CreditCard, DollarSign, Check, UserPlus, ChevronDown, Save, Clock, ShoppingCart } from "lucide-react";
 import POSPaymentPanel from "./components/POSPaymentPanel";
-import { useState } from "react";
+import { useState, forwardRef, useRef } from "react";
 import { useBranchSelection } from "@/hooks/use-branch-selection";
 
 interface POSSummaryProps {
@@ -12,6 +12,8 @@ interface POSSummaryProps {
   onComplete?: () => void;
   onSaveAsDraft?: () => void;
   customerGroupDiscount?: number;
+  paymentMethodRef?: React.RefObject<HTMLButtonElement>;
+  completeButtonRef?: React.RefObject<HTMLButtonElement>;
 }
 
 export default function POSSummary({ 
@@ -20,10 +22,13 @@ export default function POSSummary({
   total = subtotal - discount,
   onComplete,
   onSaveAsDraft,
-  customerGroupDiscount = 0
+  customerGroupDiscount = 0,
+  paymentMethodRef,
+  completeButtonRef
 }: POSSummaryProps) {
   const [isPaymentPanelOpen, setIsPaymentPanelOpen] = useState(false);
   const { currentBranch } = useBranchSelection();
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<"cash" | "card">("cash");
 
   const handleComplete = () => {
     if (onComplete) onComplete();
@@ -31,6 +36,20 @@ export default function POSSummary({
   
   const handleSaveAsDraft = () => {
     if (onSaveAsDraft) onSaveAsDraft();
+  };
+
+  const handlePaymentKeyDown = (e: React.KeyboardEvent, method: "cash" | "card") => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      setSelectedPaymentMethod(method);
+      
+      // Move focus to the complete button
+      if (completeButtonRef?.current) {
+        setTimeout(() => {
+          completeButtonRef.current?.focus();
+        }, 10);
+      }
+    }
   };
 
   return (
@@ -75,24 +94,46 @@ export default function POSSummary({
           variant="default"
           className="w-full flex items-center gap-2 bg-gradient-to-r from-wasper-primary to-wasper-accent"
           onClick={() => setIsPaymentPanelOpen(true)}
+          ref={paymentMethodRef}
+          aria-haspopup="true"
+          aria-expanded={isPaymentPanelOpen}
         >
           Complete with Multiple Payment
         </Button>
       </div>
       
-      <div className="grid grid-cols-2 gap-2 mt-4">
-        <Button className="flex items-center gap-2">
+      <div className="grid grid-cols-2 gap-2 mt-4" role="radiogroup" aria-label="Payment method">
+        <Button 
+          className={`flex items-center gap-2 ${selectedPaymentMethod === 'cash' ? 'ring-2 ring-wasper-primary' : ''}`}
+          onClick={() => setSelectedPaymentMethod("cash")}
+          onKeyDown={(e) => handlePaymentKeyDown(e, "cash")}
+          aria-checked={selectedPaymentMethod === 'cash'}
+          role="radio"
+          tabIndex={0}
+        >
           <DollarSign className="h-4 w-4" />
           Cash
         </Button>
-        <Button variant="secondary" className="flex items-center gap-2">
+        <Button 
+          variant={selectedPaymentMethod === 'card' ? "default" : "secondary"} 
+          className={`flex items-center gap-2 ${selectedPaymentMethod === 'card' ? 'ring-2 ring-wasper-primary' : ''}`}
+          onClick={() => setSelectedPaymentMethod("card")}
+          onKeyDown={(e) => handlePaymentKeyDown(e, "card")}
+          aria-checked={selectedPaymentMethod === 'card'}
+          role="radio"
+          tabIndex={0}
+        >
           <CreditCard className="h-4 w-4" />
           Card
         </Button>
       </div>
       
       <div className="grid grid-cols-1 gap-2">
-        <Button variant="outline" className="flex items-center justify-between">
+        <Button 
+          variant="outline" 
+          className="flex items-center justify-between"
+          aria-haspopup="true"
+        >
           <div className="flex items-center gap-2">
             <UserPlus className="h-4 w-4" />
             <span>Add Customer</span>
@@ -114,6 +155,7 @@ export default function POSSummary({
             onClick={handleComplete}
             variant="default" 
             className="flex items-center justify-center gap-2 bg-gradient-to-r from-wasper-primary to-wasper-accent"
+            ref={completeButtonRef}
           >
             <Check className="h-4 w-4" />
             Complete

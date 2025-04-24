@@ -12,13 +12,15 @@ interface POSCartProps {
   onUpdateQuantity?: (id: number, qty: number) => void;
   onRemoveItem?: (id: number) => void;
   customerDiscount?: number;
+  onCartItemKeyDown?: (event: React.KeyboardEvent, index: number) => void;
 }
 
 export default function POSCart({ 
   items = mockCart, 
   onUpdateQuantity, 
   onRemoveItem,
-  customerDiscount = 0
+  customerDiscount = 0,
+  onCartItemKeyDown
 }: POSCartProps) {
   // Helper function to increment quantity
   const incrementQuantity = (id: number) => {
@@ -63,10 +65,14 @@ export default function POSCart({
           </div>
         )}
         
-        {items.map((item) => (
+        {items.map((item, index) => (
           <div
             key={item.id}
-            className="flex items-center justify-between py-3 border-b last:border-b-0"
+            className="flex items-center justify-between py-3 border-b last:border-b-0 focus:bg-wasper-light focus:outline-none rounded"
+            tabIndex={0}
+            onKeyDown={(e) => onCartItemKeyDown && onCartItemKeyDown(e, index)}
+            role="button"
+            aria-label={`${item.name}, quantity: ${item.qty}, price: ${item.price} naira per unit`}
           >
             <div className="flex-1">
               <div className="font-medium">{item.name}</div>
@@ -102,6 +108,7 @@ export default function POSCart({
                 size="icon" 
                 className="h-7 w-7 text-muted-foreground hover:text-red-500"
                 onClick={() => removeItem(item.id)}
+                aria-label={`Remove ${item.name} from cart`}
               >
                 <X className="h-4 w-4" />
               </Button>

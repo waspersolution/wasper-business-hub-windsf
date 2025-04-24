@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Wifi, WifiOff, Loader2, Grid, List, Search, User, Plus, X, ChevronRight, Save, Clock, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,6 +17,7 @@ import CustomerGroupSelector from "./components/CustomerGroupSelector";
 import DraftSales from "./components/DraftSales";
 import { Customer, CustomerGroup, DraftSale } from "@/types/sales";
 import { Badge } from "@/components/ui/badge";
+import { useKeyboardNavigation, useInitialFocus } from "@/hooks/use-keyboard-navigation";
 
 // Mock categories
 const categories = [
@@ -52,6 +53,19 @@ export default function POS() {
   const [selectedGroup, setSelectedGroup] = useState<string | null>(null);
   const [cartItems, setCartItems] = useState<any[]>([]);
   const [isDraftDialogOpen, setIsDraftDialogOpen] = useState(false);
+  const [currentQuantity, setCurrentQuantity] = useState<number>(1);
+  const [selectedProductForEdit, setSelectedProductForEdit] = useState<any>(null);
+  const [selectedCartIndex, setSelectedCartIndex] = useState<number>(-1);
+  const [isAddingPayment, setIsAddingPayment] = useState(false);
+  const [isMobileCartOpen, setIsMobileCartOpen] = useState(false);
+  
+  // Refs for keyboard navigation
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  const quantityInputRef = useRef<HTMLInputElement>(null);
+  const addToCartButtonRef = useRef<HTMLButtonElement>(null);
+  const cartContainerRef = useRef<HTMLDivElement>(null);
+  const paymentMethodRef = useRef<HTMLButtonElement>(null);
+  const completeButtonRef = useRef<HTMLButtonElement>(null);
   
   const isMobile = useIsMobile();
   const { toast } = useToast();
@@ -66,28 +80,107 @@ export default function POS() {
     return matchesSearch && matchesCategory;
   });
 
+  // Set initial focus on search input when component mounts
+  useInitialFocus(searchInputRef, []);
+
+  // Define keyboard navigation map
+  useKeyboardNavigation(
+    {
+      searchInput: searchInputRef,
+      quantityInput: quantityInputRef,
+      addToCartButton: addToCartButtonRef,
+      cartContainer: cartContainerRef,
+      paymentMethod: paymentMethodRef,
+      completeButton: completeButtonRef
+    },
+    {
+      searchInput: [
+        { key: 'Enter', targetRef: 'quantityInput' },
+        { key: 'Tab', targetRef: 'quantityInput' },
+        { key: 'ArrowDown', targetRef: 'cartContainer' },
+      ],
+      quantityInput: [
+        { key: 'Enter', targetRef: 'addToCartButton' },
+        { key: 'Tab', targetRef: 'addToCartButton' },
+      ],
+      addToCartButton: [
+        { key: 'Enter', targetRef: 'searchInput' },
+        { key: 'Tab', targetRef: 'paymentMethod' },
+      ],
+      cartContainer: [
+        { key: 'Enter', targetRef: 'quantityInput' },
+        { key: 'ArrowUp', targetRef: 'searchInput' },
+        { key: 'ArrowDown', targetRef: 'paymentMethod' },
+      ],
+      paymentMethod: [
+        { key: 'Enter', targetRef: 'completeButton' },
+        { key: 'ArrowUp', targetRef: 'cartContainer' },
+      ],
+      completeButton: [
+        { key: 'Enter', targetRef: 'searchInput' },
+        { key: 'ArrowUp', targetRef: 'paymentMethod' },
+      ]
+    }
+  );
+
   // Handle adding product to cart
   const handleAddProduct = (product: any) => {
-    // Check if product is already in cart
-    const existingItem = cartItems.find(item => item.id === product.id);
-    
-    if (existingItem) {
-      // Increase quantity if product already in cart
-      setCartItems(cartItems.map(item => 
-        item.id === product.id 
-          ? { ...item, qty: item.qty + 1 } 
-          : item
-      ));
-    } else {
-      // Add new product to cart
-      setCartItems([...cartItems, { ...product, qty: 1 }]);
+    if (product) {
+      // Check if product is already in cart
+      const existingItem = cartItems.find(item => item.id === product.id);
+      
+      if (existingItem) {
+        // Increase quantity if product already in cart
+        setCartItems(cartItems.map(item => 
+          item.id === product.id 
+            ? { ...item, qty: item.qty + (currentQuantity || 1) } 
+            : item
+        ));
+      } else {
+        // Add new product to cart
+        setCartItems([...cartItems, { ...product, qty: currentQuantity || 1 }]);
+      }
+      
+      toast({
+        title: "Item added to cart",
+        description: `${product.name} added to cart`,
+        duration: 2000,
+      });
+
+      // Reset quantity and search
+      setCurrentQuantity(1);
+      setSearchQuery("");
+      
+      // Return focus to search input for next product
+      setTimeout(() => {
+        searchInputRef.current?.focus();
+      }, 10);
     }
-    
-    toast({
-      title: "Item added to cart",
-      description: `${product.name} added to cart`,
-      duration: 2000,
-    });
+  };
+
+  // Handle quantity change
+  const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(e.target.value);
+    if (!isNaN(value) && value > 0) {
+      setCurrentQuantity(value);
+    } else {
+      setCurrentQuantity(1);
+    }
+  };
+
+  // Handle cart item selection
+  const handleCartItemKeyDown = (e: React.KeyboardEvent, index: number) => {
+    if (e.key === "Enter") {
+      // Set the selected product for editing
+      setSelectedCartIndex(index);
+      setSelectedProductForEdit(cartItems[index]);
+      setCurrentQuantity(cartItems[index].qty);
+      
+      // Move focus to quantity input for editing
+      setTimeout(() => {
+        quantityInputRef.current?.focus();
+      }, 10);
+    }
   };
 
   // Handle customer group selection
@@ -102,6 +195,42 @@ export default function POS() {
     toast({
       title: "Customer selected",
       description: `${customer.name} selected`,
+      duration: 2000,
+    });
+  };
+
+  // Handle update quantity for cart items
+  const handleUpdateQuantity = (id: number, qty: number) => {
+    const product = products.find(p => p.id === id);
+    
+    // Check if quantity exceeds stock
+    if (product && qty > product.stock) {
+      toast({
+        title: "Insufficient stock",
+        description: `Only ${product.stock} units available`,
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    setCartItems(cartItems.map(item => 
+      item.id === id ? { ...item, qty } : item
+    ));
+    
+    // Reset edit state and return focus to search
+    setSelectedProductForEdit(null);
+    setCurrentQuantity(1);
+    setTimeout(() => {
+      searchInputRef.current?.focus();
+    }, 10);
+  };
+
+  // Handle remove item from cart
+  const handleRemoveItem = (id: number) => {
+    setCartItems(cartItems.filter(item => item.id !== id));
+    toast({
+      title: "Item removed",
+      description: "Item has been removed from cart",
       duration: 2000,
     });
   };
@@ -121,6 +250,65 @@ export default function POS() {
       title: "Draft saved",
       description: "Your sale has been saved as a draft",
     });
+    
+    // Clear cart and return focus to search
+    setCartItems([]);
+    setTimeout(() => {
+      searchInputRef.current?.focus();
+    }, 10);
+  };
+
+  // Handle key navigation in search field
+  const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && filteredProducts.length > 0) {
+      // If enter is pressed and we have products, select the first one
+      e.preventDefault();
+      handleAddProduct(filteredProducts[0]);
+      
+      // Move to quantity input
+      setTimeout(() => {
+        quantityInputRef.current?.focus();
+      }, 10);
+    }
+  };
+
+  // Handle key navigation in quantity field
+  const handleQuantityKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      
+      if (selectedProductForEdit) {
+        // If editing an existing item
+        handleUpdateQuantity(selectedProductForEdit.id, currentQuantity);
+      } else if (filteredProducts.length > 0) {
+        // If adding a new item
+        handleAddProduct(filteredProducts[0]);
+      }
+    }
+  };
+
+  // Handle add to cart button key events
+  const handleAddToCartKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (e.key === 'Enter' && filteredProducts.length > 0) {
+      e.preventDefault();
+      handleAddProduct(filteredProducts[0]);
+    }
+  };
+
+  // Handle completing the sale
+  const handleCompleteSale = () => {
+    if (cartItems.length === 0) {
+      toast({
+        title: "Cannot complete sale",
+        description: "Add items to your cart first",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    setIsReceiptOpen(true);
+    
+    // In a real app, you would process the payment and create the sale here
   };
 
   // Handle resuming draft
@@ -130,6 +318,10 @@ export default function POS() {
       title: "Draft resumed",
       description: `Draft #${draft.id} has been loaded`,
     });
+    
+    setTimeout(() => {
+      searchInputRef.current?.focus();
+    }, 10);
   };
 
   return (
@@ -189,10 +381,13 @@ export default function POS() {
               <div className="relative flex-1">
                 <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input
-                  placeholder="Search products..."
+                  placeholder="Scan/Search products..."
                   className="pl-9"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={handleSearchKeyDown}
+                  ref={searchInputRef}
+                  aria-label="Search or scan products"
                 />
               </div>
               <Button 
@@ -209,6 +404,36 @@ export default function POS() {
               >
                 <List className="h-4 w-4" />
               </Button>
+            </div>
+
+            {/* Quantity Input */}
+            <div className="bg-white rounded-lg shadow p-3 flex gap-2 items-center">
+              <div className="flex-1">
+                <label htmlFor="quantity" className="block text-sm font-medium text-gray-700 mb-1">
+                  Quantity
+                </label>
+                <Input
+                  id="quantity"
+                  type="number"
+                  min="1"
+                  value={currentQuantity}
+                  onChange={handleQuantityChange}
+                  onKeyDown={handleQuantityKeyDown}
+                  ref={quantityInputRef}
+                  aria-label="Product quantity"
+                />
+              </div>
+              <div className="flex items-end">
+                <Button 
+                  onClick={() => handleAddProduct(filteredProducts[0])}
+                  onKeyDown={handleAddToCartKeyDown}
+                  ref={addToCartButtonRef}
+                  disabled={filteredProducts.length === 0}
+                >
+                  <Plus className="mr-1 h-4 w-4" />
+                  Add to Cart
+                </Button>
+              </div>
             </div>
 
             {/* Category Tabs */}
@@ -231,13 +456,18 @@ export default function POS() {
 
             {/* Product Grid/List */}
             <div className="bg-white rounded-lg shadow p-3 flex-1">
-              <div className={`${viewMode === 'grid' ? 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3' : 'flex flex-col gap-2'}`}>
+              <div 
+                className={`${viewMode === 'grid' ? 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3' : 'flex flex-col gap-2'}`}
+                tabIndex={-1} // Make container focusable but not in tab order
+              >
                 {filteredProducts.map((product) => (
                   viewMode === 'grid' ? (
                     <Card 
                       key={product.id} 
-                      className="overflow-hidden hover:shadow-md transition-shadow cursor-pointer"
+                      className="overflow-hidden hover:shadow-md transition-shadow cursor-pointer focus:ring-2 focus:ring-wasper-primary focus:outline-none"
                       onClick={() => handleAddProduct(product)}
+                      tabIndex={0}
+                      onKeyDown={(e) => e.key === 'Enter' && handleAddProduct(product)}
                     >
                       <div className="bg-wasper-light h-24 flex items-center justify-center">
                         <div className="text-2xl font-bold text-wasper-primary">
@@ -255,8 +485,10 @@ export default function POS() {
                   ) : (
                     <div 
                       key={product.id} 
-                      className="p-2 border rounded-md flex items-center hover:bg-slate-50 cursor-pointer"
+                      className="p-2 border rounded-md flex items-center hover:bg-slate-50 cursor-pointer focus:ring-2 focus:ring-wasper-primary focus:outline-none"
                       onClick={() => handleAddProduct(product)}
+                      tabIndex={0}
+                      onKeyDown={(e) => e.key === 'Enter' && handleAddProduct(product)}
                     >
                       <div className="bg-wasper-light h-10 w-10 rounded-md flex items-center justify-center mr-3">
                         <div className="font-bold text-wasper-primary">
@@ -327,23 +559,40 @@ export default function POS() {
             </div>
             
             {/* Cart section */}
-            <div className="bg-white rounded-lg shadow-lg p-4 flex-1 flex flex-col">
-              <POSCart />
+            <div 
+              className="bg-white rounded-lg shadow-lg p-4 flex-1 flex flex-col"
+              ref={cartContainerRef}
+              tabIndex={0}
+              aria-label="Shopping cart"
+            >
+              <POSCart 
+                items={cartItems}
+                onUpdateQuantity={handleUpdateQuantity}
+                onRemoveItem={handleRemoveItem}
+                onCartItemKeyDown={handleCartItemKeyDown}
+              />
             </div>
             
             {/* Sales summary/payment */}
             <div className="bg-white rounded-lg shadow-lg p-4">
-              <POSSummary onComplete={() => setIsReceiptOpen(true)} />
+              <POSSummary 
+                onComplete={handleCompleteSale} 
+                paymentMethodRef={paymentMethodRef}
+                completeButtonRef={completeButtonRef}
+              />
             </div>
           </div>
 
           {/* Mobile: Cart Button */}
           {isMobile && (
-            <Sheet>
+            <Sheet open={isMobileCartOpen} onOpenChange={setIsMobileCartOpen}>
               <SheetTrigger asChild>
-                <Button className="fixed bottom-4 right-4 z-10 rounded-full shadow-lg size-14 p-0">
+                <Button 
+                  className="fixed bottom-4 right-4 z-10 rounded-full shadow-lg size-14 p-0"
+                  onClick={() => setIsMobileCartOpen(true)}
+                >
                   <div className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full size-6 flex items-center justify-center">
-                    2
+                    {cartItems.length}
                   </div>
                   <div className="flex flex-col items-center">
                     <span className="text-lg font-bold">₦</span>
@@ -356,11 +605,27 @@ export default function POS() {
                   <SheetTitle>Your Cart</SheetTitle>
                 </SheetHeader>
                 <div className="flex flex-col h-full">
-                  <div className="flex-1 overflow-auto p-4">
-                    <POSCart />
+                  <div 
+                    className="flex-1 overflow-auto p-4"
+                    ref={cartContainerRef}
+                    tabIndex={0}
+                  >
+                    <POSCart 
+                      items={cartItems}
+                      onUpdateQuantity={handleUpdateQuantity}
+                      onRemoveItem={handleRemoveItem}
+                      onCartItemKeyDown={handleCartItemKeyDown}
+                    />
                   </div>
                   <div className="p-4 border-t">
-                    <POSSummary onComplete={() => setIsReceiptOpen(true)} />
+                    <POSSummary 
+                      onComplete={() => {
+                        setIsMobileCartOpen(false);
+                        setIsReceiptOpen(true);
+                      }}
+                      paymentMethodRef={paymentMethodRef}
+                      completeButtonRef={completeButtonRef}
+                    />
                   </div>
                 </div>
               </SheetContent>
@@ -387,34 +652,29 @@ export default function POS() {
                   <span>Item</span>
                   <span>Total</span>
                 </div>
-                <div className="flex justify-between text-sm mt-1">
-                  <div>
-                    <p>Coca-Cola 50cl</p>
-                    <p className="text-xs text-gray-500">2 × ₦200</p>
+                {cartItems.map(item => (
+                  <div key={item.id} className="flex justify-between text-sm mt-1">
+                    <div>
+                      <p>{item.name}</p>
+                      <p className="text-xs text-gray-500">{item.qty} × ₦{item.price}</p>
+                    </div>
+                    <span>₦{(item.qty * item.price).toLocaleString()}</span>
                   </div>
-                  <span>₦400</span>
-                </div>
-                <div className="flex justify-between text-sm mt-1">
-                  <div>
-                    <p>Bread Sliced 600g</p>
-                    <p className="text-xs text-gray-500">1 × ₦950</p>
-                  </div>
-                  <span>₦950</span>
-                </div>
+                ))}
               </div>
               
               <div className="mt-2 space-y-1 text-sm">
                 <div className="flex justify-between">
                   <span>Subtotal:</span>
-                  <span>₦1,350</span>
+                  <span>₦{cartItems.reduce((sum, item) => sum + (item.price * item.qty), 0).toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Discount:</span>
-                  <span>-₦100</span>
+                  <span>-₦0</span>
                 </div>
                 <div className="flex justify-between font-bold">
                   <span>Total:</span>
-                  <span>₦1,250</span>
+                  <span>₦{cartItems.reduce((sum, item) => sum + (item.price * item.qty), 0).toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between text-gray-500">
                   <span>Payment Method:</span>
@@ -423,14 +683,37 @@ export default function POS() {
               </div>
               
               <div className="mt-4 flex justify-center gap-3">
-                <Button variant="outline" size="sm">
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      setIsReceiptOpen(false);
+                      setCartItems([]);
+                      setTimeout(() => {
+                        searchInputRef.current?.focus();
+                      }, 10);
+                    }
+                  }}
+                >
                   Print
                 </Button>
                 <Button variant="outline" size="sm">
                   Download
                 </Button>
-                <Button variant="outline" size="sm">
-                  Share
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => {
+                    setIsReceiptOpen(false);
+                    setCartItems([]);
+                    setTimeout(() => {
+                      searchInputRef.current?.focus();
+                    }, 10);
+                  }}
+                  autoFocus
+                >
+                  Close
                 </Button>
               </div>
             </div>
