@@ -9,7 +9,12 @@ export function useChartTransformations() {
     return [formattedValue, ''];
   };
 
-  const formatProfitChartData = (data: MonthlyProfitData[]) => data;
+  const formatProfitChartData = (data: MonthlyProfitData[]) => {
+    return data.map(item => ({
+      ...item,
+      profitMargin: ((item.profit / item.revenue) * 100).toFixed(1)
+    }));
+  };
 
   return {
     tooltipFormatter,

@@ -10,20 +10,22 @@ import { ProfitLossMetrics } from "./components/ProfitLossMetrics";
 import { ExpenseBreakdown } from "./components/ExpenseBreakdown";
 import { ReportPageHeader } from "./components/ReportPageHeader";
 import { FinancialReportsNav } from "./components/FinancialReportsNav";
-import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from "@/components/charts";
-import type { ProfitLossItem, MonthlyProfitData } from "./types/financial-reports";
+import { ProfitLossChart } from "./components/ProfitLossChart";
+import { useChartTransformations } from "./hooks/useChartTransformations";
+import type { ProfitLossItem } from "./types/financial-reports";
 import { profitLossData, monthlyProfitData } from "./data/profitLossData";
 
 export default function ProfitLoss() {
   const [period, setPeriod] = useState("2025-04");
   const [searchTerm, setSearchTerm] = useState("");
-  const [comparison, setComparison] = useState("previous-period");
   
   const filteredProfitLoss = profitLossData.filter(item => 
     item.item.toLowerCase().includes(searchTerm.toLowerCase()));
   
   const { totals, netProfit, profitMargin } = useProfitLossCalculations(filteredProfitLoss);
   const expenseItems = filteredProfitLoss.filter(item => item.category === "Expenses");
+  const { tooltipFormatter, formatProfitChartData } = useChartTransformations();
+  const formattedChartData = formatProfitChartData(monthlyProfitData);
   
   return (
     <DashboardLayout>
@@ -53,7 +55,7 @@ export default function ProfitLoss() {
             <CardContent className="p-0">
               <ProfitLossTab 
                 data={filteredProfitLoss} 
-                monthlyData={monthlyProfitData}
+                monthlyData={formattedChartData}
                 period={period}
               />
             </CardContent>
@@ -67,26 +69,10 @@ export default function ProfitLoss() {
               profitMargin={profitMargin}
             />
             
-            <Card>
-              <CardHeader>
-                <CardTitle>6-Month Profit Trend</CardTitle>
-                <CardDescription>Monthly revenue, expenses, and profit</CardDescription>
-              </CardHeader>
-              <CardContent className="h-80">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={monthlyProfitData}>
-                    <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
-                    <XAxis dataKey="month" />
-                    <YAxis />
-                    <Tooltip formatter={(value) => [`₦${value.toLocaleString()}`, '']} />
-                    <Legend />
-                    <Line type="monotone" dataKey="revenue" stroke="#4f46e5" strokeWidth={2} name="Revenue" />
-                    <Line type="monotone" dataKey="expenses" stroke="#ef4444" strokeWidth={2} name="Expenses" />
-                    <Line type="monotone" dataKey="profit" stroke="#10b981" strokeWidth={2} dot={{ r: 4 }} name="Profit" />
-                  </LineChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
+            <ProfitLossChart 
+              data={formattedChartData}
+              tooltipFormatter={tooltipFormatter}
+            />
 
             <ExpenseBreakdown 
               expenses={expenseItems}
